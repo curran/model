@@ -88,4 +88,16 @@ describe('model', function() {
       done();
     });
   });
+
+  it('should use thisArg', function(done) {
+    var model = Model(),
+        theThing = { foo: "bar" };
+    model.when('x', function (x) {
+      expect(x).toBe(5);
+      expect(this).toBe(theThing);
+      expect(this.foo).toBe("bar");
+      done();
+    }, theThing);
+    model.set('x', 5);
+  });
 });

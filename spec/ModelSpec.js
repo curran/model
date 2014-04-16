@@ -137,4 +137,5 @@ describe('model', function() {
     });
     model.set('w', 5);
   });
+  // TODO add more starting from Ohm's Law
 });

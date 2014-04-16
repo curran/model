@@ -1,4 +1,4 @@
-// Unit tests for the `model.js`
+// Unit tests for `model.js`.
 describe('model', function() {
 
   var Model;
@@ -96,21 +96,10 @@ describe('model', function() {
     model.set('z', 7);
   });
 
-  // An additional argument can be passed to `when`,
-  // which will be the value of `this` in the callback function.
-  it('should use thisArg', function(done) {
-    var model = Model(),
-        theThing = { foo: "bar" };
-    model.when('x', function (x) {
-      expect(x).toBe(5);
-      expect(this).toBe(theThing);
-      expect(this.foo).toBe("bar");
-      done();
-    }, theThing);
-    model.set('x', 5);
-  });
-
-  
+  // Properties can be set in the model in the body of a `when()` callback.
+  // This pattern can be used to deflare a data dependency graph
+  // using a functional reactive style. The model system automatically propagates changes
+  // through the data dependency graph. This is similar to computed properties in Ember.js.
   it('should propagate changes two hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['x'], function (x) {
@@ -147,6 +136,20 @@ describe('model', function() {
     });
     model.set('w', 5);
   });
+
+  // An additional argument can be passed to `when`,
+  // which will be the value of `this` in the callback function.
+  it('should use thisArg', function(done) {
+    var model = Model(),
+        theThing = { foo: "bar" };
+    model.when('x', function (x) {
+      expect(x).toBe(5);
+      expect(this).toBe(theThing);
+      expect(this.foo).toBe("bar");
+      done();
+    }, theThing);
+    model.set('x', 5);
+  });
   // TODO add more starting from Ohm's Law
 });
-// By Curran Kelleher 4/15/2014
+// By Curran Kelleher 4/16/2014

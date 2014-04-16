@@ -48,7 +48,18 @@ define([], function () {
     // Adds a callback that will listen for changes
     // to the specified property.
     function on(key, callback){
-      (callbacks[key] || (callbacks[key] = [])).push(callback);
+
+      // If there is not already a list 
+      // of callbacks for the given key,
+      if(callbacks[key]) {
+
+        // then create one.
+        callbacks[key] = [];
+      } 
+
+      // Add the callback to the list of callbacks
+      // for the given key.
+      callbacks[key].push(callback);
     }
 
     /*
@@ -70,7 +81,7 @@ define([], function () {
       // Update the internal value.
       values[key] = value;
 
-      // Call callbacks.
+      // Call callbacks if there are any.
       if(callbacks[key]){
         callbacks[key].forEach(function (callback) {
           callback();
@@ -78,6 +89,7 @@ define([], function () {
       }
     }
 
+    /* TODO add documentation here */
     function when(dependencies, fn, thisArg){
 
       // Support passing a single string as `dependencies`

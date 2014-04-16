@@ -11,12 +11,52 @@ Created in order to cleanly define reactive model-driven data visualizations.
 When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
 
 ```javascript
-model.on('change:size change:data', function (){
-  var size = model.get('size'),
+model.on('change:width change:height change:data', function (){
+  var width = model.get('width'),
+      height = model.get('height'),
       data = model.get('data');
-  // Build the visualization using size and data.
+  // Build the visualization using width, height and data.
 });
 ```
+
+However, with the above code, if only one or two of the properties are set, the function will be invoked before all properties are defined. Therefore a null check must be added for all properties as follows:
+
+```javascript
+model.on('change:width change:height change:data', function (){
+  var width = model.get('width'),
+      height = model.get('height'),
+      data = model.get('data');
+  if(width && height && data) {
+    // Build the visualization using width, height and data.
+  }
+});
+```
+
+The above code now does not break, but has another issue. When `width` and `height` are both updated, the function is invoked twice. Ideally, when `width` and `height` are updated in sequence (e.g. `model.set('width', 50); model.set('height', 100);`), the function should only be invoked once with the new values for both width and height. One way to accomplish this is to [debounce](http://underscorejs.org/#debounce) the function as follows:
+
+```javascript
+model.on('change:width change:height change:data', _.debounce(function (){
+  var width = model.get('width'),
+      height = model.get('height'),
+      data = model.get('data');
+  if(width && height && data) {
+    // Build the visualization using width, height and data.
+  }
+}));
+```
+
+The above code behaves as desired - the visualization is only built when all properties are present, and only once when multiple properties change together. As this pattern is so common in developing model driven data visualizations, it would be useful to abstract it away. The `model.when` library does exactly that. Using `model.when`, the above code becomes:
+
+```javascript
+model.when(['width', 'height', 'data'], function (width, height, data) {
+  // Build the visualization using width, height and data.
+});
+```
+
+As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models, and the `when` function (which appears in the world of Functional Reactive Programming). In summary, `model.js` provides:
+
+ * Models similar to Backbone Models in that you can call `set(propertyName, value)`
+ * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
 
 Inspired by
 

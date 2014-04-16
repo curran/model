@@ -8,6 +8,14 @@ A functional reactive model library.
 
 Created in order to cleanly define reactive model-driven data visualizations. 
 
+When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
+
+    model.on('change:size change:data', function (){
+      var size = model.get('size'),
+          data = model.get('data');
+      // Build the visualization using size and data.
+    });
+
 Inspired by
 
   * [Models in Backbone.js](http://backbonejs.org/#Model)

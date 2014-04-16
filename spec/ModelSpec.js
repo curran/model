@@ -70,6 +70,21 @@ describe('model', function() {
     model.set('z', 7);
   });
 
+  // Multiple properties can be set simultaneously by
+  // passing an object to `model.set` (similar to Backbone).
+  it('should set values from an object', function(done) {
+    var model = Model();
+    model.when(['x', 'y'], function (x, y) {
+      expect(x).toBe(9);
+      expect(y).toBe(7);
+      done();
+    });
+    model.set({
+      x: 9,
+      y: 7
+    });
+  });
+
   // Multiple changes on a property that happen in sequence
   // cause the `when` callback to be executed only once.
   it('should call fn only once for multiple updates', function(done) {

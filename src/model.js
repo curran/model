@@ -76,7 +76,19 @@ define([], function () {
     */
 
     // Sets a value on the model.
-    function set(key, value){
+    function set(keyOrObject, value){
+      if(typeof keyOrObject === 'string') {
+        setKeyValue(keyOrObject, value);
+      } else {
+        setObject(keyOrObject);
+      }
+    }
+    function setObject(object){
+      Object.keys(object).forEach(function (key) {
+        setKeyValue(key, object[key]);
+      });
+    }
+    function setKeyValue(key, value){
 
       // Update the internal value.
       values[key] = value;

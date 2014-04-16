@@ -1,4 +1,6 @@
-// Unit tests for `model.js`.
+// Unit tests for `model.js` (using [Jasmine](http://jasmine.github.io/2.0/introduction.html)).
+//
+// [Run the unit tests](http://curran.github.io/model/SpecRunner.html)
 describe('model', function() {
 
   var Model;

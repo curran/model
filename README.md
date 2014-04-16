@@ -1,6 +1,1 @@
-model
-=====
-
-A functional reactive model library.
-
-By Curran Kelleher 4/15/2014
+Everything is in the gh-pages branch.

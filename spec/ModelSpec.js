@@ -116,4 +116,25 @@ describe('model', function() {
     });
     model.set('x', 10);
   });
+
+  it('should propagate changes three hops through a data dependency graph', function(done) {
+    var model = Model();
+    model.when(['w'], function (w) {
+      expect(w).toBe(5);
+      model.set('x', w * 2);
+    });
+    model.when(['x'], function (x) {
+      expect(x).toBe(10);
+      model.set('y', x + 1);
+    });
+    model.when(['y'], function (y) {
+      expect(y).toBe(11);
+      model.set('z', y * 2);
+    });
+    model.when(['z'], function (z) {
+      expect(z).toBe(22);
+      done();
+    });
+    model.set('w', 5);
+  });
 });

@@ -1,0 +1,26 @@
+{
+  "name": "model",
+  "version": "0.0.1",
+  "homepage": "https://github.com/curran/model",
+  "authors": [
+    "curran <curran.kelleher@gmail.com>"
+  ],
+  "description": "A functional reactive model library.",
+  "main": "src/model.js",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "LICENSE",
+    "README.md",
+    "SpecRunner.html",
+    "bower.json",
+    "buildDocs.sh",
+    "countLines.sh",
+    "docs",
+    "lib",
+    "requireConfig.js",
+    "spec"
+  ]
+}

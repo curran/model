@@ -50,4 +50,17 @@ describe('model', function() {
     model.set('y', 6);
     model.set('z', 7);
   });
+
+  it('should call fn with multiple dependency properties in the order specified', function(done) {
+    var model = Model();
+    model.when(['y', 'x', 'z'], function (y, x, z) {
+      expect(x).toBe(5);
+      expect(y).toBe(6);
+      expect(z).toBe(7);
+      done();
+    });
+    model.set('x', 5);
+    model.set('y', 6);
+    model.set('z', 7);
+  });
 });

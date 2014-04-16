@@ -48,12 +48,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>An example Jasmine unit test suite.
-See also <a href="http://stackoverflow.com/questions/19240302/does-jasmine-2-0-really-not-work-with-require-js/22702118#22702118">http://stackoverflow.com/questions/19240302/does-jasmine-2-0-really-not-work-with-require-js/22702118#22702118</a></p>
+              <p>Unit tests for the Model module.
+Curran Kelleher 4/15/2014</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>describe(<span class="hljs-string">'model'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+
   <span class="hljs-keyword">var</span> Model;</pre></div></div>
             
         </li>
@@ -74,7 +75,9 @@ See also <a href="http://stackoverflow.com/questions/19240302/does-jasmine-2-0-r
       Model = loadedModule;
       done();
     });
-  });</pre></div></div>
+  });
+
+  it(<span class="hljs-string">"can create a model and listen for changes to a single property"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span></pre></div></div>
             
         </li>
         
@@ -85,11 +88,11 @@ See also <a href="http://stackoverflow.com/questions/19240302/does-jasmine-2-0-r
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>run tests that use the myModule object</p>
+              <p>Create a new model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  it(<span class="hljs-string">"can create a model and listen for changes to a single property"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = Model();</pre></div></div>
             
         </li>
         
@@ -100,11 +103,14 @@ See also <a href="http://stackoverflow.com/questions/19240302/does-jasmine-2-0-r
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Create a new model.</p>
+              <p>Listen for changes on x.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = Model();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    model.on(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">30</span>);
+      done();
+    });</pre></div></div>
             
         </li>
         
@@ -115,59 +121,11 @@ See also <a href="http://stackoverflow.com/questions/19240302/does-jasmine-2-0-r
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Create a callback for the X property.</p>
+              <p>Set x.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">listenX</span><span class="hljs-params">(x)</span>{</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>The new value is passed to the callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      expect(x).toBe(<span class="hljs-number">30</span>);
-
-      done();
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Add callbacks as observers to the model.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    model.on(<span class="hljs-string">'x'</span>, listenX);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Set values of X and Y.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">30</span>); <span class="hljs-comment">// prints "x changed to 30"</span>
+            <div class="content"><div class='highlight'><pre>    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">30</span>);
   });
 });</pre></div></div>
             

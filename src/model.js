@@ -51,7 +51,7 @@ define([], function () {
 
       // If there is not already a list 
       // of callbacks for the given key,
-      if(callbacks[key]) {
+      if(!callbacks[key]) {
 
         // then create one.
         callbacks[key] = [];

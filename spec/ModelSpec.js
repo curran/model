@@ -79,4 +79,13 @@ describe('model', function() {
     model.set('z', 6);
     model.set('z', 7);
   });
+
+  it('should call fn once to initialize', function(done) {
+    var model = Model();
+    model.set('x', 55);
+    model.when(['x'], function (x) {
+      expect(x).toBe(55);
+      done();
+    });
+  });
 });

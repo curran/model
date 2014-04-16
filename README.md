@@ -1,14 +1,17 @@
 model
 =====
 
-A functional reactive model library.
+A functional reactive model library. `model.js` provides:
+
+ * Models similar to Backbone Models in that you can call `set(propertyName, value)`
+ * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
+
+Check out the annotated code:
 
  * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
- * [Source](http://curran.github.io/model/docs/model.html)
+ * [Model.js](http://curran.github.io/model/docs/model.html)
 
-Created in order to cleanly define reactive model-driven data visualizations. 
-
-When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
+This library was created in order to cleanly define reactive model-driven data visualizations. When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
 
 ```javascript
 model.on('change:width change:height change:data', function (){
@@ -53,10 +56,7 @@ model.when(['width', 'height', 'data'], function (width, height, data) {
 });
 ```
 
-As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models, and the `when` function (which appears in the world of Functional Reactive Programming). In summary, `model.js` provides:
-
- * Models similar to Backbone Models in that you can call `set(propertyName, value)`
- * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
+As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function (which appears in the world of Functional Reactive Programming).
 
 Inspired by
 

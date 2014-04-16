@@ -3,8 +3,20 @@ model
 
 A functional reactive model library.
 
- * [Documentation](http://curran.github.io/model/docs/model.html)
- * [Annotated Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
+ * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
+ * [Source](http://curran.github.io/model/docs/model.html)
+
+Created in order to cleanly define reactive model-driven data visualizations. 
+
+Inspired by
+
+  * [Models in Backbone.js](http://backbonejs.org/#Model)
+  * The `when` operator in Functional Reactive Programming
+    * [`when`](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservablewhenargs) in [RxJS](http://reactive-extensions.github.io/RxJS/)
+    * [`when`](https://github.com/baconjs/bacon.js/tree/master#bacon-when) in [Bacon.js](https://github.com/baconjs/bacon.js/tree/master)
+  * [Computed properties in Ember.js](http://emberjs.com/guides/object-model/computed-properties/)
+  * [Dependency injection in Angular.js](http://docs.angularjs.org/guide/di)
+  * [Dependency declaration syntax in Require.js](http://requirejs.org/docs/api.html#defdep)
 
 See also:
 

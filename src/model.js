@@ -47,32 +47,33 @@ define([], function () {
 
     // Adds a callback that will listen for changes
     // to the specified property.
-    function on(key, callbackToAdd){
-      if(!callbacks[key]){
-        callbacks[key] = [];
-      }
-      callbacks[key].push(callbackToAdd);
+    function on(key, callback){
+      (callbacks[key] || (callbacks[key] = [])).push(callback);
     }
 
-    //// Removes a callback that listening for changes
-    //// to the specified property.
-    //TODO test this
-    //function off(key, callbackToRemove){
-    //  if(callbacks[key]){
-    //    callbacks[key] = callbacks[key].filter(function (callback) {
-    //      return callback !== callbackToRemove;
-    //    });
-    //  }
-    //}
+    /*
+     Removes a callback that listening for changes
+     to the specified property.
+    TODO test this
+    function off(key, callbackToRemove){
+      if(callbacks[key]){
+        callbacks[key] = callbacks[key].filter(function (callback) {
+          return callback !== callbackToRemove;
+        });
+      }
+    }
+    */
 
-    // Sets a value on the model and
-    // invokes callbacks added for the property,
-    // passing the new value into the callback.
+    // Sets a value on the model.
     function set(key, value){
+
+      // Update the internal value.
       values[key] = value;
+
+      // Call callbacks.
       if(callbacks[key]){
         callbacks[key].forEach(function (callback) {
-          callback(value);
+          callback();
         });
       }
     }

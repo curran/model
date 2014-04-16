@@ -100,4 +100,20 @@ describe('model', function() {
     }, theThing);
     model.set('x', 5);
   });
+
+  it('should propagate changes two hops through a data dependency graph', function(done) {
+    var model = Model();
+    model.when(['x'], function (x) {
+      model.set('y', x + 1);
+    });
+    model.when(['y'], function (y) {
+      expect(y).toBe(11);
+      model.set('z', y * 2);
+    });
+    model.when(['z'], function (z) {
+      expect(z).toBe(22);
+      done();
+    });
+    model.set('x', 10);
+  });
 });

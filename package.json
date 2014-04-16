@@ -1,0 +1,13 @@
+{
+  "name": "Model",
+  "version": "0.0.1",
+  "author": "Curran Kelleher <curran.kelleher@gmail.com>",
+  "description": "A functional reactive model library.",
+  "dependencies": {
+    "express": "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-docco": "~0.3.3"
+  }
+}

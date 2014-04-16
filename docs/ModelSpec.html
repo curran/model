@@ -77,7 +77,7 @@ Curran Kelleher 4/15/2014</p>
     });
   });
 
-  it(<span class="hljs-string">"can create a model and listen for changes to a single property"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span></pre></div></div>
+  it(<span class="hljs-string">'should create a model and listen for changes to a single property'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span></pre></div></div>
             
         </li>
         
@@ -127,7 +127,144 @@ Curran Kelleher 4/15/2014</p>
             
             <div class="content"><div class='highlight'><pre>    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">30</span>);
   });
-});</pre></div></div>
+
+  it(<span class="hljs-string">'should call fn only once for multiple updates'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">30</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">10</span>);
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">20</span>);
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">30</span>);
+  });
+
+  it(<span class="hljs-string">'should call fn with multiple dependency properties'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when([<span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>, <span class="hljs-string">'z'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">5</span>);
+      expect(y).toBe(<span class="hljs-number">6</span>);
+      expect(z).toBe(<span class="hljs-number">7</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">6</span>);
+    model.set(<span class="hljs-string">'z'</span>, <span class="hljs-number">7</span>);
+  });
+
+  it(<span class="hljs-string">'should call fn with multiple dependency properties in the order specified'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Test changing the order</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when([<span class="hljs-string">'y'</span>, <span class="hljs-string">'x'</span>, <span class="hljs-string">'z'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y, x, z)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">5</span>);
+      expect(y).toBe(<span class="hljs-number">6</span>);
+      expect(z).toBe(<span class="hljs-number">7</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">6</span>);
+    model.set(<span class="hljs-string">'z'</span>, <span class="hljs-number">7</span>);
+  });
+  it(<span class="hljs-string">'should call fn with multiple dependency properties only once after several updates'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when([<span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>, <span class="hljs-string">'z'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y, z)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">5</span>);
+      expect(y).toBe(<span class="hljs-number">6</span>);
+      expect(z).toBe(<span class="hljs-number">7</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">6</span>);
+    model.set(<span class="hljs-string">'z'</span>, <span class="hljs-number">5</span>);
+    model.set(<span class="hljs-string">'z'</span>, <span class="hljs-number">6</span>);
+    model.set(<span class="hljs-string">'z'</span>, <span class="hljs-number">7</span>);
+  });
+
+  it(<span class="hljs-string">'should call fn once to initialize'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">55</span>);
+    model.when([<span class="hljs-string">'x'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">55</span>);
+      done();
+    });
+  });
+
+  it(<span class="hljs-string">'should use thisArg'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        theThing = { foo: <span class="hljs-string">"bar"</span> };
+    model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">5</span>);
+      expect(<span class="hljs-keyword">this</span>).toBe(theThing);
+      expect(<span class="hljs-keyword">this</span>.foo).toBe(<span class="hljs-string">"bar"</span>);
+      done();
+    }, theThing);
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+  });
+
+  it(<span class="hljs-string">'should propagate changes two hops through a data dependency graph'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when([<span class="hljs-string">'x'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      model.set(<span class="hljs-string">'y'</span>, x + <span class="hljs-number">1</span>);
+    });
+    model.when([<span class="hljs-string">'y'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span>
+      expect(y).toBe(<span class="hljs-number">11</span>);
+      model.set(<span class="hljs-string">'z'</span>, y * <span class="hljs-number">2</span>);
+    });
+    model.when([<span class="hljs-string">'z'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(z)</span> {</span>
+      expect(z).toBe(<span class="hljs-number">22</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">10</span>);
+  });
+
+  it(<span class="hljs-string">'should propagate changes three hops through a data dependency graph'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when([<span class="hljs-string">'w'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(w)</span> {</span>
+      expect(w).toBe(<span class="hljs-number">5</span>);
+      model.set(<span class="hljs-string">'x'</span>, w * <span class="hljs-number">2</span>);
+    });
+    model.when([<span class="hljs-string">'x'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      expect(x).toBe(<span class="hljs-number">10</span>);
+      model.set(<span class="hljs-string">'y'</span>, x + <span class="hljs-number">1</span>);
+    });
+    model.when([<span class="hljs-string">'y'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span>
+      expect(y).toBe(<span class="hljs-number">11</span>);
+      model.set(<span class="hljs-string">'z'</span>, y * <span class="hljs-number">2</span>);
+    });
+    model.when([<span class="hljs-string">'z'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(z)</span> {</span>
+      expect(z).toBe(<span class="hljs-number">22</span>);
+      done();
+    });
+    model.set(<span class="hljs-string">'w'</span>, <span class="hljs-number">5</span>);
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>TODO add more starting from Ohm’s Law</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>});</pre></div></div>
             
         </li>
         

@@ -110,7 +110,7 @@ define([], function () {
         if(allAreDefined(args)) {
 
           // Call `fn` with the dependency property values.
-          computedProperties = fn.apply(thisArg, args);
+          fn.apply(thisArg, args);
         }
       });
 

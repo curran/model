@@ -252,7 +252,19 @@ for the given key.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(key, value)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(keyOrObject, value)</span>{</span>
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> keyOrObject === <span class="hljs-string">'string'</span>) {
+        setKeyValue(keyOrObject, value);
+      } <span class="hljs-keyword">else</span> {
+        setObject(keyOrObject);
+      }
+    }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setObject</span><span class="hljs-params">(object)</span>{</span>
+      <span class="hljs-built_in">Object</span>.keys(object).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key)</span> {</span>
+        setKeyValue(key, object[key]);
+      });
+    }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setKeyValue</span><span class="hljs-params">(key, value)</span>{</span></pre></div></div>
             
         </li>
         

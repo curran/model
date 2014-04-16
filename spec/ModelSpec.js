@@ -1,10 +1,9 @@
-// Unit tests for the Model module.
-// Curran Kelleher 4/15/2014
+// Unit tests for the `model.js`
 describe('model', function() {
 
   var Model;
 
-  // Use require.js to fetch the module
+  // Use Require.js to fetch the AMD module.
   it("should load the AMD module", function(done) {
     require(['model'], function (loadedModule) {
       Model = loadedModule;
@@ -14,30 +13,33 @@ describe('model', function() {
 
   it('should create a model and listen for changes to a single property', function(done) {
 
-    // Create a new model.
+    // Create a new model by calling `Model()`.
     var model = Model();
 
-    // Listen for changes on x.
+    // Listen for changes on x using `model.when()`.
     model.when('x', function (x) {
       expect(x).toBe(30);
       done();
     });
 
-    // Set x.
+    // Set x to be 30, which triggers the callback.
     model.set('x', 30);
   });
 
-  it('should call fn only once for multiple updates', function(done) {
+  // `model.when()` calls the callback for existing values,
+  // even if they are not changed.
+  it('should call fn once to initialize', function(done) {
     var model = Model();
-    model.when('x', function (x) {
-      expect(x).toBe(30);
+    model.set('x', 55);
+    model.when(['x'], function (x) {
+      expect(x).toBe(55);
       done();
     });
-    model.set('x', 10);
-    model.set('x', 20);
-    model.set('x', 30);
   });
 
+  // An array of dependencies can be passed to `when()`,
+  // and the values from the model are passed to the callback
+  // This is similar to the dependency injection syntax of Angular.js.
   it('should call fn with multiple dependency properties', function(done) {
     var model = Model();
     model.when(['x', 'y', 'z'], function (x, y, z) {
@@ -51,10 +53,10 @@ describe('model', function() {
     model.set('z', 7);
   });
 
+  // Model values are passed as arguments to the callback
+  // in the order specified in the dependencies array. 
   it('should call fn with multiple dependency properties in the order specified', function(done) {
     var model = Model();
-
-    // Test changing the order
     model.when(['y', 'x', 'z'], function (y, x, z) {
       expect(x).toBe(5);
       expect(y).toBe(6);
@@ -65,6 +67,20 @@ describe('model', function() {
     model.set('y', 6);
     model.set('z', 7);
   });
+
+  // Multiple changes on a property that happen in sequence
+  // cause the `when` callback to be executed only once.
+  it('should call fn only once for multiple updates', function(done) {
+    var model = Model();
+    model.when('x', function (x) {
+      expect(x).toBe(30);
+      done();
+    });
+    model.set('x', 10);
+    model.set('x', 20);
+    model.set('x', 30);
+  });
+
   it('should call fn with multiple dependency properties only once after several updates', function(done) {
     var model = Model();
     model.when(['x', 'y', 'z'], function (x, y, z) {
@@ -80,15 +96,8 @@ describe('model', function() {
     model.set('z', 7);
   });
 
-  it('should call fn once to initialize', function(done) {
-    var model = Model();
-    model.set('x', 55);
-    model.when(['x'], function (x) {
-      expect(x).toBe(55);
-      done();
-    });
-  });
-
+  // An additional argument can be passed to `when`,
+  // which will be the value of `this` in the callback function.
   it('should use thisArg', function(done) {
     var model = Model(),
         theThing = { foo: "bar" };
@@ -101,6 +110,7 @@ describe('model', function() {
     model.set('x', 5);
   });
 
+  
   it('should propagate changes two hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['x'], function (x) {
@@ -139,3 +149,4 @@ describe('model', function() {
   });
   // TODO add more starting from Ohm's Law
 });
+// By Curran Kelleher 4/15/2014

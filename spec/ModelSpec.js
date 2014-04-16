@@ -18,7 +18,7 @@ describe('model', function() {
     var model = Model();
 
     // Listen for changes on x.
-    model.on('x', function (x) {
+    model.when('x', function (x) {
       expect(x).toBe(30);
       done();
     });

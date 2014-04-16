@@ -4,6 +4,7 @@ model
 A functional reactive model library.
 
  * [Documentation](http://curran.github.io/model/docs/model.html)
+ * [Annotated Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
 
 See also:
 

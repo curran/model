@@ -1,15 +1,15 @@
-model
-=====
+model.js
+========
 
-A functional reactive model library. `model.js` provides:
+A functional reactive model library. Provides:
 
- * Models similar to Backbone Models in that you can call `set(propertyName, value)`
+ * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call `set(propertyName, value)`.
  * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
 
-Check out the annotated code:
+Check out the annotated source code:
 
- * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
  * [Model.js](http://curran.github.io/model/docs/model.html)
+ * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
 
 This library was created in order to cleanly define reactive model-driven data visualizations. When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
 

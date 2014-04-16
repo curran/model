@@ -102,6 +102,19 @@ describe('model', function() {
   // This pattern can be used to deflare a data dependency graph
   // using a functional reactive style. The model system automatically propagates changes
   // through the data dependency graph. This is similar to computed properties in Ember.js.
+  it('should compute fullName from firstName and lastName', function(done) {
+    var model = Model();
+    model.when(['firstName', 'lastName'], function (firstName, lastName) {
+      model.set('fullName', firstName + ' ' + lastName);
+    });
+    model.when('fullName', function (fullName) {
+      expect(fullName).toBe('John Doe');
+      done();
+    });
+    model.set('firstName', 'John');
+    model.set('lastName', 'Doe');
+  });
+
   it('should propagate changes two hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['x'], function (x) {

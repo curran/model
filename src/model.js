@@ -133,5 +133,5 @@ define([], function () {
       set: set,
       when: when
     };
-  }
+  };
 });

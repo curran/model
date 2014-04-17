@@ -106,4 +106,13 @@ See also:
  * [Backbone.js mailing list: Improving the Backbone Model API with wire()](https://groups.google.com/forum/#!searchin/backbonejs/wire/backbonejs/CnFLHg-d0uk/lIJ8wYxSiTEJ) First pass at functional reactive models, built on Backbone models.
  * [wire.js](https://github.com/curran/phd/blob/dac07e2e8c38da7343645d7a07ec17a762120ea0/prototype/src/wire.js) The original implementation of the idea for this library, as an extension to Backbone Models.
 
+Pull requests welcome! Potential contributions include:
+
+ * Use universal module code to make `model.js` usable as either a global or as an AMD module.
+ * Add a Grunt workflow for linting and minifying
+   * Include a minified version `model.min.js` in the Bower package
+ * Add `Model(object)` constructor argument option that acts like `model.set(object)` for initializing properties (trying to keep the API as simple as possible, not sure if this would really improve the API for most use cases).
+ * Add more generalized D3 examples! For example, choropleth map, parallel coordinates, streamgraph.
+ * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
+
 By Curran Kelleher 4/16/2014

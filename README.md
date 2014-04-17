@@ -3,7 +3,9 @@ model.js
 
 A functional reactive model library. Provides:
 
- * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call `set(propertyName, value)`.
+ * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call
+   * `set(propertyName, value)` to set a value, and
+   * `get(propertyName)` to get a value
  * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
 
 Check out the

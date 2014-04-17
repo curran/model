@@ -24,7 +24,6 @@ define(['model'], function (Model) {
           .style('text-anchor', 'end'),
         model = Model();
 
-    model.set('margin', {top: 20, right: 20, bottom: 30, left: 40});
 
     model.when('yLabel', yAxisLabel.text, yAxisLabel);
 

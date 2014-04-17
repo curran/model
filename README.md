@@ -58,7 +58,11 @@ model.when(['width', 'height', 'data'], function (width, height, data) {
 });
 ```
 
-As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function (which appears in the world of Functional Reactive Programming).
+As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming.
+
+As an example of how this can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+
+<img src="http://curran.github.io/model/examples/d3BarChart/ModelDrivenBarChart.png">
 
 Inspired by
 

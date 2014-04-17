@@ -8,6 +8,9 @@
 // Draws from this brushing example for interaction:
 // http://bl.ocks.org/mbostock/4343214
 //
+// See also docs on quadtree:
+// https://github.com/mbostock/d3/wiki/Quadtree-Geom
+//
 // Define the AMD module using the `define()` function
 // provided by Require.js.
 define(['d3', 'model'], function (d3, Model) {

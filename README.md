@@ -112,7 +112,11 @@ Pull requests welcome! Potential contributions include:
  * Add a Grunt workflow for linting and minifying
    * Include a minified version `model.min.js` in the Bower package
  * Add `Model(object)` constructor argument option that acts like `model.set(object)` for initializing properties (trying to keep the API as simple as possible, not sure if this would really improve the API for most use cases).
- * Add more generalized D3 examples! For example, choropleth map, parallel coordinates, streamgraph.
+ * Add more generalized D3 examples! For example:
+   * [Focus+Context via Brushing](http://bl.ocks.org/mbostock/1667367)
+   * choropleth map
+   * parallel coordinates
+   * streamgraph
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
 By Curran Kelleher 4/16/2014

@@ -2,7 +2,7 @@
  * Curran Kelleher 4/17/2014 */
 
 /* Size the visualization container. */
-#barChartContainer {
+#lineChartContainer {
   position: fixed;
   top: 30px;
   bottom: 30px;
@@ -10,7 +10,7 @@
   right: 30px;
 }
 
-/* Style the bar chart.
+/* Style the visualization.
  * This CSS is copied verbatim from the
  * D3 line chart example found at
  * http://bl.ocks.org/mbostock/3883245 */

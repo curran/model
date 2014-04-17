@@ -8,7 +8,7 @@
 // Define the line chart AMD module using the
 // `define()` function provided by Require.js.
 define(['model'], function (Model) {
-  return function BarChart(div){
+  return function (div){
     var x = d3.time.scale(),
         y = d3.scale.linear(),
         xAxis = d3.svg.axis().scale(x).orient('bottom'),

@@ -119,14 +119,14 @@ define(['d3', 'model'], function (d3, Model) {
 
     function brushed() {
       var extent = brush.extent();
-      if(brush.empty()){
-        //TODO add model.get
-        //model.set('selectedData', model.get('data'));
-      }
-      else if(dots) {
+      if(dots) {
         dots.each(function(d) { d.selected = false; });
         search(extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
         dots.classed('selected', function(d) { return d.selected; });
+      }
+      if(brush.empty()){
+        model.set('selectedData', model.get('data'));
+      } else {
         model.set('selectedData', dots.filter(function (d) {
           return d.selected;
         }).data());

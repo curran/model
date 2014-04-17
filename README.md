@@ -68,9 +68,21 @@ model.when(['firstName', 'lastName'], function (firstName, lastName) {
 });
 ```
 
-<img src="http://curran.github.io/model/images/barChartFlow.png">
+<img src="http://curran.github.io/model/images/computedProperty.png">
 
-As an example of how this pattern can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+The following example demonstrates construction of a data dependency graph in which the flow propagates two hops from x to y to z.
+```javascript
+model.when(['x'], function (x) {
+  model.set('y', x + 1);
+});
+model.when(['y'], function (y) {
+  model.set('z', y * 2);
+});
+```
+
+<img src="http://curran.github.io/model/images/dependencyGraph.png">
+
+This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. As an example of how this pattern can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
 
 <img src="http://curran.github.io/model/images/barChartFlow.png">
 

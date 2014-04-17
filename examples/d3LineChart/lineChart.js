@@ -1,11 +1,11 @@
-// An adaptation of the [D3 bar chart example](http://bl.ocks.org/mbostock/3885304)
+// An adaptation of the [D3 line chart example](http://bl.ocks.org/mbostock/3883245)
 // that uses `model.js`. This version, unlike the original example,
 // is model driven and reactive. When a part of the model updates,
 // only the parts of the visualization that depend on those parts
 // of the model are updated. There are no redundant calls to visualization
 // update code when multiple properties are changed simultaneously.
 //
-// Define the bar chart AMD module using the
+// Define the line chart AMD module using the
 // `define()` function provided by Require.js.
 define(['model'], function (Model) {
   return function BarChart(div){

@@ -1,3 +1,11 @@
+// The main program that runs the bar chart example.
+// This program creates a new bar chart, loads a
+// configuration file for it, and loads data into it.
+// Then it periodically updates various aspects of the chart
+// with random values, to illustrate that the chart
+// is dynamic and reacts to changes in its model.
+//
+// Curran Kelleher 4/17/2014
 require(['barChart'], function (BarChart) {
   var div = document.getElementById('barChartContainer'),
       barChart = BarChart(div);

@@ -1,3 +1,6 @@
+/* CSS for the bar chart example.
+ * Curran Kelleher 4/17/2014 */
+
 /* Size the visualization container. */
 #barChartContainer {
   position: fixed;
@@ -7,7 +10,10 @@
   right: 30px;
 }
 
-/* Style the bar chart. */
+/* Style the bar chart.
+ * This CSS is copied verbatim from the
+ * D3 bar chart example found at
+ * http://bl.ocks.org/mbostock/3885304 */
 .bar {
   fill: steelblue;
 }

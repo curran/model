@@ -2,7 +2,7 @@ An example model-driven bar chart using `model.js`. Draws from the [D3 bar chart
 
 [Run the bar chart](http://curran.github.io/model/examples/d3BarChart/)
 
-<img src="http://curran.github.io/model/examples/d3BarChart/barChartFlow.png">
+<img src="http://curran.github.io/model/images/barChartFlow.png">
 This diagram shows the flow of data resulting in the dynamic bar chart.
 
 Files:

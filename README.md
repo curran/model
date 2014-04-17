@@ -58,11 +58,21 @@ model.when(['width', 'height', 'data'], function (width, height, data) {
 });
 ```
 
-As this was the only usage pattern I encountered when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming.
+As this was the only usage pattern I encountered with models when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming and makes working with models for visualizations much nicer.
 
-As an example of how this can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
 
-<img src="http://curran.github.io/model/examples/d3BarChart/barChartFlow.png">
+```javascript
+model.when(['firstName', 'lastName'], function (firstName, lastName) {
+  model.set('fullName', firstName + ' ' + lastName);
+});
+```
+
+<img src="http://curran.github.io/model/images/barChartFlow.png">
+
+As an example of how this pattern can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+
+<img src="http://curran.github.io/model/images/barChartFlow.png">
 
 Inspired by
 

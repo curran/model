@@ -1,8 +1,17 @@
+// The main program that assembles the linked views.
+//
+// Curran Kelleher 4/17/2014
 require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) {
+
+  // Grab the container div from the DOM.
   var div = document.getElementById('container'),
+
+      // Add both visualizations to the same div.
+      // Each will create its own SVG element.
       scatterPlot = ScatterPlot(div),
       barChart = BarChart(div);
 
+  // Configure the scatter plot to use the iris data.
   scatterPlot.set({
     xField: 'sepalWidth',
     yField: 'sepalLength',
@@ -11,6 +20,7 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     margin: { 'top': 20, 'right': 20, 'bottom': 30, 'left': 40 }
   });
 
+  // Configure the bar chart to use the aggregated iris data.
   barChart.set({
     barField: 'species',
     heightField: 'count',
@@ -18,18 +28,22 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     margin: { 'top': 20, 'right': 20, 'bottom': 30, 'left': 40 }
   });
 
+  // Compute the aggregated iris data in response to brushing
+  // in the scatter plot, and pass it into the bar chart.
   scatterPlot.when('selectedData', function (scatterData) {
+    var speciesCounts = {},
+        barData = [];
 
     // Aggregate scatter plot data by counting 
     // the number of irises for each species.
-    var speciesCounts = {},
-        barData = [];
     scatterData.forEach(function (d) {
       if(!speciesCounts[d.species]){
         speciesCounts[d.species] = 0;
       }
       speciesCounts[d.species]++;
     });
+
+    // Flatten the object containing species counts into an array.
     barData = Object.keys(speciesCounts).map(function (species) {
       return {
         species: species,
@@ -41,29 +55,36 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     barChart.set('data', barData);
   });
 
+  // Load the iris data.
   d3.tsv('data.tsv', function (d) {
     d.sepalLength = +d.sepalLength;
     d.sepalWidth = +d.sepalWidth;
     return d;
   }, function(error, data) {
 
-    // Set size once to initialize
+    // Set sizes once to initialize.
     setSizes();
 
-    // Set size on resize
+    // Set sizes when the user resizes the browser.
     window.addEventListener('resize', setSizes);
 
-    // Set the data
+    // Set the data.
     scatterPlot.set('data', data);
   });
 
+  // Sets the `box` property on each visualization
+  // to arrange them within the container div.
   function setSizes(){
+  
+    // Put the scatter plot on the left.
     scatterPlot.set('box', {
       x: 0,
       y: 0,
       width: div.clientWidth / 2,
       height: div.clientHeight
     });
+
+    // Put the bar chart on the right.
     barChart.set('box', {
       x: div.clientWidth / 2,
       y: 0,

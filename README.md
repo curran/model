@@ -125,9 +125,15 @@ Pull requests welcome! Potential contributions include:
  * Add `Model(object)` constructor argument option that acts like `model.set(object)` for initializing properties (trying to keep the API as simple as possible, not sure if this would really improve the API for most use cases).
  * Add more generalized D3 examples! For example:
    * [Focus+Context via Brushing](http://bl.ocks.org/mbostock/1667367)
-   * choropleth map
-   * parallel coordinates
-   * streamgraph
+   * [Choropleth Map](http://bl.ocks.org/mbostock/4060606)
+   * [Parallel Coordinates](http://exposedata.com/parallel/)
+   * [TreeMap](http://bl.ocks.org/mbostock/4063582)
+   * [Streamgraph](http://bl.ocks.org/mbostock/4060954)
+   * [Stacked Area Chart](http://bl.ocks.org/mbostock/3885211)
+   * [Stacked Bar Chart](http://bl.ocks.org/mbostock/3886208)
+   * [Grouped Bar Chart](http://bl.ocks.org/mbostock/3887051)
+   * [Sunburst Partition](http://bl.ocks.org/mbostock/4063423)
+   * [Icicle Plot](http://mbostock.github.io/d3/talk/20111018/partition.html)
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
 By Curran Kelleher 4/16/2014

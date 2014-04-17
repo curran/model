@@ -24,12 +24,13 @@ define([], function () {
   // Returns true if all values in the given array
   // are defined and not null, false otherwise.
   function allAreDefined(arr){
+    var allDefined = true;
     arr.forEach(function (d) {
       if(typeof d === 'undefined' || d === null){
-        return false;
+        allDefined = false;
       }
     });
-    return true;
+    return allDefined;
   }
 
   // The constructor function.

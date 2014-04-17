@@ -27,5 +27,18 @@ body {
 }
 
 .dot {
-  stroke: #000;
+  fill: black;
+}
+
+/* The following CSS is for brushing,
+ * adapted from http://bl.ocks.org/mbostock/4343214 */
+
+.dot.selected {
+  fill: red;
+}
+
+.brush .extent {
+  stroke: gray;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }

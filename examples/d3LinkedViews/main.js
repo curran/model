@@ -18,9 +18,10 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     margin: { 'top': 20, 'right': 20, 'bottom': 30, 'left': 40 }
   });
 
-  // TODO add interaction to scatterplot,
-  // change 'data' to 'selectedData'
-  scatterPlot.when('data', function (scatterData) {
+  scatterPlot.when('selectedData', function (scatterData) {
+
+    // Aggregate scatter plot data by counting 
+    // the number of irises for each species.
     var speciesCounts = {},
         barData = [];
     scatterData.forEach(function (d) {
@@ -35,7 +36,8 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
         count: speciesCounts[species]
       };
     });
-    console.log(barData);
+
+    // Update the bar chart with the aggregated data.
     barChart.set('data', barData);
   });
 

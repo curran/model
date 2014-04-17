@@ -14,6 +14,7 @@ Check out the
    * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
    * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
    * [D3 Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
+   * [D3 Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 
@@ -88,7 +89,14 @@ model.when(['y'], function (y) {
 
 This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. As an example of how this pattern can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
 
+<img src="http://curran.github.io/model/images/barChart.png">
 <img src="http://curran.github.io/model/images/barChartFlow.png">
+
+Multiple model driven visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
+
+<img src="http://curran.github.io/model/images/linkedViews.png">
+Brushing in the scatter plot causes the selected data to be aggregated and plotted in the bar chart ([run it!](http://curran.github.io/model/examples/d3LinkedViews/)).
+
 
 Inspired by
 

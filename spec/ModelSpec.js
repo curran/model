@@ -1,11 +1,13 @@
 // Unit tests for `model.js` (using [Jasmine](http://jasmine.github.io/2.0/introduction.html)).
 //
+// Read through this to learn how to use the library.
+//
 // [Run the unit tests](http://curran.github.io/model/SpecRunner.html)
 describe('model', function() {
 
   var Model;
 
-  // Use Require.js to fetch the AMD module.
+  // Use Require.js to fetch the `model.js` AMD module.
   it("should load the AMD module", function(done) {
     require(['model'], function (loadedModule) {
       Model = loadedModule;
@@ -33,7 +35,7 @@ describe('model', function() {
   it('should call fn once to initialize', function(done) {
     var model = Model();
     model.set('x', 55);
-    model.when(['x'], function (x) {
+    model.when('x', function (x) {
       expect(x).toBe(55);
       done();
     });
@@ -70,7 +72,24 @@ describe('model', function() {
     model.set('z', 7);
   });
 
-  // The callback is not called unless all values are defined.
+  // Multiple properties can be set simultaneously by
+  // passing an object to `model.set`.
+  it('should set values from an object', function(done) {
+    var model = Model();
+    model.when(['y', 'x', 'z'], function (y, x, z) {
+      expect(x).toBe(5);
+      expect(y).toBe(6);
+      expect(z).toBe(7);
+      done();
+    });
+    model.set({
+      x: 5,
+      y: 6,
+      z: 7
+    });
+  });
+
+  // The callback is not called until all dependency values are defined.
   it('should call fn only when all properties are defined', function(done) {
     var model = Model();
     model.when(['y', 'x', 'z'], function (y, x, z) {
@@ -79,26 +98,10 @@ describe('model', function() {
       expect(z).toBe(7);
       done();
     });
-    model.set('x', 5);
-    model.set('y', 6);
+    model.set({ x: 5, y: 6 });
     setTimeout(function () {
       model.set('z', 7);
-    }, 5);
-  });
-
-  // Multiple properties can be set simultaneously by
-  // passing an object to `model.set`.
-  it('should set values from an object', function(done) {
-    var model = Model();
-    model.when(['x', 'y'], function (x, y) {
-      expect(x).toBe(9);
-      expect(y).toBe(7);
-      done();
-    });
-    model.set({
-      x: 9,
-      y: 7
-    });
+    }, 50);
   });
 
   // Multiple changes on a property that happen in sequence
@@ -124,6 +127,7 @@ describe('model', function() {
     });
     model.set('x', 5);
     model.set('y', 6);
+
     model.set('z', 5);
     model.set('z', 6);
     model.set('z', 7);

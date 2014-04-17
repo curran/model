@@ -6,7 +6,7 @@
 # By Curran Kelleher 4/15/2014 
 
 # $excluded is a regex for paths to exclude from line counting
-excluded="spec\|node_modules\|bower_components\|README\|lib\|docs\|csv\|XLS\|json\|png\|\.git"
+excluded="spec\|node_modules\|bower_components\|README\|lib\|docs\|csv\|XLS\|json\|png\|\.git\|tsv"
 
 countLines(){
   # $total is the total lines of code counted
@@ -23,8 +23,12 @@ countLines(){
   echo "  " $total in total
 }
 
-echo Source code files:
+echo Core files:
 cd src
+countLines
+
+echo Examples:
+cd ../examples
 countLines
 
 echo Unit tests:

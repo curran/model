@@ -26,7 +26,7 @@ define(['d3', 'model'], function (d3, Model) {
         g = svg.append('g'),
         xAxisG = g.append('g').attr('class', 'x axis'),
         yAxisG = g.append('g').attr('class', 'y axis'),
-        xAxisLabel = yAxisG.append('text')
+        xAxisLabel = xAxisG.append('text')
           .attr('class', 'label')
           .attr('y', -6)
           .style('text-anchor', 'end'),
@@ -44,7 +44,7 @@ define(['d3', 'model'], function (d3, Model) {
         quadtree,
         model = Model();
 
-    model.when('xLabel', xAxisLabel.text, yAxisLabel);
+    model.when('xLabel', xAxisLabel.text, xAxisLabel);
     model.when('yLabel', yAxisLabel.text, yAxisLabel);
 
 

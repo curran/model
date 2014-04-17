@@ -7,7 +7,7 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     xField: 'sepalWidth',
     yField: 'sepalLength',
     xLabel: 'Sepal Width (cm)',
-    yLabel: 'Sepal Width (cm)',
+    yLabel: 'Sepal Length (cm)',
     margin: { 'top': 20, 'right': 20, 'bottom': 30, 'left': 40 }
   });
 

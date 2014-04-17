@@ -49,7 +49,7 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>A functional reactive model library.</p>
-<p>By Curran Kelleher 4/15/2014</p>
+<p>By Curran Kelleher 4/17/2014</p>
 
             </div>
             
@@ -64,26 +64,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Returns a debounced version of the given function.
-Calling the debounced function one or more times in sequence
-will schedule the given function to execute only once
-at the next tick of the JavaScript event loop.
-Similar to <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounce</a></p>
+              <p>The constructor function for models.
+No need to use <code>new</code>.
+For example: <code>var model = Model();</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span><span class="hljs-params">(func)</span>{</span>
-    <span class="hljs-keyword">var</span> queued = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-      <span class="hljs-keyword">if</span>(!queued){
-        queued = <span class="hljs-literal">true</span>;
-        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-          queued = <span class="hljs-literal">false</span>;
-          func();
-        }, <span class="hljs-number">0</span>);
-      }
-    };
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -94,19 +81,11 @@ Similar to <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Returns true if all values in the given array
-are defined and not null, false otherwise.</p>
+              <p>the public API:</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span>{</span>
-    arr.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
-      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>){
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-      }
-    });
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = {</pre></div></div>
             
         </li>
         
@@ -117,11 +96,18 @@ are defined and not null, false otherwise.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>The constructor function.</p>
+              <h2 id="model-set">model.set</h2>
+<p>Sets properties on the model. There are two ways of calling <code>set</code>:</p>
+<ul>
+<li><code>model.set(property, value)</code> sets the value
+of the given model property to the given value.</li>
+<li><code>model.set(object)</code> sets the value of model properties
+based on the key value pairs present in the given object.</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>          set: set,</pre></div></div>
             
         </li>
         
@@ -132,15 +118,32 @@ are defined and not null, false otherwise.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>An object containing callback functions.</p>
+              <h2 id="model-when">model.when</h2>
+<p>Listens for changes on the model such that:</p>
 <ul>
-<li>Keys are property names</li>
-<li>Values are arrays of callback functions</li>
+<li>Multiple sequential model updates cause the callback
+to execute only once</li>
+<li>The callback is only executed if all dependency property
+values are defined</li>
+</ul>
+<p><code>model.when(dependencies, callback [, thisArg])</code></p>
+<ul>
+<li><code>dependencies</code> specifies the names of model properties that are
+dependencies of the callback function. <code>dependencies</code> can be<ul>
+<li>a string (in the case of a single dependency property) or</li>
+<li>an array of strings (in the case of many dependency properties).</li>
+</ul>
+</li>
+<li><code>callback(values...)</code> the callback function that is invoked after dependency
+properties change. The values of dependency properties are passed
+as arguments to the callback, in the same order specified by <code>dependencies</code>.</li>
+<li><code>thisArg</code> (optional) value to use as <code>this</code> when executing <code>callback</code>.</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> callbacks = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          when: when
+        },</pre></div></div>
             
         </li>
         
@@ -150,6 +153,25 @@ are defined and not null, false otherwise.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>An object containing callback functions.</p>
+<ul>
+<li>Keys are property names</li>
+<li>Values are arrays of callback functions</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        callbacks = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>An object containing property values.</p>
 <ul>
@@ -164,11 +186,11 @@ are defined and not null, false otherwise.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Adds a callback that will listen for changes
 to the specified property.</p>
@@ -180,11 +202,11 @@ to the specified property.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>If there is not already a list 
 of callbacks for the given key,</p>
@@ -196,11 +218,11 @@ of callbacks for the given key,</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>then create one.</p>
 
@@ -212,11 +234,11 @@ of callbacks for the given key,</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Add the callback to the list of callbacks
 for the given key.</p>
@@ -242,11 +264,11 @@ for the given key.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Sets a value on the model.</p>
 
@@ -269,11 +291,11 @@ for the given key.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Update the internal value.</p>
 
@@ -284,11 +306,11 @@ for the given key.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Call callbacks if there are any.</p>
 
@@ -301,17 +323,16 @@ for the given key.</p>
       }
     }
 
-    <span class="hljs-comment">/* TODO add documentation here */</span>
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">when</span><span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
             
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Support passing a single string as <code>dependencies</code></p>
 
@@ -324,11 +345,11 @@ for the given key.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
 on the next tick of the JavaScript event loop.</p>
@@ -340,11 +361,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Extract the values for each dependency property from the model.</p>
 
@@ -357,11 +378,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Only call the function if all values are defined.</p>
 
@@ -372,11 +393,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Call <code>fn</code> with the dependency property values.</p>
 
@@ -389,11 +410,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> once for initialization.</p>
 
@@ -404,11 +425,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> when dependency properties change.</p>
 <p>Multiple sequential dependency property changes 
@@ -425,22 +446,74 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Return the public Model API,
 using the revealing module pattern.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> {
-      set: set,
-      when: when
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> model;
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Returns a debounced version of the given function.
+Calling the debounced function one or more times in sequence
+will schedule the given function to execute only once
+at the next tick of the JavaScript event loop.
+Similar to <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounce</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span><span class="hljs-params">(func)</span>{</span>
+    <span class="hljs-keyword">var</span> queued = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      <span class="hljs-keyword">if</span>(!queued){
+        queued = <span class="hljs-literal">true</span>;
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+          queued = <span class="hljs-literal">false</span>;
+          func();
+        }, <span class="hljs-number">0</span>);
+      }
     };
-  };
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Returns true if all values in the given array
+are defined and not null, false otherwise.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span>{</span>
+    <span class="hljs-keyword">var</span> allDefined = <span class="hljs-literal">true</span>;
+    arr.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>){
+        allDefined = <span class="hljs-literal">false</span>;
+      }
+    });
+    <span class="hljs-keyword">return</span> allDefined;
+  }
+
 });</pre></div></div>
             
         </li>

@@ -1,45 +1,52 @@
 // A functional reactive model library.
 // 
-// By Curran Kelleher 4/15/2014
+// By Curran Kelleher 4/17/2014
 define([], function () {
 
-  // Returns a debounced version of the given function.
-  // Calling the debounced function one or more times in sequence
-  // will schedule the given function to execute only once
-  // at the next tick of the JavaScript event loop.
-  // Similar to http://underscorejs.org/#debounce
-  function debounce(func){
-    var queued = false;
-    return function () {
-      if(!queued){
-        queued = true;
-        setTimeout(function () {
-          queued = false;
-          func();
-        }, 0);
-      }
-    };
-  }
-
-  // Returns true if all values in the given array
-  // are defined and not null, false otherwise.
-  function allAreDefined(arr){
-    var allDefined = true;
-    arr.forEach(function (d) {
-      if(typeof d === 'undefined' || d === null){
-        allDefined = false;
-      }
-    });
-    return allDefined;
-  }
-
-  // The constructor function.
+  // The constructor function for models.
+  // No need to use `new`.
+  // For example: `var model = Model();`
   return function Model(){
+    
+    // the public API:
+    var model = {
 
-    // An object containing callback functions.
-    //  * Keys are property names
-    //  * Values are arrays of callback functions
-    var callbacks = {},
+          // ## model.set
+          //
+          // Sets properties on the model. There are two ways of calling `set`:
+          //
+          //  * `model.set(property, value)` sets the value
+          //    of the given model property to the given value.
+          //  * `model.set(object)` sets the value of model properties
+          //    based on the key value pairs present in the given object.
+          set: set,
+
+          // ## model.when
+          //
+          // Listens for changes on the model such that:
+          //
+          //  * Multiple sequential model updates cause the callback
+          //    to execute only once
+          //  * The callback is only executed if all dependency property
+          //    values are defined
+          //
+          // `model.when(dependencies, callback [, thisArg])`
+          //
+          //  * `dependencies` specifies the names of model properties that are
+          //    dependencies of the callback function. `dependencies` can be
+          //    * a string (in the case of a single dependency property) or
+          //    * an array of strings (in the case of many dependency properties).
+          //  * `callback(values...)` the callback function that is invoked after dependency
+          //    properties change. The values of dependency properties are passed
+          //    as arguments to the callback, in the same order specified by `dependencies`.
+          //  * `thisArg` (optional) value to use as `this` when executing `callback`.
+          when: when
+        },
+
+        // An object containing callback functions.
+        //  * Keys are property names
+        //  * Values are arrays of callback functions
+        callbacks = {},
 
         // An object containing property values.
         //  * Keys are property names
@@ -102,7 +109,6 @@ define([], function () {
       }
     }
 
-    /* TODO add documentation here */
     function when(dependencies, fn, thisArg){
 
       // Support passing a single string as `dependencies`
@@ -142,9 +148,37 @@ define([], function () {
 
     // Return the public Model API,
     // using the revealing module pattern.
-    return {
-      set: set,
-      when: when
-    };
+    return model;
   };
+
+  // Returns a debounced version of the given function.
+  // Calling the debounced function one or more times in sequence
+  // will schedule the given function to execute only once
+  // at the next tick of the JavaScript event loop.
+  // Similar to http://underscorejs.org/#debounce
+  function debounce(func){
+    var queued = false;
+    return function () {
+      if(!queued){
+        queued = true;
+        setTimeout(function () {
+          queued = false;
+          func();
+        }, 0);
+      }
+    };
+  }
+
+  // Returns true if all values in the given array
+  // are defined and not null, false otherwise.
+  function allAreDefined(arr){
+    var allDefined = true;
+    arr.forEach(function (d) {
+      if(typeof d === 'undefined' || d === null){
+        allDefined = false;
+      }
+    });
+    return allDefined;
+  }
+
 });

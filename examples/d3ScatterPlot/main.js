@@ -6,7 +6,7 @@
 // is dynamic and reacts to changes in its model.
 //
 // Curran Kelleher 4/17/2014
-require(['scatterPlot'], function (ScatterPlot) {
+require(['d3', 'scatterPlot'], function (d3, ScatterPlot) {
   var div = document.getElementById('scatterPlotContainer'),
       scatterPlot = ScatterPlot(div);
 

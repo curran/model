@@ -7,7 +7,7 @@
 //
 // Define the bar chart AMD module using the
 // `define()` function provided by Require.js.
-define(['model'], function (Model) {
+define(['d3', 'model'], function (d3, Model) {
   return function BarChart(div){
     var x = d3.scale.ordinal(),
         y = d3.scale.linear(),

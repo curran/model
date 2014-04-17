@@ -6,7 +6,7 @@
 // is dynamic and reacts to changes in its model.
 //
 // Curran Kelleher 4/17/2014
-require(['barChart'], function (BarChart) {
+require(['d3', 'barChart'], function (d3, BarChart) {
   var div = document.getElementById('barChartContainer'),
       barChart = BarChart(div);
 

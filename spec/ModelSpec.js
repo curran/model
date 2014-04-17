@@ -28,6 +28,9 @@ describe('model', function() {
 
     // Set x to be 30, which triggers the callback.
     model.set('x', 30);
+
+    // `model.get()` can be used to get a value from the model.
+    expect(model.get('x')).toBe(30);
   });
 
   // `model.when()` calls the callback for existing values,
@@ -134,7 +137,7 @@ describe('model', function() {
   });
 
   // Properties can be set in the model in the body of a `when()` callback.
-  // This pattern can be used to deflare a data dependency graph
+  // This pattern can be used to define a data dependency graph
   // using a functional reactive style. The model system automatically propagates changes
   // through the data dependency graph. This is similar to computed properties in Ember.js.
   it('should compute fullName from firstName and lastName', function(done) {

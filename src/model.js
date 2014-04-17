@@ -21,6 +21,13 @@ define([], function () {
           //    based on the key value pairs present in the given object.
           set: set,
 
+          // ## model.get
+          //
+          // Gets property values from the model.
+          //
+          //  * `model.get(property)` gets the value of the given model property.
+          get: get,
+
           // ## model.when
           //
           // Listens for changes on the model such that:
@@ -107,6 +114,11 @@ define([], function () {
           callback();
         });
       }
+    }
+
+    // Gets a property from the model.
+    function get(key){
+      return values[key];
     }
 
     function when(dependencies, fn, thisArg){

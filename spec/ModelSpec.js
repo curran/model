@@ -70,8 +70,24 @@ describe('model', function() {
     model.set('z', 7);
   });
 
+  // The callback is not called unless all values are defined.
+  it('should call fn only when all properties are defined', function(done) {
+    var model = Model();
+    model.when(['y', 'x', 'z'], function (y, x, z) {
+      expect(x).toBe(5);
+      expect(y).toBe(6);
+      expect(z).toBe(7);
+      done();
+    });
+    model.set('x', 5);
+    model.set('y', 6);
+    setTimeout(function () {
+      model.set('z', 7);
+    }, 5);
+  });
+
   // Multiple properties can be set simultaneously by
-  // passing an object to `model.set` (similar to Backbone).
+  // passing an object to `model.set`.
   it('should set values from an object', function(done) {
     var model = Model();
     model.when(['x', 'y'], function (x, y) {

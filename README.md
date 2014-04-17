@@ -13,6 +13,7 @@ Check out the
  * Examples
    * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
    * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
+   * [D3 Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

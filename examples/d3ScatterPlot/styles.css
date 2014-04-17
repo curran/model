@@ -1,0 +1,31 @@
+/* CSS for the visualization.
+ * Curran Kelleher 4/17/2014 */
+
+/* Size the visualization container. */
+#scatterPlotContainer {
+  position: fixed;
+  top: 30px;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+}
+
+/* Style the visualization.
+ * This CSS is copied verbatim from the
+ * D3 scatter plot example found at
+ * http://bl.ocks.org/mbostock/3887118 */
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}

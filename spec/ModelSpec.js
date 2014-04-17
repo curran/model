@@ -33,8 +33,7 @@ describe('model', function() {
     expect(model.get('x')).toBe(30);
   });
 
-  // `model.when()` calls the callback for existing values,
-  // even if they are not changed.
+  // `model.when()` calls the callback for existing values.
   it('should call fn once to initialize', function(done) {
     var model = Model();
     model.set('x', 55);
@@ -45,8 +44,7 @@ describe('model', function() {
   });
 
   // An array of dependencies can be passed to `when()`,
-  // and the values from the model are passed to the callback
-  // This is similar to the dependency injection syntax of Angular.js.
+  // and the values from the model are passed to the callback.
   it('should call fn with multiple dependency properties', function(done) {
     var model = Model();
     model.when(['x', 'y', 'z'], function (x, y, z) {

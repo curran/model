@@ -6,7 +6,7 @@
 // is dynamic and reacts to changes in its model.
 //
 // Curran Kelleher 4/17/2014
-require(['lineChart'], function (LineChart) {
+require(['d3', 'lineChart'], function (d3, LineChart) {
   var div = document.getElementById('lineChartContainer'),
       lineChart = LineChart(div);
 

@@ -12,6 +12,7 @@ Check out the
  * [Documentation](http://curran.github.io/model/docs/model.html)
  * Examples
    * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
+   * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

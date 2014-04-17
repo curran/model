@@ -62,7 +62,7 @@ As this was the only usage pattern I encountered when using Backbone for develop
 
 As an example of how this can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
 
-<img src="http://curran.github.io/model/examples/d3BarChart/ModelDrivenBarChart.png">
+<img src="http://curran.github.io/model/examples/d3BarChart/barChartFlow.png">
 
 Inspired by
 

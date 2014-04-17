@@ -2,10 +2,8 @@ require(['barChart'], function (BarChart) {
   var div = document.getElementById('barChartContainer'),
       barChart = BarChart(div);
 
-  barChart.set({
-    yLabel: 'Frequency',
-    barField: 'char',
-    heightField: 'freq'
+  d3.json('configuration.json', function (config) {
+    barChart.set(config);
   });
 
   d3.tsv('data.tsv', function (d) {

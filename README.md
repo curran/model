@@ -6,10 +6,12 @@ A functional reactive model library. Provides:
  * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call `set(propertyName, value)`.
  * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
 
-Check out the annotated source code:
+Check out the
 
- * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html) - serves as the user guide
- * [Model.js](http://curran.github.io/model/docs/model.html)
+ * [User Guide](http://curran.github.io/model/docs/ModelSpec.html)
+ * [Documentation](http://curran.github.io/model/docs/model.html)
+ * Examples
+   * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

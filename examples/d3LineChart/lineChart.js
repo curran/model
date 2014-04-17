@@ -49,11 +49,10 @@ define(['model'], function (Model) {
       xAxisG.attr('transform', 'translate(0,' + height + ')');
     });
 
-    model.when(['width', 'height', 'data'], function (width, height, data) {
+    model.when(['width', 'height', 'data', 'xField', 'yField'], function (width, height, data, xField, yField) {
 
-      // TODO generalize fields
-      x.domain(d3.extent(data, function(d) { return d.date; }));
-      y.domain(d3.extent(data, function(d) { return d.close; }));
+      x.domain(d3.extent(data, function(d) { return d[xField]; }));
+      y.domain(d3.extent(data, function(d) { return d[yField]; }));
 
       x.range([0, width]);
       y.range([height, 0]);

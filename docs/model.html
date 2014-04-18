@@ -82,7 +82,7 @@ No need to use <code>new</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>The <code>model</code> API has only three functions: <code>get</code>, <code>set</code> and <code>when</code>:</p>
+              <p>The <code>model</code> API has only three functions: <code>get</code>, <code>set</code> and <code>when</code>.</p>
 
             </div>
             
@@ -100,10 +100,13 @@ No need to use <code>new</code>.</p>
               <h2 id="model-set">model.set</h2>
 <p>Sets model properties.</p>
 <ul>
-<li><code>model.set(property, value)</code> sets the value
-of the given model property to the given value.</li>
+<li><code>model.set(property, value)</code> sets a property to the given value.<ul>
+<li><code>property</code> a string, the property name</li>
+<li><code>value</code> the value assigned to the property (can be any type)</li>
+</ul>
+</li>
 <li><code>model.set(object)</code> sets the value of model properties
-based on the key value pairs present in the given object.</li>
+based on the key-value pairs present in the given object.</li>
 </ul>
 
             </div>
@@ -122,7 +125,10 @@ based on the key value pairs present in the given object.</li>
               <h2 id="model-get">model.get</h2>
 <p>Gets model properties.</p>
 <ul>
-<li><code>model.get(property)</code> gets the value of the given model property.</li>
+<li><code>model.get(property)</code> gets the value of the given property<ul>
+<li><code>property</code> a string, the property name</li>
+</ul>
+</li>
 </ul>
 
             </div>

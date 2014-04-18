@@ -10,24 +10,26 @@ define([], function () {
   // For example: `var model = Model();`
   return function Model(){
     
-    // The `model` API has only three functions: `get`, `set` and `when`:
+    // The `model` API has only three functions: `get`, `set` and `when`.
     var model = {
 
           // ## model.set
           //
           // Sets model properties.
           //
-          //  * `model.set(property, value)` sets the value
-          //    of the given model property to the given value.
+          //  * `model.set(property, value)` sets a property to the given value.
+          //    * `property` a string, the property name
+          //    * `value` the value assigned to the property (can be any type)
           //  * `model.set(object)` sets the value of model properties
-          //    based on the key value pairs present in the given object.
+          //    based on the key-value pairs present in the given object.
           set: set,
 
           // ## model.get
           //
           // Gets model properties.
           //
-          //  * `model.get(property)` gets the value of the given model property.
+          //  * `model.get(property)` gets the value of the given property
+          //    * `property` a string, the property name
           get: get,
 
           // ## model.when

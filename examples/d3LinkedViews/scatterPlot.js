@@ -118,32 +118,32 @@ define(['d3', 'model'], function (d3, Model) {
     return model;
 
     function brushed() {
-      var extent = brush.extent();
+      var e = brush.extent(), selectedData;
       if(dots) {
         dots.each(function(d) { d.selected = false; });
-        search(extent[0][0], extent[0][1], extent[1][0], extent[1][1]);
+        selectedData = search(e[0][0], e[0][1], e[1][0], e[1][1]);
         dots.classed('selected', function(d) { return d.selected; });
       }
-      if(brush.empty()){
-        model.set('selectedData', model.get('data'));
-      } else {
-        model.set('selectedData', dots.filter(function (d) {
-          return d.selected;
-        }).data());
-      }
+      model.set('selectedData', brush.empty() ? model.get('data') : selectedData);
     }
 
     // Find the nodes within the specified rectangle.
     function search(x0, y0, x3, y3) {
+      var selectedData = [];
       quadtree.visit(function(node, x1, y1, x2, y2) {
-        if (node.leaf) {
-          node.point.selected = (
-            (node.x >= x0) && (node.x < x3) &&
-            (node.y >= y0) && (node.y < y3)
-          );
+        var d = node.point, x, y;
+        if (d) {
+          x = node.x;
+          y = node.y;
+          d.visited = true;
+          if(x >= x0 && x < x3 && y >= y0 && y < y3){
+            d.selected = true;
+            selectedData.push(d);
+          }
         }
         return x1 >= x3 || y1 >= y3 || x2 < x0 || y2 < y0;
       });
+      return selectedData;
     }
   }
 });

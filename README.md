@@ -127,7 +127,7 @@ Pull requests welcome! Potential contributions include:
  * Add more generalized D3 examples! For example:
    * [Focus+Context via Brushing](http://bl.ocks.org/mbostock/1667367)
    * [Choropleth Map](http://bl.ocks.org/mbostock/4060606)
-   * [Parallel Coordinates](http://exposedata.com/parallel/)
+   * [Parallel Coordinates](http://bl.ocks.org/jasondavies/1341281)
    * [TreeMap](http://bl.ocks.org/mbostock/4063582)
    * [Streamgraph](http://bl.ocks.org/mbostock/4060954)
    * [Stacked Area Chart](http://bl.ocks.org/mbostock/3885211)

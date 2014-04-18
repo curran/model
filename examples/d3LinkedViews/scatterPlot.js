@@ -36,6 +36,12 @@ define(['d3', 'model'], function (d3, Model) {
           .attr('y', 6)
           .attr('dy', '.71em')
           .style('text-anchor', 'end'),
+
+        // Add the dots group before the brush group,
+        // so that mouse events go to the brush
+        // rather than to the dots, even when the mouse is
+        // on top of a dot.
+        dotsG = g.append('g'),
         brushG = g.append('g')
           .attr('class', 'brush'),
         brush = d3.svg.brush()
@@ -106,7 +112,7 @@ define(['d3', 'model'], function (d3, Model) {
       yAxisG.call(yAxis);
 
       // Plot the data as dots
-      dots = g.selectAll('.dot').data(data);
+      dots = dotsG.selectAll('.dot').data(data);
       dots.enter().append('circle')
         .attr('class', 'dot')
         .attr('r', 3.5);

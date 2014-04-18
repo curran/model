@@ -6,15 +6,16 @@ define([], function () {
   // # Model()
   // The constructor function for models.
   // No need to use `new`.
+  //
   // For example: `var model = Model();`
   return function Model(){
     
-    // the `model` API has only three functions:
+    // The `model` API has only three functions: `get`, `set` and `when`:
     var model = {
 
           // ## model.set
           //
-          // Sets properties on the model. There are two ways of calling `set`:
+          // Sets model properties.
           //
           //  * `model.set(property, value)` sets the value
           //    of the given model property to the given value.
@@ -24,7 +25,7 @@ define([], function () {
 
           // ## model.get
           //
-          // Gets property values from the model.
+          // Gets model properties.
           //
           //  * `model.get(property)` gets the value of the given model property.
           get: get,
@@ -51,49 +52,19 @@ define([], function () {
           when: when
         },
 
-        // # Implementation Internals
+        // # Internals
         //
-        // An object containing callback functions.
+        // `callbabks` An object containing callback functions.
         //  * Keys are property names
         //  * Values are arrays of callback functions
         callbacks = {},
 
-        // An object containing property values.
+        // `values` An object containing property values.
         //  * Keys are property names
         //  * Values are values set on the model
         values = {};
 
-    // Adds a callback that will listen for changes
-    // to the specified property.
-    function on(key, callback){
-
-      // If there is not already a list 
-      // of callbacks for the given key,
-      if(!callbacks[key]) {
-
-        // then create one.
-        callbacks[key] = [];
-      } 
-
-      // Add the callback to the list of callbacks
-      // for the given key.
-      callbacks[key].push(callback);
-    }
-
-    /*
-     Removes a callback that listening for changes
-     to the specified property.
-    TODO test this
-    function off(key, callbackToRemove){
-      if(callbacks[key]){
-        callbacks[key] = callbacks[key].filter(function (callback) {
-          return callback !== callbackToRemove;
-        });
-      }
-    }
-    */
-
-    // Sets a value on the model.
+    // ## set
     function set(keyOrObject, value){
       if(typeof keyOrObject === 'string') {
         setKeyValue(keyOrObject, value);
@@ -101,11 +72,13 @@ define([], function () {
         setObject(keyOrObject);
       }
     }
+
     function setObject(object){
       Object.keys(object).forEach(function (key) {
         setKeyValue(key, object[key]);
       });
     }
+
     function setKeyValue(key, value){
 
       // Update the internal value.
@@ -119,11 +92,12 @@ define([], function () {
       }
     }
 
-    // Gets a property from the model.
+    // ## get
     function get(key){
       return values[key];
     }
 
+    // ## when
     function when(dependencies, fn, thisArg){
 
       // Support passing a single string as `dependencies`
@@ -159,6 +133,23 @@ define([], function () {
       dependencies.forEach(function(property){
         on(property, callFn);
       });
+    }
+
+    // Adds a callback that will listen for changes
+    // to the specified property.
+    function on(key, callback){
+
+      // If there is not already a list 
+      // of callbacks for the given key,
+      if(!callbacks[key]) {
+
+        // then create one.
+        callbacks[key] = [];
+      } 
+
+      // Add the callback to the list of callbacks
+      // for the given key.
+      callbacks[key].push(callback);
     }
 
     // Return the public Model API,

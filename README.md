@@ -6,7 +6,7 @@ A functional reactive model library. Provides:
  * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call
    * `set(propertyName, value)` to set a value, and
    * `get(propertyName)` to get a value
- * A `when` function, which allows declaration of data dependencies in a functional reactive style. 
+ * A `when` function, which allows declaration of data dependency graphs in a [functional reactive](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming) style. 
 
 Check out the
 
@@ -20,7 +20,9 @@ Check out the
 
 Usable via [Bower](http://bower.io/): `bower install model`
 
-This library was created in order to cleanly define reactive model-driven data visualizations. When using Backbone and Underscore to define model-driven visualization, the a pattern appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
+## Motivation
+
+This library was created in order to cleanly define reactive model-driven data visualizations. When using Backbone and Underscore to define model-driven visualizations, there is a pattern that appears again and again for executing code that depends on multiple model properties. For example, consider a Backbone model that has a `size` property that contains the width and height of the visualization, and a `data` property that contains the array of data to be visualized. This is the code you want to write:
 
 ```javascript
 model.on('change:width change:height change:data', function (){
@@ -44,7 +46,7 @@ model.on('change:width change:height change:data', function (){
 });
 ```
 
-The above code now does not break, but has another issue. When `width` and `height` are both updated, the function is invoked twice. Ideally, when `width` and `height` are updated in sequence (e.g. `model.set('width', 50); model.set('height', 100);`), the function should only be invoked once with the new values for both width and height. One way to accomplish this is to [debounce](http://underscorejs.org/#debounce) the function as follows:
+The above code now does not break, but has another issue. When `width` and `height` are both updated, the function is invoked twice. Ideally, when `width` and `height` are updated in sequence (e.g. `model.set('width', 50); model.set('height', 100);`), the function should only be invoked once with the new values for both width and height. Also, multiple sequential updates to `width` or `height` (e.g. `model.set('width', 0); model.set('width', 50);`) should only result in a single recomputation of the visualization, using the last value (in this case 50). One way to accomplish this is to [debounce](http://underscorejs.org/#debounce) the function as follows:
 
 ```javascript
 model.on('change:width change:height change:data', _.debounce(function (){
@@ -57,7 +59,7 @@ model.on('change:width change:height change:data', _.debounce(function (){
 }));
 ```
 
-The above code behaves as desired - the visualization is only built when all properties are present, and only once when multiple properties change together. As this pattern is so common in developing model driven data visualizations, it would be useful to abstract it away. The `model.when` library does exactly that. Using `model.when`, the above code becomes:
+The above code behaves as desired - the visualization is only built when all properties are present, and only once when multiple properties change together. As this pattern is so common in developing model driven data visualizations, it would be useful to abstract it away into a reusable function. The `model.when` function does exactly that. Using `model.when`, the above code becomes:
 
 ```javascript
 model.when(['width', 'height', 'data'], function (width, height, data) {
@@ -65,7 +67,9 @@ model.when(['width', 'height', 'data'], function (width, height, data) {
 });
 ```
 
-As this was the only usage pattern I encountered with models when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming and makes working with models for visualizations much nicer.
+As this was the only usage pattern I encountered with models when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming and makes working with models for visualizations much nicer. This is why model.js was created.
+
+## Data Dependency Graphs
 
 Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
 
@@ -89,16 +93,21 @@ model.when(['y'], function (y) {
 
 <img src="http://curran.github.io/model/images/dependencyGraph.png">
 
-This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. As an example of how this pattern can be used for creating a visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. 
+
+## Building Reactive Visualizations
+
+As an example of how model.js data dependency graphs can be used for creating a reactive visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
 
 <img src="http://curran.github.io/model/images/barChart.png">
 <img src="http://curran.github.io/model/images/barChartFlow.png">
 
-Multiple model driven visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
+Multiple reactive visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
 
 <img src="http://curran.github.io/model/images/linkedViews.png">
 Brushing in the scatter plot causes the selected data to be aggregated and plotted in the bar chart ([run it!](http://curran.github.io/model/examples/d3LinkedViews/)).
 
+## Related Work
 
 Inspired by
 
@@ -117,6 +126,8 @@ See also:
  * [Stackoverflow: how to implement observer pattern in javascript?](http://stackoverflow.com/questions/12308246/how-to-implement-observer-pattern-in-javascript) - Contains bare minimum model implementation that was the seed of this project.
  * [Backbone.js mailing list: Improving the Backbone Model API with wire()](https://groups.google.com/forum/#!searchin/backbonejs/wire/backbonejs/CnFLHg-d0uk/lIJ8wYxSiTEJ) First pass at functional reactive models, built on Backbone models.
  * [wire.js](https://github.com/curran/phd/blob/dac07e2e8c38da7343645d7a07ec17a762120ea0/prototype/src/wire.js) The original implementation of the idea for this library, as an extension to Backbone Models.
+
+## Contributing
 
 Pull requests welcome! Potential contributions include:
 
@@ -137,4 +148,4 @@ Pull requests welcome! Potential contributions include:
    * [Icicle Plot](http://mbostock.github.io/d3/talk/20111018/partition.html)
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
-By Curran Kelleher 4/16/2014
+By [Curran Kelleher](https://github.com/curran/portfolio) 4/17/2014

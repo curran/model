@@ -3,12 +3,13 @@
 // By Curran Kelleher 4/17/2014
 define([], function () {
 
+  // # Model()
   // The constructor function for models.
   // No need to use `new`.
   // For example: `var model = Model();`
   return function Model(){
     
-    // the public API:
+    // the `model` API has only three functions:
     var model = {
 
           // ## model.set
@@ -50,6 +51,8 @@ define([], function () {
           when: when
         },
 
+        // # Implementation Internals
+        //
         // An object containing callback functions.
         //  * Keys are property names
         //  * Values are arrays of callback functions

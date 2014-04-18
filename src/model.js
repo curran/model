@@ -19,7 +19,7 @@ define([], function () {
           //
           //  * `model.set(property, value)` sets a property to the given value.
           //    * `property` a string, the property name
-          //    * `value` the value assigned to the property (can be any type)
+          //    * `value` the value assigned to the property (any type)
           //  * `model.set(object)` sets the value of model properties
           //    based on the key-value pairs present in the given object.
           set: set,
@@ -45,23 +45,23 @@ define([], function () {
           //
           //  * `dependencies` specifies the names of model properties that are
           //    dependencies of the callback function. `dependencies` can be
-          //    * a string (in the case of a single dependency property) or
-          //    * an array of strings (in the case of many dependency properties).
+          //    * a string (in the case of a single dependency) or
+          //    * an array of strings (in the case of many dependencies).
           //  * `callback(values...)` the callback function that is invoked after dependency
           //    properties change. The values of dependency properties are passed
           //    as arguments to the callback, in the same order specified by `dependencies`.
-          //  * `thisArg` (optional) value to use as `this` when executing `callback`.
+          //  * `thisArg` value to use as `this` when executing `callback`.
           when: when
         },
 
         // # Internals
         //
-        // `callbabks` An object containing callback functions.
+        // `callbacks` is an object containing callback functions.
         //  * Keys are property names
         //  * Values are arrays of callback functions
         callbacks = {},
 
-        // `values` An object containing property values.
+        // `values` is an object containing property values.
         //  * Keys are property names
         //  * Values are values set on the model
         values = {};

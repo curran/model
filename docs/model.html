@@ -102,7 +102,7 @@ No need to use <code>new</code>.</p>
 <ul>
 <li><code>model.set(property, value)</code> sets a property to the given value.<ul>
 <li><code>property</code> a string, the property name</li>
-<li><code>value</code> the value assigned to the property (can be any type)</li>
+<li><code>value</code> the value assigned to the property (any type)</li>
 </ul>
 </li>
 <li><code>model.set(object)</code> sets the value of model properties
@@ -156,14 +156,14 @@ values are defined</li>
 <ul>
 <li><code>dependencies</code> specifies the names of model properties that are
 dependencies of the callback function. <code>dependencies</code> can be<ul>
-<li>a string (in the case of a single dependency property) or</li>
-<li>an array of strings (in the case of many dependency properties).</li>
+<li>a string (in the case of a single dependency) or</li>
+<li>an array of strings (in the case of many dependencies).</li>
 </ul>
 </li>
 <li><code>callback(values...)</code> the callback function that is invoked after dependency
 properties change. The values of dependency properties are passed
 as arguments to the callback, in the same order specified by <code>dependencies</code>.</li>
-<li><code>thisArg</code> (optional) value to use as <code>this</code> when executing <code>callback</code>.</li>
+<li><code>thisArg</code> value to use as <code>this</code> when executing <code>callback</code>.</li>
 </ul>
 
             </div>
@@ -181,7 +181,7 @@ as arguments to the callback, in the same order specified by <code>dependencies<
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <h1 id="internals">Internals</h1>
-<p><code>callbabks</code> An object containing callback functions.</p>
+<p><code>callbacks</code> is an object containing callback functions.</p>
 <ul>
 <li>Keys are property names</li>
 <li>Values are arrays of callback functions</li>
@@ -200,7 +200,7 @@ as arguments to the callback, in the same order specified by <code>dependencies<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p><code>values</code> An object containing property values.</p>
+              <p><code>values</code> is an object containing property values.</p>
 <ul>
 <li>Keys are property names</li>
 <li>Values are values set on the model</li>

@@ -1,0 +1,39 @@
+{
+  "name": "model",
+  "version": "0.0.2",
+  "description": "A functional reactive model library",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/curran/model.git"
+  },
+  "keywords": [
+    "functional",
+    "reactive"
+  ],
+  "author": "curran <curran.kelleher@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/curran/model/issues"
+  },
+  "homepage": "https://github.com/curran/model",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-uglify": "~0.4.0",
+    "load-grunt-tasks": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-umd": "~1.7.3",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-jasmine": "~0.6.3",
+    "grunt-docco": "~0.3.3",
+    "express": "~4.0.0"
+  }
+}

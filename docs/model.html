@@ -53,7 +53,8 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>;(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
+<span class="hljs-pi">  'use strict'</span>;</pre></div></div>
             
         </li>
         
@@ -71,7 +72,7 @@ No need to use <code>new</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -504,7 +505,7 @@ using the revealing module pattern.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> model;
-  };</pre></div></div>
+  }</pre></div></div>
             
         </li>
         
@@ -559,8 +560,9 @@ are defined and not null, false otherwise.</p>
     });
     <span class="hljs-keyword">return</span> allDefined;
   }
-
-});</pre></div></div>
+  
+  <span class="hljs-keyword">this</span>.model = Model;
+}).call(<span class="hljs-keyword">this</span>);</pre></div></div>
             
         </li>
         

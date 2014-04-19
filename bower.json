@@ -7,7 +7,9 @@
   ],
   "description": "A functional reactive model library.",
   "main": "src/model.js",
-  "moduleType": [ "amd" ],
+  "moduleType": [
+    "amd"
+  ],
   "license": "MIT",
   "ignore": [
     "LICENSE",
@@ -23,5 +25,10 @@
     "examples",
     "images",
     "server.js"
-  ]
+  ],
+  "devDependencies": {
+    "jasmine": "~2.0.0",
+    "d3": "~3.4.6",
+    "requirejs": "~2.1.11"
+  }
 }

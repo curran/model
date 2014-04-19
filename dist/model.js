@@ -1,3 +1,15 @@
+(function(root, factory) {
+    if(typeof exports === 'object') {
+        module.exports = factory();
+    }
+    else if(typeof define === 'function' && define.amd) {
+        define([], factory);
+    }
+    else {
+        root['model'] = factory();
+    }
+}(this, function() {
+
 // A functional reactive model library.
 //
 // By Curran Kelleher 4/17/2014
@@ -192,3 +204,7 @@ var model = (function(){
 
   return Model;
 }).call(this);
+
+return model;
+
+}));

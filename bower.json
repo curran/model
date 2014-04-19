@@ -9,7 +9,7 @@
   "main": "dist/model.js",
   "license": "MIT",
   "ignore": [
-    ".bowerrc"
+    ".bowerrc",
     ".travis.yml",
     "bower.json",
     "countLines.sh",

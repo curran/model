@@ -1,6 +1,6 @@
-An example model-driven stacked area using `model.js`. Draws from the [D3 stacked area example](http://bl.ocks.org/mbostock/3887118).
+An example model-driven stacked area using `model.js`. Draws from the [D3 stacked area example](http://bl.ocks.org/mbostock/3885211).
 
-[Run the stacked area](http://curran.github.io/model/examples/d3ScatterPlot/)
+[Run the stacked area](http://curran.github.io/model/examples/d3StackedArea/)
 
 Files:
 
@@ -12,4 +12,4 @@ Files:
  * `requireConfig.js` the configuration for Require.js, telling it where to look for modules
  * `styles.css` the CSS for the visualization
 
-Curran Kelleher 4/17/2014
+Abraham Adberstein 4/19/2014

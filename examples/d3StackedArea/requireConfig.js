@@ -1,5 +1,5 @@
 // The configuration for Require.js.
-// Curran Kelleher 4/17/2014
+// Abraham Adberstein 4/19/2014
 require.config({
   // Map the `model` module name to the model lib.
   paths: {

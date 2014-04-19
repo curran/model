@@ -5,7 +5,7 @@
 // with random values, to illustrate that the chart
 // is dynamic and reacts to changes in its model.
 //
-//   Curran Kelleher 4/17/2014
+//   Abraham Adberstein 4/19/2014
 
 require(['d3', 'stackedArea'], function (d3, StackedArea) {
 	var div = document.getElementById('stackedAreaContainer'), 

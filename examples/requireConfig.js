@@ -3,9 +3,9 @@
 require.config({
   paths: {
     // Map the `model` module name to the model lib.
-    model: '../../src/model',
+    model: '../../dist/model',
     
     // Expose d3 as a module.
-    d3: '../../lib/d3.min'
+    d3: '../../lib/d3/d3.min'
   }
 });

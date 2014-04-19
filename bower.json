@@ -6,29 +6,29 @@
     "curran <curran.kelleher@gmail.com>"
   ],
   "description": "A functional reactive model library.",
-  "main": "src/model.js",
-  "moduleType": [
-    "amd"
-  ],
+  "main": "dist/model.js",
   "license": "MIT",
   "ignore": [
-    "LICENSE",
-    "README.md",
-    "SpecRunner.html",
+    ".bowerrc"
+    ".travis.yml",
     "bower.json",
-    "buildDocs.sh",
     "countLines.sh",
     "docs",
-    "lib",
-    "requireConfig.js",
-    "spec",
     "examples",
+    "Gruntfile.js",
     "images",
-    "server.js"
+    "lib",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "requireConfig.js",
+    "server.js",
+    "spec",
+    "SpecRunner.html"
   ],
   "devDependencies": {
-    "jasmine": "~2.0.0",
     "d3": "~3.4.6",
+    "jasmine": "~2.0.0",
     "requirejs": "~2.1.11"
   }
 }

@@ -22,7 +22,7 @@ module.exports = function(grunt){
       all: {
         src: 'src/model.js',
         dest: 'dist/model.js',
-        objectToExport: 'model'
+        objectToExport: 'Model'
       }
     },
     docco: {

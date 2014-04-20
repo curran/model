@@ -1,3 +1,4 @@
+
 {
   "name": "model",
   "version": "0.0.2",
@@ -35,9 +36,5 @@
     "grunt-contrib-jasmine": "~0.6.3",
     "grunt-docco": "~0.3.3",
     "express": "~4.0.0"
-  },
-  "dependencies": {
-    "express": "3.x", 
-    "pause":   "0.0.1"
   }
 }

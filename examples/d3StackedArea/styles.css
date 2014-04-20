@@ -26,6 +26,6 @@ body {
   shape-rendering: crispEdges;
 }
 
-.browser text {
+.layer text {
   text-anchor: end;
 }

@@ -46,47 +46,46 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['width', 'height', 'data'], function (width, height, data) {
-      var browsers, browserG;
+      var names = d3.keys(data[0]).filter(function(key) { return key !== 'date'; }),
+          layers = stack(names.map(function(name) {
+            return {
+              name: name,
+              values: data.map(function(d) {
+                return { date: d.date, y: d[name] / 100 };
+              })
+            };
+          })),
+          layer = g.selectAll('.layer').data(layers),
+          layerG = layer.enter().append('g')
+            .attr('class', 'layer');
 
-      color.domain(d3.keys(data[0]).filter(function(key) { return key !== 'date'; }));
-
-      browsers = stack(color.domain().map(function(name) {
-        return {
-          name: name,
-          values: data.map(function(d) {
-            return { date: d.date, y: d[name] / 100 };
-          })
-        };
-      }));
-
+      // Update scales
       x.domain(d3.extent(data, function(d) { return d.date; }));
       x.range([0, width]);
       y.range([height, 0]);
 
-      xAxisG
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis);
+      color.domain(names);
 
+      // Update axes
+      xAxisG.call(xAxis);
       yAxisG.call(yAxis);
 
-      browser = g.selectAll('.browser').data(browsers); 
-      browserG = browser.enter().append('g')
-        .attr('class', 'browser');
-
-      browserG.append('path').attr('class', 'area');
-      browser.select('g path')
+      // Plot each area.
+      layerG.append('path').attr('class', 'area');
+      layer.select('g path')
         .attr('d', function(d) { return area(d.values); })
         .style('fill', function(d) { return color(d.name); });
 
-      browserG.append('text');
-      browser.select('g text')
+      // Plot each area label
+      layerG.append('text');
+      layer.select('g text')
         .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
         .attr('transform', function(d) { return 'translate(' + x(d.value.date) + ',' + y(d.value.y0 + d.value.y / 2) + ')'; })
         .attr('x', -6)
         .attr('dy', '.35em')
         .text(function(d) { return d.name; });
 
-      browser.exit().remove();
+      layer.exit().remove();
       
     });
     return model;

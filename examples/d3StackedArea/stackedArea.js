@@ -99,6 +99,7 @@ define(['d3', 'model'], function (d3, Model) {
           .text(function(d) { return d.name; });
 
       browser.exit().remove();
+      
     });
     return model;
   }

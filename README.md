@@ -16,6 +16,7 @@ Check out the
    * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
    * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
    * [D3 Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
+   * [D3 Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
    * [D3 Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
 
 Usable via [Bower](http://bower.io/): `bower install model`
@@ -131,17 +132,13 @@ See also:
 
 Pull requests welcome! Potential contributions include:
 
- * Use universal module code to make `model.js` usable as either a global or as an AMD module.
- * Add a Grunt workflow for linting and minifying
-   * Include a minified version `model.min.js` in the Bower package
- * Add `Model(object)` constructor argument option that acts like `model.set(object)` for initializing properties (trying to keep the API as simple as possible, not sure if this would really improve the API for most use cases).
+ * Add a DOM-based example
  * Add more generalized D3 examples! For example:
    * [Focus+Context via Brushing](http://bl.ocks.org/mbostock/1667367)
    * [Choropleth Map](http://bl.ocks.org/mbostock/4060606)
    * [Parallel Coordinates](http://bl.ocks.org/jasondavies/1341281)
    * [TreeMap](http://bl.ocks.org/mbostock/4063582)
    * [Streamgraph](http://bl.ocks.org/mbostock/4060954)
-   * [Stacked Area Chart](http://bl.ocks.org/mbostock/3885211)
    * [Stacked Bar Chart](http://bl.ocks.org/mbostock/3886208)
    * [Grouped Bar Chart](http://bl.ocks.org/mbostock/3887051)
    * [Sunburst Partition](http://bl.ocks.org/mbostock/4063423)

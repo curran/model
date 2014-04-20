@@ -12,50 +12,60 @@ require(['d3', 'stackedArea'], function (d3, StackedArea) {
 		stackedArea = StackedArea(div); 
 
 	d3.json('configuration.json', function (config) {
-    	stackedArea.set(config);
-    });
+    stackedArea.set(config);
+  });
 
-	d3.tsv("data.tsv",(function () {
-	    var parseDate = d3.time.format("%d-%b-%y").parse;
-	    return function (d) {
-	      d.date = parseDate(d.date);
-	      d.frequency = +d.frequency;
-	      return d;
-	    };
-    }()), function(error, data) {
-		  
-		  setSizeFromDiv();
+	d3.tsv('data.tsv',(function () {
+    var parseDate = d3.time.format('%y-%b-%d').parse;
+    return function (d) {
+      d.date = parseDate(d.date);
+      d.frequency = +d.frequency;
+      return d;
+    };
+  }()), function(error, data) {
+    
+    setSizeFromDiv();
 
-		  window.addEventListener('resize', stackedArea.updateSize);
+    window.addEventListener('resize', stackedArea.updateSize);
 
-		  stackedArea.set('data',data); 
+//    stackedArea.set('data',data); 
 
-		    // Reset data each second
-		    setInterval(function () {
+    // Reset data each second
+    setInterval(function () {
+      var browsers = ['IE', 'Chrome', 'Firefox', 'Safari', 'Opera'],
+          randomBrowsers = browsers.filter(function (d){
+            return Math.random() < 0.5;
+          });
 
-		      // Include each element with a 10% chance.
-		      var randomSample = data.filter(function(d){
-		        return Math.random() < 0.1;
-		      });
+      // Filter to include random browsers.
+      stackedArea.set('data', data.filter(function(d){
+        
+        // sample 10% of points
+        return Math.random() < 0.1;
+      }).map(function (d) {
+        var newElement = { date: d.date };
+        randomBrowsers.forEach(function (browser) {
+          newElement[browser] = d[browser];
+        });
+        return newElement;
+      }));
+    }, 1000);
 
-		      stackedArea.set('data', randomSample);
-		    }, 1000);
+    // Randomly change the margin every 1.7 seconds.
+    function random(){ return Math.random() * 100; }
+    setInterval(function () {
+      stackedArea.set('margin', {top: random(), right: random(), bottom: random(), left: random()});
+    }, 1700);
 
-		    // Randomly change the margin every 1.7 seconds.
-		    function random(){ return Math.random() * 100; }
-		    setInterval(function () {
-		      stackedArea.set('margin', {top: random(), right: random(), bottom: random(), left: random()});
-		    }, 1700);
-
-		    // Change the Y axis label every 600 ms.
-		    function randomString() {
-		      var possibilities = ['Frequency', 'Population', 'Alpha', 'Beta'],
-		          i = Math.round(Math.random() * possibilities.length);
-		      return possibilities[i];
-		    }
-		    setInterval(function () {
-		      stackedArea.set('yLabel', randomString());
-		    }, 600);
+    // Change the Y axis label every 600 ms.
+    function randomString() {
+      var possibilities = ['Frequency', 'Population', 'Alpha', 'Beta'],
+          i = Math.round(Math.random() * possibilities.length);
+      return possibilities[i];
+    }
+    setInterval(function () {
+      stackedArea.set('yLabel', randomString());
+    }, 600);
 
 
 	});

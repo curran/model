@@ -1,15 +1,8 @@
 module.exports = function(grunt){
-  'use strict';
 
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    watch: {
-      build: {
-        files: ['<%= jshint.all %>'],
-        tasks: ['default']
-      }
-    },
     jshint: {
       all: ['Gruntfile.js', 'src/**/*.js', 'spec/**/*.js']
     },
@@ -42,16 +35,9 @@ module.exports = function(grunt){
           globalAlias: 'model'
         }
       }
-    },
-    express: {
-      serve: {
-        server: 'server.js',
-        livereload: true
-      }
     }
   });
 
   grunt.registerTask('build', ['jshint', 'umd', 'uglify']);
-  grunt.registerTask('default', ['build', 'jasmine']);
-  grunt.registerTask('serve', ['express', 'express-keepalive']);
+  grunt.registerTask('default', ['build', 'jasmine', 'docco']);
 };

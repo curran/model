@@ -2,7 +2,6 @@
 // By Curran Kelleher 4/15/2014
 //
 // Run in the background with the shell command "node server.js &".
-// Install  with "npm install"
 var port = 8000,
     express = require('express'),
     app = express();

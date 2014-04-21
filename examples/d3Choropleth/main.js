@@ -1,22 +1,17 @@
 var width = 960,
-    height = 600;
-
-var rateById = d3.map();
-
-var quantize = d3.scale.quantize()
-    .domain([0, .15])
-    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
-
-var projection = d3.geo.albersUsa()
-    .scale(1280)
-    .translate([width / 2, height / 2]);
-
-var path = d3.geo.path()
-    .projection(projection);
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    height = 600,
+    rateById = d3.map(),
+    quantize = d3.scale.quantize()
+      .domain([0, .15])
+      .range(d3.range(9).map(function(i) { return "q" + i + "-9"; })),
+    projection = d3.geo.albersUsa()
+      .scale(1280)
+      .translate([width / 2, height / 2]),
+    path = d3.geo.path()
+      .projection(projection),
+    svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
 
 d3.json('us.json', function (us) {
   d3.tsv('unemployment.tsv', function(d) { rateById.set(d.id, +d.rate); }, function () {

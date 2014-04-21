@@ -1,6 +1,6 @@
 var width = 960,
     height = 600,
-    rateById = d3.map(),
+    rateById = {},
     quantize = d3.scale.quantize()
       .domain([0, .15])
       .range(d3.range(9).map(function(i) { return "q" + i + "-9"; })),
@@ -14,7 +14,7 @@ var width = 960,
       .attr("height", height);
 
 d3.json('us.json', function (us) {
-  d3.tsv('unemployment.tsv', function(d) { rateById.set(d.id, +d.rate); }, function () {
+  d3.tsv('unemployment.tsv', function(d) { rateById[d.id] = +d.rate; }, function () {
     ready(null, us);
   })
 });
@@ -25,7 +25,7 @@ function ready(error, us) {
     .selectAll("path")
       .data(topojson.feature(us, us.objects.counties).features)
     .enter().append("path")
-      .attr("class", function(d) { return quantize(rateById.get(d.id)); })
+      .attr("class", function(d) { return quantize(rateById[d.id]); })
       .attr("d", path);
 
   svg.append("path")

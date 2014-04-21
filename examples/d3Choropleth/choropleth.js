@@ -25,16 +25,22 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       model.set('rateById', rateById);
     });
 
-    model.when(['us', 'rateById'], function (us, rateById) {
-      var counties = countiesG.selectAll('path')
-        .data(topojson.feature(us, us.objects.counties).features);
+    model.when(['us'], function (us) {
+      model.set({
+        countiesFeatures: topojson.feature(us, us.objects.counties).features,
+        stateBoundaries: topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })
+      });
+    });
+
+    model.when(['countiesFeatures', 'stateBoundaries', 'rateById'], function (countiesFeatures, stateBoundaries, rateById) {
+      var counties = countiesG.selectAll('path').data(countiesFeatures);
 
       counties.enter().append('path')
       counties
         .attr('class', function(d) { return quantize(rateById[d.id]); })
         .attr('d', path);
 
-      states.attr('d', path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+      states.attr('d', path(stateBoundaries));
     });
 
     d3.select(self.frameElement).style("height", height + "px");

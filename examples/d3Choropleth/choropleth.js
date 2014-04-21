@@ -19,15 +19,9 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
           .attr('class', 'states'),
         model = Model();
 
-    d3.json('us.json', function (err, us) {
-      model.set('us', us);
-    });
-
-    d3.tsv('unemployment.tsv', function (err, unemployment) {
+    model.when('unemployment', function (unemployment) {
       var rateById = {};
-      unemployment.forEach(function (d) {
-        rateById[d.id] = +d.rate;
-      });
+      unemployment.forEach(function (d) { rateById[d.id] = +d.rate; });
       model.set('rateById', rateById);
     });
 
@@ -44,6 +38,8 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     });
 
     d3.select(self.frameElement).style("height", height + "px");
+
+    return model;
   };
 });
 

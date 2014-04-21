@@ -201,6 +201,64 @@ describe('model', function() {
     }, theThing);
     model.set('x', 5);
   });
+
+  it('should propagate changes in breadth first iterations', function (done) {
+    // Updates through a data dependency graph propagate in a
+    // breadth-first manner.
+    //
+    // Here is a data dependency graph that can test this
+    // (data flowing left to right):
+    //```
+    //   b  d
+    // a      f
+    //   c  e
+    //```
+    //
+    // When "a" changes, "f" should update once only, after the changes propagated
+    // through the following two paths simultaneously:
+    // 
+    //  * a -> b -> d -> f
+    //  * a -> c -> e -> f
+    var model = Model(),
+        fWasSetTo25 = false;
+
+    // a -> (b, c)
+    model.when('a', function (a) {
+      model.set({
+        b: a + 1,
+        c: a + 2
+      });
+    }); 
+
+    // b -> d
+    model.when('b', function (b) {
+      model.set('d', b + 1);
+    });
+
+    // c -> e
+    model.when('c', function (c) {
+      model.set('e', c + 1);
+    });
+
+    // (d, e) -> f
+    model.when(['d', 'e'], function (d, e) { 
+      model.set('f', d + e);
+    });
+
+    model.when('f', function (f) {
+      if(f == 15){
+        model.set('a', 10);
+      } else {
+        if(fWasSetTo25) {
+          throw new Error('f set to 25 more than once.');
+        }
+        expect(f).toBe(25);
+        fWasSetTo25 = true;
+        done();
+      }
+    });
+    model.set('a', 5);
+  });
   // TODO add more starting from Ohm's Law
 });
 // By Curran Kelleher 4/16/2014

@@ -1,3 +1,6 @@
+// A dynamic Choropleth map using model.js.
+// Based on the Choropleth D3 example http://bl.ocks.org/mbostock/4060606
+// By Curran Kelleher 4/20/2014
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
     var quantize = d3.scale.quantize().domain([0, .15])

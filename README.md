@@ -16,8 +16,9 @@ Check out the
    * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
    * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
    * [D3 Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
-   * [D3 Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
    * [D3 Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
+   * [D3 Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
+   * [D3 Choropleth](https://github.com/curran/model/tree/gh-pages/examples/d3Choropleth)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

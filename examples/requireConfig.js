@@ -5,7 +5,8 @@ require.config({
     // Map the `model` module name to the model lib.
     model: '../../dist/model',
     
-    // Expose d3 as a module.
-    d3: '../../lib/d3/d3.min'
+    // Expose d3 and topojson as AMD modules.
+    d3: '../../lib/d3/d3.min',
+    topojson: '../../lib/topojson/topojson'
   }
 });

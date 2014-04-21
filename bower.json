@@ -10,24 +10,29 @@
   "license": "MIT",
   "ignore": [
     ".bowerrc",
+    ".git",
+    ".gitignore",
     ".travis.yml",
+    "Gruntfile.js",
+    "LICENSE",
+    "README.md",
+    "SpecRunner.html",
     "bower.json",
     "countLines.sh",
     "docs",
     "examples",
-    "Gruntfile.js",
     "images",
     "lib",
-    "LICENSE",
+    "node_modules",
     "package.json",
-    "README.md",
     "requireConfig.js",
     "server.js",
     "spec",
-    "SpecRunner.html"
+    "src"
   ],
   "devDependencies": {
     "d3": "~3.4.6",
+    "topojson": "~1.6.8",
     "jasmine": "~2.0.0",
     "requirejs": "~2.1.11"
   }

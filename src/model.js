@@ -96,6 +96,8 @@ function Model(){
 
   // ## get
   function get(key){
+
+    // Return the internal value.
     return values[key];
   }
 
@@ -111,7 +113,7 @@ function Model(){
     // on the next tick of the JavaScript event loop.
     var callFn = debounce(function(){
 
-      // Extract the values for each dependency property from the model.
+      // Extract the values for each dependency property.
       var args = dependencies.map(function (dependency) {
         return values[dependency];
       });
@@ -137,8 +139,8 @@ function Model(){
     });
   }
 
-  // Adds a callback that will listen for changes
-  // to the specified property.
+  // ### on
+  // Adds a change listener for a property.
   function on(key, callback){
 
     // If there is not already a list
@@ -154,16 +156,21 @@ function Model(){
     callbacks[key].push(callback);
   }
 
-  // Return the public Model API,
-  // using the revealing module pattern.
   return model;
 }
 
+// ### debounce
 // Returns a debounced version of the given function.
 // Calling the debounced function one or more times in sequence
+// (on the same tick of the JavaScript event loop)
 // will schedule the given function to execute only once
-// at the next tick of the JavaScript event loop.
-// Similar to http://underscorejs.org/#debounce
+// on the next tick of the JavaScript event loop.
+//
+// Similar to [debounce in Underscore.js](http://underscorejs.org/#debounce).
+//
+// When propagating changes through a data dependency graph, debouce causes 
+// changes to be propagated in a breadth-first manner, which is the correct behavior.
+// Why does this work? See [Breadth-first search with setTimeout](https://tom-fitzhenry.me.uk/blog/2013/10/breadth-first-search-with-settimeout.html).
 function debounce(func){
   var queued = false;
   return function () {
@@ -177,6 +184,7 @@ function debounce(func){
   };
 }
 
+// ### allAreDefined
 // Returns true if all values in the given array
 // are defined and not null, false otherwise.
 function allAreDefined(arr){

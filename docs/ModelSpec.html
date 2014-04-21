@@ -407,7 +407,9 @@ which will be the value of <code>this</code> in the callback function.</p>
       done();
     }, theThing);
     model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
-  });</pre></div></div>
+  });
+
+  it(<span class="hljs-string">'should propagate changes in breadth first iterations'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(done)</span> {</span></pre></div></div>
             
         </li>
         
@@ -418,11 +420,24 @@ which will be the value of <code>this</code> in the callback function.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>TODO add more starting from Ohm’s Law</p>
+              <p>Updates through a data dependency graph propagate in a
+breadth-first manner.</p>
+<p>Here is a data dependency graph that can test this
+(data flowing left to right):</p>
+<pre><code>  b  d
+a      f
+  c  e
+</code></pre><p>When “a” changes, “f” should update once only, after the changes propagated
+through the following two paths simultaneously:</p>
+<ul>
+<li>a -&gt; b -&gt; d -&gt; f</li>
+<li>a -&gt; c -&gt; e -&gt; f</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = Model(),
+        fWasSetTo25 = <span class="hljs-literal">false</span>;</pre></div></div>
             
         </li>
         
@@ -432,6 +447,107 @@ which will be the value of <code>this</code> in the callback function.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>a -&gt; (b, c)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when(<span class="hljs-string">'a'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> {</span>
+      model.set({
+        b: a + <span class="hljs-number">1</span>,
+        c: a + <span class="hljs-number">2</span>
+      });
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>b -&gt; d</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when(<span class="hljs-string">'b'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(b)</span> {</span>
+      model.set(<span class="hljs-string">'d'</span>, b + <span class="hljs-number">1</span>);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>c -&gt; e</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when(<span class="hljs-string">'c'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(c)</span> {</span>
+      model.set(<span class="hljs-string">'e'</span>, c + <span class="hljs-number">1</span>);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>(d, e) -&gt; f</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when([<span class="hljs-string">'d'</span>, <span class="hljs-string">'e'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d, e)</span> {</span> 
+      model.set(<span class="hljs-string">'f'</span>, d + e);
+    });
+
+    model.when(<span class="hljs-string">'f'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(f)</span> {</span>
+      <span class="hljs-keyword">if</span>(f == <span class="hljs-number">15</span>){
+        model.set(<span class="hljs-string">'a'</span>, <span class="hljs-number">10</span>);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">if</span>(fWasSetTo25) {
+          <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'f set to 25 more than once.'</span>);
+        }
+        expect(f).toBe(<span class="hljs-number">25</span>);
+        fWasSetTo25 = <span class="hljs-literal">true</span>;
+        done();
+      }
+    });
+    model.set(<span class="hljs-string">'a'</span>, <span class="hljs-number">5</span>);
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>TODO add more starting from Ohm’s Law</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>By Curran Kelleher 4/16/2014</p>
 

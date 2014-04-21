@@ -13,6 +13,7 @@
 // A functional reactive model library.
 //
 // By Curran Kelleher 4/17/2014
+//
 // # Model()
 // The constructor function for models.
 // No need to use `new`.
@@ -20,7 +21,6 @@
 // For example: `var model = Model();`
 
 function Model(){
-  'use strict';
 
   // The `model` API has only three functions: `get`, `set` and `when`.
   var model = {
@@ -95,7 +95,7 @@ function Model(){
 
   function setKeyValue(key, value){
 
-    // Update the internal value.
+    // Set the internal value.
     values[key] = value;
 
     // Call callbacks if there are any.
@@ -109,7 +109,7 @@ function Model(){
   // ## get
   function get(key){
 
-    // Return the internal value.
+    // Get the internal value.
     return values[key];
   }
 
@@ -200,13 +200,9 @@ function debounce(func){
 // Returns true if all values in the given array
 // are defined and not null, false otherwise.
 function allAreDefined(arr){
-  var allDefined = true;
-  arr.forEach(function (d) {
-    if(typeof d === 'undefined' || d === null){
-      allDefined = false;
-    }
+  return !arr.some(function (d) {
+    return typeof d === 'undefined' || d === null;
   });
-  return allDefined;
 }
 
 

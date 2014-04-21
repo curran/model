@@ -58,8 +58,7 @@ No need to use <code>new</code>.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span>
-<span class="hljs-pi">  'use strict'</span>;</pre></div></div>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -236,7 +235,7 @@ as arguments to the callback, in the same order specified by <code>dependencies<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Update the internal value.</p>
+              <p>Set the internal value.</p>
 
             </div>
             
@@ -286,7 +285,7 @@ as arguments to the callback, in the same order specified by <code>dependencies<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Return the internal value.</p>
+              <p>Get the internal value.</p>
 
             </div>
             
@@ -545,13 +544,9 @@ are defined and not null, false otherwise.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span>{</span>
-  <span class="hljs-keyword">var</span> allDefined = <span class="hljs-literal">true</span>;
-  arr.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
-    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>){
-      allDefined = <span class="hljs-literal">false</span>;
-    }
+  <span class="hljs-keyword">return</span> !arr.some(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>;
   });
-  <span class="hljs-keyword">return</span> allDefined;
 }</pre></div></div>
             
         </li>

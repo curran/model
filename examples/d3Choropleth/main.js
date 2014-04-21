@@ -9,4 +9,13 @@ require(['d3', 'choropleth'], function (d3, Choropleth) {
   d3.tsv('unemployment.tsv', function (err, unemployment) {
     choropleth.set('unemployment', unemployment);
   });
+
+  setSizeFromDiv();
+  window.addEventListener('resize', setSizeFromDiv);
+  function setSizeFromDiv(){
+    choropleth.set('size', {
+      width: div.clientWidth,
+      height: div.clientHeight
+    });
+  }
 });

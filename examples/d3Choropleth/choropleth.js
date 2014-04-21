@@ -1,23 +1,13 @@
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
-    var width = 960,
-        height = 600,
-        quantize = d3.scale.quantize()
-          .domain([0, .15])
+    var quantize = d3.scale.quantize().domain([0, .15])
           .range(d3.range(9).map(function(i) { return 'q' + i + '-9'; })),
-        projection = d3.geo.albersUsa()
-          .scale(1280)
-          .translate([width / 2, height / 2]),
-        path = d3.geo.path()
-          .projection(projection),
+        projection = d3.geo.albersUsa(),
+        path = d3.geo.path(),
         svg = d3.select(div).append('svg'),
         countiesG = svg.append('g').attr('class', 'counties'),
         states = svg.append('path').attr('class', 'states'),
         model = Model();
-
-    svg
-      .attr('width', width)
-      .attr('height', height),
 
     model.when('unemployment', function (unemployment) {
       var rateById = {};
@@ -32,13 +22,21 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       });
     });
 
-    model.when(['countiesFeatures', 'stateBoundaries', 'rateById'],
-        function (countiesFeatures, stateBoundaries, rateById) {
-      var counties = countiesG.selectAll('path').data(countiesFeatures);
+    model.when(['size', 'countiesFeatures', 'stateBoundaries', 'rateById'],
+        function (size, countiesFeatures, stateBoundaries, rateById) {
+      var counties;
+
+      svg.attr('width', size.width).attr('height', size.height);
+      projection
+        .scale(2 * Math.min(size.width, size.height))
+        .translate([size.width / 2, size.height / 2]);
+      path.projection(projection);
+
+      counties = countiesG.selectAll('path').data(countiesFeatures);
       counties.enter().append('path')
-      counties
-        .attr('class', function(d) { return quantize(rateById[d.id]); })
-        .attr('d', path);
+      counties.attr('d', path)
+        .attr('class', function(d) { return quantize(rateById[d.id]); });
+
       states.attr('d', path(stateBoundaries));
     });
 

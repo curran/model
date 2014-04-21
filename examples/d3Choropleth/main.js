@@ -1,7 +1,6 @@
 require(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   var width = 960,
       height = 600,
-      rateById = {},
       quantize = d3.scale.quantize()
         .domain([0, .15])
         .range(d3.range(9).map(function(i) { return "q" + i + "-9"; })),
@@ -16,15 +15,18 @@ require(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       model = Model();
 
   d3.json('us.json', function (err, us) {
-    d3.tsv('unemployment.tsv', function (err, unemployment) {
-      unemployment.forEach(function (d) {
-        rateById[d.id] = +d.rate;
-      });
-      ready(us);
-    });
+    model.set('us', us);
   });
 
-  function ready( us) {
+  d3.tsv('unemployment.tsv', function (err, unemployment) {
+    var rateById = {};
+    unemployment.forEach(function (d) {
+      rateById[d.id] = +d.rate;
+    });
+    model.set('rateById', rateById);
+  });
+
+  model.when(['us', 'rateById'], function (us, rateById) {
     svg.append("g")
         .attr("class", "counties")
       .selectAll("path")
@@ -37,7 +39,7 @@ require(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
         .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
         .attr("class", "states")
         .attr("d", path);
-  }
+  });
 
   d3.select(self.frameElement).style("height", height + "px");
 });

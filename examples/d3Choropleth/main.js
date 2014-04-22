@@ -9,12 +9,12 @@ require(['d3', 'choropleth'], function (d3, Choropleth) {
   d3.tsv('unemployment.tsv', function (err, unemployment) {
     choropleth.set('unemployment', unemployment);
 
-    //setInterval(function () {
-    //  unemployment.forEach(function (d) {
-    //    d.rate = Math.random();
-    //  });
-    //  choropleth.set('unemployment', unemployment);
-    //}, 2000);
+    setInterval(function () {
+      unemployment.forEach(function (d) {
+        d.rate = Math.random() / 2;
+      });
+      choropleth.set('unemployment', unemployment);
+    }, 2000);
   });
 
   setSizeFromDiv();

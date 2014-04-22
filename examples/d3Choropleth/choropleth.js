@@ -82,20 +82,18 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     model.when(['pan', 'zoom'], function (pan, zoom) {
       g.attr('transform', 'translate(' + pan + ')scale(' + zoom + ')');
     });
-
-    model.when(['countiesFeatures', 'stateBoundaries', 'rateById'],
-        function (countiesFeatures, stateBoundaries, rateById) {
-      var counties;
-
-
-      counties = countiesG.selectAll('path').data(countiesFeatures);
+    
+    model.when(['countiesFeatures', 'stateBoundaries'],
+        function (countiesFeatures, stateBoundaries) {
+      var counties = countiesG.selectAll('path').data(countiesFeatures);
       counties.enter().append('path')
-      
-      // TODO separate this from polygons
-      counties.attr('d', path)
-        .attr('class', function(d) { return quantize(rateById[d.id]); });
-
+      counties.attr('d', path);
       states.attr('d', path(stateBoundaries));
+    });
+
+    model.when(['countiesFeatures', 'rateById'], function (countiesFeatures, rateById) {
+      var counties = countiesG.selectAll('path').data(countiesFeatures);
+      counties.attr('class', function(d) { return quantize(rateById[d.id]); });
     });
 
     return model;

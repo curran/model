@@ -12,14 +12,12 @@
 //  * Zooming to a feature
 //    https://gist.github.com/mbostock/4699541
 // 
-// By Curran Kelleher 4/20/2014
+// By Curran Kelleher 4/22/2014
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
     var quantize = d3.scale.quantize().domain([0, .15])
           .range(d3.range(9).map(function(i) { return 'q' + i + '-9'; })),
-        projection = d3.geo.albersUsa()
-          .translate([0, 0])
-          .scale(1),
+        projection = d3.geo.albersUsa().translate([0, 0]).scale(1),
         path = d3.geo.path().projection(projection),
         svg = d3.select(div).append('svg'),
         g = svg.append('g'),
@@ -47,10 +45,12 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       svg.attr('width', size.width).attr('height', size.height);
     });
 
-    model.when('unemployment', function (unemployment) {
-      var rateById = {};
-      unemployment.forEach(function (d) { rateById[d.id] = +d.rate; });
-      model.set('rateById', rateById);
+    model.when(['data', 'idField', 'colorField'], function (data, idField, colorField) {
+      var dataById = {};
+      data.forEach(function (d) {
+        dataById[d[idField]] = +d[colorField];
+      });
+      model.set('dataById', dataById);
     });
 
     model.when(['us', 'size'], function (us, size) {
@@ -83,18 +83,28 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       g.attr('transform', 'translate(' + pan + ')scale(' + zoom + ')');
     });
     
-    model.when(['countiesFeatures', 'stateBoundaries'],
-        function (countiesFeatures, stateBoundaries) {
-      var counties = countiesG.selectAll('path').data(countiesFeatures);
-      counties.enter().append('path')
-      counties.attr('d', path);
+    // Update the county polygons
+    model.when('countiesFeatures', function (countiesFeatures) {
+      counties(countiesFeatures).attr('d', path);
+    });
+
+    // Update the state boundary lines
+    model.when('stateBoundaries', function (stateBoundaries) {
       states.attr('d', path(stateBoundaries));
     });
 
-    model.when(['countiesFeatures', 'rateById'], function (countiesFeatures, rateById) {
-      var counties = countiesG.selectAll('path').data(countiesFeatures);
-      counties.attr('class', function(d) { return quantize(rateById[d.id]); });
+    // Update the color only (not polygons) when the data changes
+    model.when(['countiesFeatures', 'dataById'], function (countiesFeatures, dataById) {
+      counties(countiesFeatures).attr('class', function(d) {
+        return quantize(dataById[d.id]);
+      });
     });
+
+    function counties(countiesFeatures){
+      var counties = countiesG.selectAll('path').data(countiesFeatures);
+      counties.enter().append('path');
+      return counties;
+    }
 
     return model;
   };

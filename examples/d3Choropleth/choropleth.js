@@ -1,5 +1,13 @@
 // A dynamic Choropleth map using model.js.
-// Based on the Choropleth D3 example http://bl.ocks.org/mbostock/4060606
+//
+// Draws from:
+//
+//  * Mike Bostock's Choropleth D3 examples
+//    http://bl.ocks.org/mbostock/4060606
+//    http://bl.ocks.org/mbostock/3757132
+//  * SVG Geometric Zooming example
+//    http://bl.ocks.org/mbostock/3680999
+// 
 // By Curran Kelleher 4/20/2014
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
@@ -8,9 +16,21 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
         projection = d3.geo.albersUsa(),
         path = d3.geo.path(),
         svg = d3.select(div).append('svg'),
-        countiesG = svg.append('g').attr('class', 'counties'),
-        states = svg.append('path').attr('class', 'states'),
+        g = svg.append('g'),
+        countiesG = g.append('g').attr('class', 'counties'),
+        states = g.append('path').attr('class', 'states'),
         model = Model();
+
+    svg.call(d3.behavior.zoom().on('zoom', function () {
+      model.set({
+        translate: d3.event.translate,
+        scale: d3.event.scale
+      });
+    }));
+
+    model.when(['translate', 'scale'], function (translate, scale) {
+      g.attr('transform', 'translate(' + translate + ')scale(' + scale + ')');
+    });
 
     model.when('unemployment', function (unemployment) {
       var rateById = {};

@@ -7,29 +7,44 @@
 //    http://bl.ocks.org/mbostock/3757132
 //  * SVG Geometric Zooming example
 //    http://bl.ocks.org/mbostock/3680999
+//  * Merging states using topojson
+//    https://gist.github.com/mbostock/5416405
+//  * Zooming to a feature
+//    https://gist.github.com/mbostock/4699541
 // 
 // By Curran Kelleher 4/20/2014
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
     var quantize = d3.scale.quantize().domain([0, .15])
           .range(d3.range(9).map(function(i) { return 'q' + i + '-9'; })),
-        projection = d3.geo.albersUsa(),
-        path = d3.geo.path(),
+        projection = d3.geo.albersUsa()
+          .translate([0, 0])
+          .scale(1),
+        path = d3.geo.path().projection(projection),
         svg = d3.select(div).append('svg'),
         g = svg.append('g'),
         countiesG = g.append('g').attr('class', 'counties'),
         states = g.append('path').attr('class', 'states'),
+        zoomBehavior = d3.behavior.zoom().on('zoom', function () {
+          model.set({
+            pan: d3.event.translate,
+            zoom: d3.event.scale
+          });
+        }),
         model = Model();
 
-    svg.call(d3.behavior.zoom().on('zoom', function () {
-      model.set({
-        translate: d3.event.translate,
-        scale: d3.event.scale
-      });
-    }));
+    // Set default pan & zoom
+    model.set({
+      pan: [0, 0],
+      zoom: 1
+    });
 
-    model.when(['translate', 'scale'], function (translate, scale) {
-      g.attr('transform', 'translate(' + translate + ')scale(' + scale + ')');
+    // Set pan & zoom in response to interaction
+    svg.call(zoomBehavior);
+
+    // Update the SVG width and height
+    model.when(['size'], function (size) {
+      svg.attr('width', size.width).attr('height', size.height);
     });
 
     model.when('unemployment', function (unemployment) {
@@ -38,25 +53,45 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       model.set('rateById', rateById);
     });
 
-    model.when(['us'], function (us) {
+    model.when(['us', 'size'], function (us, size) {
+      var countiesFeatures = topojson.feature(us, us.objects.counties).features,
+          stateBoundaries = topojson.mesh(us, us.objects.states, function(a, b) {
+            return a !== b;
+          }),
+ 
+          // Fit the map on the display.
+          usGeom = topojson.merge(us, us.objects.states.geometries),
+          bounds = path.bounds(usGeom),
+          dx = bounds[1][0] - bounds[0][0],
+          dy = bounds[1][1] - bounds[0][1],
+          x = (bounds[0][0] + bounds[1][0]) / 2,
+          y = (bounds[0][1] + bounds[1][1]) / 2,
+          scale = 1 / Math.max(dx / size.width, dy / size.height);
+
+      projection
+        .scale(scale)
+        .translate([ size.width / 2 - scale * x, size.height / 2 - scale * y ]);
+
       model.set({
-        countiesFeatures: topojson.feature(us, us.objects.counties).features,
-        stateBoundaries: topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })
+        countiesFeatures: countiesFeatures,
+        stateBoundaries: stateBoundaries
       });
     });
 
-    model.when(['size', 'countiesFeatures', 'stateBoundaries', 'rateById'],
-        function (size, countiesFeatures, stateBoundaries, rateById) {
+    // Update the transform based pan & zoom
+    model.when(['pan', 'zoom'], function (pan, zoom) {
+      g.attr('transform', 'translate(' + pan + ')scale(' + zoom + ')');
+    });
+
+    model.when(['countiesFeatures', 'stateBoundaries', 'rateById'],
+        function (countiesFeatures, stateBoundaries, rateById) {
       var counties;
 
-      svg.attr('width', size.width).attr('height', size.height);
-      projection
-        .scale(2 * Math.min(size.width, size.height))
-        .translate([size.width / 2, size.height / 2]);
-      path.projection(projection);
 
       counties = countiesG.selectAll('path').data(countiesFeatures);
       counties.enter().append('path')
+      
+      // TODO separate this from polygons
       counties.attr('d', path)
         .attr('class', function(d) { return quantize(rateById[d.id]); });
 

@@ -66,9 +66,9 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
     var countryNamesByCode = {}
 
     locations.forEach(function (d) {
-      if(d.locationTypeName == 'Country/Area'){
+      //if(d.locationTypeName == 'Country/Area'){
         countryNamesByCode[d.unCountryCode] = d.countryName;
-      }
+      //}
     });
 
     d3.csv('un_population.csv', function(error, data) {

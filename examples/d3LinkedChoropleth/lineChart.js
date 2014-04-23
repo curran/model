@@ -23,7 +23,53 @@ define(['d3', 'model'], function (d3, Model) {
           .attr('y', 6)
           .attr('dy', '.71em')
           .style('text-anchor', 'end'),
+        pathsG = g.append('g'),
+        selectedYearLine = g.append('line')
+          .attr('y1', 0)
+          .style('stroke', 'black')
+          .style('stroke-width', '2px'),
+        mouseTarget = g.append('rect')
+          .attr('x', 0)
+          .attr('y', 0)
+          .style('fill', 'none')
+          .style('pointer-events', 'all'),
         model = Model();
+
+    (function () {
+      var previousSelectedYear;
+      function getSelectedYear(){
+        // Select the year that is closest to the mouse.
+        var mouseX = d3.mouse(mouseTarget.node())[0],
+            date = x.invert(mouseX),
+            year = date.getFullYear(),
+            month = date.getMonth(),
+            selectedYear = Math.round(year + (month / 11));
+        return selectedYear;
+      }
+      mouseTarget.on('mousemove', function () {
+        var selectedYear = getSelectedYear();
+        model.set('selectedYear', selectedYear);
+        if(!previousSelectedYear) {
+          previousSelectedYear = selectedYear;
+        }
+      });
+      mouseTarget.on('click', function () {
+        previousSelectedYear = getSelectedYear();
+      });
+      mouseTarget.on('mouseout', function () {
+        if(previousSelectedYear) {
+          model.set('selectedYear', previousSelectedYear);
+        }
+      });
+    }());
+
+    model.when(['selectedYear', 'height'], function (selectedYear, height) {
+      var xPixel = x(new Date(selectedYear, 0));
+      selectedYearLine
+        .attr('x1', xPixel)
+        .attr('x2', xPixel)
+        .attr('y2', height);
+    });
 
     model.when('yLabel', yAxisLabel.text, yAxisLabel);
 
@@ -43,8 +89,13 @@ define(['d3', 'model'], function (d3, Model) {
       model.set('height', box.height - margin.top - margin.bottom);
     });
 
+    model.when('width', function (width) {
+      mouseTarget.attr('width', width);
+    });
+
     model.when('height', function (height) {
       xAxisG.attr('transform', 'translate(0,' + height + ')');
+      mouseTarget.attr('height', height);
     });
 
     model.when(['width', 'height', 'data', 'xField', 'yField', 'idField'], 
@@ -78,7 +129,7 @@ define(['d3', 'model'], function (d3, Model) {
         .x(function(d) { return x(d[xField]); })
         .y(function(d) { return y(d[yField]); });
 
-      paths = g.selectAll('.line').data(lineData);
+      paths = pathsG.selectAll('.line').data(lineData);
       paths.enter().append('path').attr('class', 'line');
       paths.attr('d', function(d) { return line(d.values); });
     });

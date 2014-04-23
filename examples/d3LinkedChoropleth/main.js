@@ -66,9 +66,9 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
     var countryNamesByCode = {}
 
     locations.forEach(function (d) {
-      //if(d.locationTypeName == 'Country/Area'){
+      if(d.locationTypeName == 'Country/Area'){
         countryNamesByCode[d.unCountryCode] = d.countryName;
-      //}
+      }
     });
 
     d3.csv('un_population.csv', function(error, data) {
@@ -78,8 +78,18 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
         d.country = countryNamesByCode[d.countryCode];
         return d.country;
       });
+
       lineChart.set('data', data);
-      choropleth.set('data', data);
+
+      lineChart.set('selectedYear', d3.max(data, function (d) {
+        return d.date.getFullYear();
+      }));
+
+      lineChart.when('selectedYear', function (selectedYear) {
+        choropleth.set('data', data.filter(function (d) {
+          return d.date.getFullYear() == selectedYear;
+        }));
+      });
     });
   });
 

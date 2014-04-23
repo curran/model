@@ -114,9 +114,7 @@ function Model(){
     var callFn = debounce(function(){
 
       // Extract the values for each dependency property.
-      var args = dependencies.map(function (dependency) {
-        return values[dependency];
-      });
+      var args = dependencies.map(get);
 
       // Only call the function if all values are defined.
       if(allAreDefined(args)) {

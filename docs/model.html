@@ -353,9 +353,7 @@ on the next tick of the JavaScript event loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> args = dependencies.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependency)</span> {</span>
-        <span class="hljs-keyword">return</span> values[dependency];
-      });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> args = dependencies.map(get);</pre></div></div>
             
         </li>
         

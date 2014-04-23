@@ -10,9 +10,9 @@
   fill: none;
 }
 
-.states {
+.land {
   fill: none;
-  stroke: #fff;
+  stroke: gray;
   stroke-linejoin: round;
 }
 

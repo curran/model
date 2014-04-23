@@ -90,6 +90,16 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
           return d.date.getFullYear() == selectedYear;
         }));
       });
+
+      choropleth.when('visibleRegions', function (visibleRegions) {
+        var visibleCountries = {};
+        visibleRegions.forEach(function (d) {
+          visibleCountries[d.id] = true;
+        });
+        lineChart.set('data', data.filter(function (d) {
+          return visibleCountries[d.country];
+        }));
+      });
     });
   });
 

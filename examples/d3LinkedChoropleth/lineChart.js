@@ -132,6 +132,7 @@ define(['d3', 'model'], function (d3, Model) {
       paths = pathsG.selectAll('.line').data(lineData);
       paths.enter().append('path').attr('class', 'line');
       paths.attr('d', function(d) { return line(d.values); });
+      paths.exit().remove();
     });
     return model;
   }

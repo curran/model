@@ -26,7 +26,6 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
         svg = d3.select(div).append('svg').style('position', 'absolute'),
         g = svg.append('g'),
         countriesG = g.append('g').attr('class', 'counties'),
-        states = g.append('path').attr('class', 'states'),
         zoomBehavior = d3.behavior.zoom().on('zoom', function () {
           model.set({
             pan: d3.event.translate,
@@ -70,8 +69,8 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       var countryFeatures = topojson.feature(countries, countries.objects.countriesGeoJSON).features,
  
           // Fit the map on the display.
-          worldGeom = topojson.merge(countries, countries.objects.countriesGeoJSON.geometries),
-          bounds = path.bounds(worldGeom),
+          landGeometry = topojson.merge(countries, countries.objects.countriesGeoJSON.geometries),
+          bounds = path.bounds(landGeometry),
           dx = bounds[1][0] - bounds[0][0],
           dy = bounds[1][1] - bounds[0][1],
           x = (bounds[0][0] + bounds[1][0]) / 2,
@@ -94,20 +93,34 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     model.when(['pan', 'zoom'], function (pan, zoom) {
       g.attr('transform', 'translate(' + pan + ')scale(' + zoom + ')');
     });
-    
+
     // Update the county polygons
     model.when('countryFeatures', function (countryFeatures) {
       countries(countryFeatures).attr('d', path)
         .attr('fill', 'red');
     });
 
+    model.when(['pan', 'zoom', 'countryFeatures', 'box'], function (pan, zoom, countryFeatures, box) {
+      var visibleRegions = countries(countryFeatures).filter(function () {
+        // TODO make this more efficient by using a quadtree
+        // in geo space and projecting pixel bounds to projected space
+        // TODO select rects where any part is visible, not only fully contained
+        var rect = this.getBoundingClientRect();
+        return (
+          rect.top > box.y &&
+          rect.bottom < (box.y + box.height) &&
+          rect.left > box.x &&
+          rect.right < (box.x + box.width)
+        );
+      }).data();
+      model.set('visibleRegions', visibleRegions);
+    });
+    
+
     // Update the color only (not polygons) when the data changes
     model.when(['countryFeatures', 'dataById', 'colorField'], function (countryFeatures, dataById, colorField) {
       countries(countryFeatures)
         .attr('class', function(d) {
-          if(!dataById[d.id]){
-            console.log(d.id);
-          }
           return quantize(dataById[d.id]);
         })
         .on('mouseover', function (d) {

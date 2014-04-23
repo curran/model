@@ -181,14 +181,14 @@ function Model(){
 // When propagating changes through a data dependency graph, debouce causes 
 // changes to be propagated in a breadth-first manner, which is the correct behavior.
 // Why does this work? See [Breadth-first search with setTimeout](https://tom-fitzhenry.me.uk/blog/2013/10/breadth-first-search-with-settimeout.html).
-function debounce(func){
+function debounce(fn){
   var queued = false;
   return function () {
     if(!queued){
       queued = true;
       setTimeout(function () {
         queued = false;
-        func();
+        fn();
       }, 0);
     }
   };

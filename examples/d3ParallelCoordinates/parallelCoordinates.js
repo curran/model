@@ -142,12 +142,15 @@ define(['d3', 'model'], function (d3, Model) {
     // Handles a brush event, toggling the display of foreground lines.
     function brush() {
       var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
-          extents = actives.map(function(p) { return y[p].brush.extent(); });
-      foregroundPaths.style('display', function(d) {
-        return actives.every(function(p, i) {
-          return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-        }) ? null : 'none';
-      });
+          extents = actives.map(function(p) { return y[p].brush.extent(); }),
+          selectedPaths = foregroundPaths.filter(function(d) {
+            return actives.every(function(p, i) {
+              return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+            });
+          });
+      foregroundPaths.style('display', 'none');
+      selectedPaths.style('display', null);
+      model.set('selectedData', selectedPaths.data());
     }
 
     return model;

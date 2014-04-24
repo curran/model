@@ -5,6 +5,12 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
 
   parallelCoordinates.set('margin', { top: 20, right: 20, bottom: 30, left: 40 });
 
+  // This callback fires with the selected data as the user filters.
+  parallelCoordinates.when('selectedData', function (selectedData) {
+    console.log(selectedData.length);
+  });
+
+
   d3.csv('cars.csv', function(error, data) {
 
     // Set the data

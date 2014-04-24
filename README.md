@@ -19,6 +19,7 @@ Check out the
    * [D3 Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
    * [D3 Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
    * [D3 Choropleth](https://github.com/curran/model/tree/gh-pages/examples/d3Choropleth)
+   * [D3 Linked Choropleth and Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedChoropleth)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

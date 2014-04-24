@@ -3,7 +3,7 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
   var div = document.getElementById('parallelCoordinatesContainer'),
       parallelCoordinates = ParallelCoordinates(div);
 
-  //parallelCoordinates.set('margin', { top: 20, right: 20, bottom: 30, left: 40 });
+  parallelCoordinates.set('margin', { top: 20, right: 20, bottom: 30, left: 40 });
 
   d3.csv('cars.csv', function(error, data) {
 

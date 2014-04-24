@@ -15,6 +15,8 @@ define(['d3', 'model'], function (d3, Model) {
         foreground = g.append('g')
           .attr('class', 'foreground'),
         dimension,
+        backgroundPaths,
+        foregroundPaths,
         model = Model();
 
     function getY(d) {
@@ -56,14 +58,16 @@ define(['d3', 'model'], function (d3, Model) {
       });
       
       // Add grey background lines for context.
-      background.selectAll('path').data(cars)
-        .enter().append('path');
-      background.selectAll('path').attr('d', path);
+      backgroundPaths = background.selectAll('path').data(cars);
+      backgroundPaths.enter().append('path');
+      backgroundPaths.attr('d', path);
+      backgroundPaths.exit().remove();
 
       // Add blue foreground lines for focus.
-      foreground.selectAll('path').data(cars)
-        .enter().append('path');
-      foreground.selectAll('path').attr('d', path);
+      foregroundPaths = foreground.selectAll('path').data(cars);
+      foregroundPaths.enter().append('path');
+      foregroundPaths.attr('d', path);
+      foregroundPaths.exit().remove();
 
       // Add a group element for each dimension.
       dimension = g.selectAll('.dimension').data(dimensions);
@@ -73,35 +77,38 @@ define(['d3', 'model'], function (d3, Model) {
       dimensionEnter
         .append('g').attr('class', 'axis')
         .append('text').attr('class', 'axis-label')
-          .attr('text-anchor', 'middle')
-          .attr('y', -9);
+        .attr('text-anchor', 'middle')
+        .attr('y', -9);
       dimensionEnter.append('g').attr('class', 'brush')
+
+      dimension.exit().remove();
 
       dimension.attr('transform', function(d) { return 'translate(' + x(d) + ')'; })
         .call(d3.behavior.drag()
           .on('dragstart', function(d) {
             dragging[d] = this.__origin__ = x(d);
-            background.selectAll('path').attr('visibility', 'hidden');
+            backgroundPaths.attr('visibility', 'hidden');
           })
           .on('drag', function(d) {
             dragging[d] = Math.min(width, Math.max(0, this.__origin__ += d3.event.dx));
-            foreground.selectAll('path').attr('d', path);
+            foregroundPaths.attr('d', path);
             dimensions.sort(function(a, b) { return position(a) - position(b); });
             x.domain(dimensions);
-            dimension.attr('transform', function(d) { return 'translate(' + position(d) + ')'; })
+            dimension.attr('transform', function(d) {
+              return 'translate(' + position(d) + ')';
+            });
           })
           .on('dragend', function(d) {
             delete this.__origin__;
             delete dragging[d];
             transition(d3.select(this)).attr('transform', 'translate(' + x(d) + ')');
-            transition(foreground.selectAll('path'))
-                .attr('d', path);
-            background.selectAll('path')
-                .attr('d', path)
-                .transition()
-                .delay(500)
-                .duration(0)
-                .attr('visibility', null);
+            transition(foregroundPaths).attr('d', path);
+            backgroundPaths
+              .attr('d', path)
+              .transition()
+              .delay(500)
+              .duration(0)
+              .attr('visibility', null);
           }));
 
       // Add an axis and title.
@@ -136,7 +143,7 @@ define(['d3', 'model'], function (d3, Model) {
     function brush() {
       var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
           extents = actives.map(function(p) { return y[p].brush.extent(); });
-      foreground.selectAll('path').style('display', function(d) {
+      foregroundPaths.style('display', function(d) {
         return actives.every(function(p, i) {
           return extents[i][0] <= d[p] && d[p] <= extents[i][1];
         }) ? null : 'none';

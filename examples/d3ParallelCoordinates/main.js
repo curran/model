@@ -10,16 +10,16 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
     // Set the data
     parallelCoordinates.set('data', data);
 
-    //// Reset data each second
-    //setInterval(function () {
+    // Reset data each second
+    setInterval(function () {
 
-    //  // Include each element with a 50% chance.
-    //  var randomSample = data.filter(function(d){
-    //    return Math.random() < 0.5;
-    //  });
+      // Include each element with a 50% chance.
+      var randomSample = data.filter(function(d){
+        return Math.random() < 0.1;
+      });
 
-    //  parallelCoordinates.set('data', randomSample);
-    //}, 1000);
+      parallelCoordinates.set('data', randomSample);
+    }, 1000);
   });
 
   // Set size once to initialize

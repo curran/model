@@ -12,11 +12,22 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
 
     // Reset data each second
     setInterval(function () {
+      var randomKeys = Object.keys(data[0]).filter(function(d){
+            return Math.random() < 0.7;
+          }),
 
-      // Include each element with a 50% chance.
-      var randomSample = data.filter(function(d){
-        return Math.random() < 0.1;
-      });
+          dataWithRandomKeys = data.map(function (d) {
+            var e = {};
+            randomKeys.forEach(function (key) {
+              e[key] = d[key];
+            });
+            return e;
+          }),
+
+          // Include each element with a 50% chance.
+          randomSample = dataWithRandomKeys.filter(function(d){
+            return Math.random() < 0.1;
+          });
 
       parallelCoordinates.set('data', randomSample);
     }, 1000);

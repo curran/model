@@ -259,6 +259,63 @@ describe('model', function() {
     });
     model.set('a', 5);
   });
-  // TODO add more starting from Ohm's Law
+
+  // `when` callbacks can be removed using `cancel`.
+  it('should cancel a single callback', function(done) {
+    var model = Model(),
+        whens = model.when('x', function (x) {
+          expect(x).toBe(5);
+          if(x != 5) { throw new Error('Callback called again.'); }
+        });
+    model.set('x', 5);
+    setTimeout(function () {
+      model.cancel(whens);
+      model.set('x', 6);
+      done();
+    }, 0);
+  });
+
+  it('should cancel multiple callbacks', function(done) {
+    var model = Model(),
+        whens = model.when('x', function (x) {
+          expect(x).toBe(5);
+          if(x != 5) { throw new Error('X callback called again.'); }
+        }).when('y', function (y) {
+          expect(y).toBe(10);
+          if(y != 10) { throw new Error('Y callback called again.'); }
+        });
+    model.set('x', 5);
+    model.set('y', 10);
+    setTimeout(function () {
+      model.cancel(whens);
+      model.set('x', 6);
+      model.set('y', 11);
+      done();
+    }, 0);
+  });
+  it('should cancel callbacks independently', function(done) {
+    var model = Model(),
+        yValue,
+        whenX = model.when('x', function (x) {
+          if(x != 5) { throw new Error('X callback called again.'); }
+        }),
+        whenY = model.when('y', function (y) {
+          if(y != 10) { throw new Error('Y callback called again.'); }
+          yValue = y;
+        });
+    model.set('x', 5);
+    setTimeout(function () {
+      model.cancel(whenX);
+      model.set('x', 6);
+      model.set('y', 10);
+      setTimeout(function () {
+        expect(yValue).toBe(10);
+        model.cancel(whenY);
+        model.set('x', 7);
+        model.set('y', 11);
+        done();
+      }, 0);
+    }, 0);
+  });
 });
 // By Curran Kelleher 4/16/2014

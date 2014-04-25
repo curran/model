@@ -534,11 +534,67 @@ through the following two paths simultaneously:</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>TODO add more starting from Ohm’s Law</p>
+              <p><code>when</code> callbacks can be removed using <code>cancel</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  it(<span class="hljs-string">'should cancel a single callback'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        whens = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+          expect(x).toBe(<span class="hljs-number">5</span>);
+          <span class="hljs-keyword">if</span>(x != <span class="hljs-number">5</span>) { <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Callback called again.'</span>); }
+        });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      model.cancel(whens);
+      model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">6</span>);
+      done();
+    }, <span class="hljs-number">0</span>);
+  });
+
+  it(<span class="hljs-string">'should cancel multiple callbacks'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        whens = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+          expect(x).toBe(<span class="hljs-number">5</span>);
+          <span class="hljs-keyword">if</span>(x != <span class="hljs-number">5</span>) { <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'X callback called again.'</span>); }
+        }).when(<span class="hljs-string">'y'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span>
+          expect(y).toBe(<span class="hljs-number">10</span>);
+          <span class="hljs-keyword">if</span>(y != <span class="hljs-number">10</span>) { <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Y callback called again.'</span>); }
+        });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">10</span>);
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      model.cancel(whens);
+      model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">6</span>);
+      model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">11</span>);
+      done();
+    }, <span class="hljs-number">0</span>);
+  });
+  it(<span class="hljs-string">'should cancel callbacks independently'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        yValue,
+        whenX = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+          <span class="hljs-keyword">if</span>(x != <span class="hljs-number">5</span>) { <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'X callback called again.'</span>); }
+        }),
+        whenY = model.when(<span class="hljs-string">'y'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span>
+          <span class="hljs-keyword">if</span>(y != <span class="hljs-number">10</span>) { <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Y callback called again.'</span>); }
+          yValue = y;
+        });
+    model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">5</span>);
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      model.cancel(whenX);
+      model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">6</span>);
+      model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">10</span>);
+      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        expect(yValue).toBe(<span class="hljs-number">10</span>);
+        model.cancel(whenY);
+        model.set(<span class="hljs-string">'x'</span>, <span class="hljs-number">7</span>);
+        model.set(<span class="hljs-string">'y'</span>, <span class="hljs-number">11</span>);
+        done();
+      }, <span class="hljs-number">0</span>);
+    }, <span class="hljs-number">0</span>);
+  });
+});</pre></div></div>
             
         </li>
         

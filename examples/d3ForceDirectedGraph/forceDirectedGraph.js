@@ -5,7 +5,9 @@ define(['d3', 'model'], function (d3, Model) {
   return function (div){
     var model = Model(),
         force = d3.layout.force(),
-        svg = d3.select(div).append('svg').style('position', 'absolute');
+        svg = d3.select(div).append('svg').style('position', 'absolute'),
+        linkG = svg.append('g'),
+        nodeG = svg.append('g');
 
     model.set({
       color: d3.scale.category20(),
@@ -34,12 +36,12 @@ define(['d3', 'model'], function (d3, Model) {
         .links(graph.links)
         .start();
 
-      link = svg.selectAll('.link').data(graph.links);
+      link = linkG.selectAll('.link').data(graph.links);
       link.enter().append('line').attr('class', 'link');
       link.style('stroke-width', function(d) { return Math.sqrt(d.value); });
       link.exit().remove();
 
-      node = svg.selectAll('.node').data(graph.nodes);
+      node = nodeG.selectAll('.node').data(graph.nodes);
       node.enter().append('circle')
         .attr('class', 'node')
         .attr('r', 5)

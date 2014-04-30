@@ -21,6 +21,7 @@ Check out the
    * [D3 Choropleth](https://github.com/curran/model/tree/gh-pages/examples/d3Choropleth)
    * [D3 Linked Choropleth and Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedChoropleth)
    * [D3 Parallel Coordinates](https://github.com/curran/model/tree/gh-pages/examples/d3ParallelCoordinates)
+   * [D3 Force Directed Graph](https://github.com/curran/model/tree/gh-pages/examples/d3ForceDirectedGraph)
 
 Usable via [Bower](http://bower.io/): `bower install model`
 

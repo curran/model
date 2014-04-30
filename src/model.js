@@ -30,6 +30,7 @@ function Model(){
         //
         //  * `model.get(property)` gets the value of the given property
         //    * `property` a string, the property name
+        //    * returns the current property value
         get: get,
 
         // ## model.when
@@ -51,7 +52,24 @@ function Model(){
         //    properties change. The values of dependency properties are passed
         //    as arguments to the callback, in the same order specified by `dependencies`.
         //  * `thisArg` value to use as `this` when executing `callback`.
-        when: when
+        //  * returns a `whens` object containing
+        //    * a chainable `when` function
+        //    * `callbacks` an object containing the callbacks for all 
+        //      `when` calls in the chain, an array of objects with:
+        //      * `properties` an array of property names
+        //      * `fn` the callback function added to the properties
+        when: function when(dependencies, fn, thisArg){
+          return chainableWhen()(dependencies, fn, thisArg);
+        },
+
+        // ## model.cancel
+        //
+        // Cancels previously added `when` callback functions.
+        //
+        // `model.cancel(whens)`
+        //
+        //  * `whens` the object returned from `when` or a chain of `when` calls
+        cancel: cancel
       },
 
       // # Internals
@@ -102,42 +120,65 @@ function Model(){
   }
 
   // ## when
-  function when(dependencies, fn, thisArg){
+  function chainableWhen(){
+    var callbacks = [];
+    return function when(dependencies, fn, thisArg){
 
-    // Support passing a single string as `dependencies`
-    if(!(dependencies instanceof Array)) {
-      dependencies = [dependencies];
-    }
-
-    // `callFn()` will invoke `fn` with values of dependency properties
-    // on the next tick of the JavaScript event loop.
-    var callFn = debounce(function(){
-
-      // Extract the values for each dependency property.
-      var args = dependencies.map(get);
-
-      // Only call the function if all values are defined.
-      if(allAreDefined(args)) {
-
-        // Call `fn` with the dependency property values.
-        fn.apply(thisArg, args);
+      // Support passing a single string as `dependencies`
+      if(!(dependencies instanceof Array)) {
+        dependencies = [dependencies];
       }
-    });
 
-    // Invoke `fn` once for initialization.
-    callFn();
+      // `callFn()` will invoke `fn` with values of dependency properties
+      // on the next tick of the JavaScript event loop.
+      var callFn = debounce(function(){
 
-    // Invoke `fn` when dependency properties change.
-    //
-    // Multiple sequential dependency property changes
-    // result in only a single invocation of `fn`
-    // because callFn is [debounced](underscorejs.org/#debounce).
-    dependencies.forEach(function(property){
-      on(property, callFn);
+        // Extract the values for each dependency property.
+        var args = dependencies.map(get);
+
+        // Only call the function if all values are defined.
+        if(allAreDefined(args)) {
+
+          // Call `fn` with the dependency property values.
+          fn.apply(thisArg, args);
+        }
+      });
+
+      // Invoke `fn` once for initialization.
+      callFn();
+
+      // Invoke `fn` when dependency properties change.
+      //
+      // Multiple sequential dependency property changes
+      // result in only a single invocation of `fn`
+      // because callFn is [debounced](underscorejs.org/#debounce).
+      dependencies.forEach(function(property){
+        
+        // Listen for changes on the property.
+        on(property, callFn);
+        
+        // Store the added callbacks for canceling later.
+        callbacks.push({
+          property: property,
+          fn: callFn
+        });
+      });
+
+      return {
+        when: when,
+        callbacks: callbacks
+      };
+    };
+  }
+
+  // ## cancel
+  function cancel(whens){
+    whens.callbacks.forEach(function (callback) {
+      off(callback.property, callback.fn);
     });
   }
 
-  // ### on
+  // ## on
   // Adds a change listener for a property.
   function on(key, callback){
 
@@ -154,10 +195,18 @@ function Model(){
     callbacks[key].push(callback);
   }
 
+  // ## off
+  // Removes a change listener for a property.
+  function off(key, callbackToRemove){
+    callbacks[key] = callbacks[key].filter(function (callback) {
+      return callback !== callbackToRemove;
+    });
+  }
+
   return model;
 }
 
-// ### debounce
+// ## debounce
 // Returns a debounced version of the given function.
 // Calling the debounced function one or more times in sequence
 // (on the same tick of the JavaScript event loop)
@@ -182,7 +231,7 @@ function debounce(fn){
   };
 }
 
-// ### allAreDefined
+// ## allAreDefined
 // Returns true if all values in the given array
 // are defined and not null, false otherwise.
 function allAreDefined(arr){

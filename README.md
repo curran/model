@@ -132,6 +132,7 @@ See also:
  * [Backbone.js mailing list: Improving the Backbone Model API with wire()](https://groups.google.com/forum/#!searchin/backbonejs/wire/backbonejs/CnFLHg-d0uk/lIJ8wYxSiTEJ) First pass at functional reactive models, built on Backbone models.
  * [wire.js](https://github.com/curran/phd/blob/dac07e2e8c38da7343645d7a07ec17a762120ea0/prototype/src/wire.js) The original implementation of the idea for this library, as an extension to Backbone Models.
  * [Backbone Pull Request](https://github.com/jashkenas/backbone/pull/3135)
+ * [Model.js featured in Dashing D3.js](https://www.dashingd3js.com/data-visualization-and-d3-newsletter/data-visualization-and-d3-newsletter-issue-75)
 
 ## Contributing
 
@@ -140,8 +141,6 @@ Pull requests welcome! Potential contributions include:
  * Add a DOM-based example
  * Add more generalized D3 examples! For example:
    * [Focus+Context via Brushing](http://bl.ocks.org/mbostock/1667367)
-   * [Choropleth Map](http://bl.ocks.org/mbostock/4060606)
-   * [Parallel Coordinates](http://bl.ocks.org/jasondavies/1341281)
    * [TreeMap](http://bl.ocks.org/mbostock/4063582)
    * [Streamgraph](http://bl.ocks.org/mbostock/4060954)
    * [Stacked Bar Chart](http://bl.ocks.org/mbostock/3886208)

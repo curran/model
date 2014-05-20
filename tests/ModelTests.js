@@ -1,19 +1,19 @@
-// Unit tests for `model.js` (using [Jasmine](http://jasmine.github.io/2.0/introduction.html)).
+// Unit tests for `model.js`.
 //
 // Read through this to learn how to use the library.
-//
-// [Run the unit tests](http://curran.github.io/model/SpecRunner.html)
+var requirejs = require('requirejs'),
+    expect = require('chai').expect;
+
+requirejs.config({
+  baseUrl: 'dist',
+  nodeRequire: require
+});
+
 describe('model', function() {
 
-  var Model;
+  var Model = requirejs('model');
 
-  // Use Require.js to fetch the `model.js` AMD module.
-  it("should load the AMD module", function(done) {
-    require(['model'], function (loadedModule) {
-      Model = loadedModule;
-      done();
-    });
-  });
+  console.log(Model);
 
   it('should create a model and listen for changes to a single property', function(done) {
 
@@ -22,7 +22,7 @@ describe('model', function() {
 
     // Listen for changes on x using `model.when()`.
     model.when('x', function (x) {
-      expect(x).toBe(30);
+      expect(x).to.equal(30);
       done();
     });
 
@@ -30,7 +30,7 @@ describe('model', function() {
     model.set('x', 30);
 
     // `model.get()` can be used to get a value from the model.
-    expect(model.get('x')).toBe(30);
+    expect(model.get('x')).to.equal(30);
   });
 
   // `model.when()` calls the callback for existing values.
@@ -38,7 +38,7 @@ describe('model', function() {
     var model = Model();
     model.set('x', 55);
     model.when('x', function (x) {
-      expect(x).toBe(55);
+      expect(x).to.equal(55);
       done();
     });
   });
@@ -48,9 +48,9 @@ describe('model', function() {
   it('should call fn with multiple dependency properties', function(done) {
     var model = Model();
     model.when(['x', 'y', 'z'], function (x, y, z) {
-      expect(x).toBe(5);
-      expect(y).toBe(6);
-      expect(z).toBe(7);
+      expect(x).to.equal(5);
+      expect(y).to.equal(6);
+      expect(z).to.equal(7);
       done();
     });
     model.set('x', 5);
@@ -63,9 +63,9 @@ describe('model', function() {
   it('should call fn with multiple dependency properties in the order specified', function(done) {
     var model = Model();
     model.when(['y', 'x', 'z'], function (y, x, z) {
-      expect(x).toBe(5);
-      expect(y).toBe(6);
-      expect(z).toBe(7);
+      expect(x).to.equal(5);
+      expect(y).to.equal(6);
+      expect(z).to.equal(7);
       done();
     });
     model.set('x', 5);
@@ -78,9 +78,9 @@ describe('model', function() {
   it('should set values from an object', function(done) {
     var model = Model();
     model.when(['y', 'x', 'z'], function (y, x, z) {
-      expect(x).toBe(5);
-      expect(y).toBe(6);
-      expect(z).toBe(7);
+      expect(x).to.equal(5);
+      expect(y).to.equal(6);
+      expect(z).to.equal(7);
       done();
     });
     model.set({
@@ -94,9 +94,9 @@ describe('model', function() {
   it('should call fn only when all properties are defined', function(done) {
     var model = Model();
     model.when(['y', 'x', 'z'], function (y, x, z) {
-      expect(x).toBe(5);
-      expect(y).toBe(6);
-      expect(z).toBe(7);
+      expect(x).to.equal(5);
+      expect(y).to.equal(6);
+      expect(z).to.equal(7);
       done();
     });
     model.set({ x: 5, y: 6 });
@@ -110,7 +110,7 @@ describe('model', function() {
   it('should call fn only once for multiple updates', function(done) {
     var model = Model();
     model.when('x', function (x) {
-      expect(x).toBe(30);
+      expect(x).to.equal(30);
       done();
     });
     model.set('x', 10);
@@ -121,9 +121,9 @@ describe('model', function() {
   it('should call fn with multiple dependency properties only once after several updates', function(done) {
     var model = Model();
     model.when(['x', 'y', 'z'], function (x, y, z) {
-      expect(x).toBe(5);
-      expect(y).toBe(6);
-      expect(z).toBe(7);
+      expect(x).to.equal(5);
+      expect(y).to.equal(6);
+      expect(z).to.equal(7);
       done();
     });
     model.set('x', 5);
@@ -144,7 +144,7 @@ describe('model', function() {
       model.set('fullName', firstName + ' ' + lastName);
     });
     model.when('fullName', function (fullName) {
-      expect(fullName).toBe('John Doe');
+      expect(fullName).to.equal('John Doe');
       done();
     });
     model.set('firstName', 'John');
@@ -157,11 +157,11 @@ describe('model', function() {
       model.set('y', x + 1);
     });
     model.when(['y'], function (y) {
-      expect(y).toBe(11);
+      expect(y).to.equal(11);
       model.set('z', y * 2);
     });
     model.when(['z'], function (z) {
-      expect(z).toBe(22);
+      expect(z).to.equal(22);
       done();
     });
     model.set('x', 10);
@@ -170,19 +170,19 @@ describe('model', function() {
   it('should propagate changes three hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['w'], function (w) {
-      expect(w).toBe(5);
+      expect(w).to.equal(5);
       model.set('x', w * 2);
     });
     model.when(['x'], function (x) {
-      expect(x).toBe(10);
+      expect(x).to.equal(10);
       model.set('y', x + 1);
     });
     model.when(['y'], function (y) {
-      expect(y).toBe(11);
+      expect(y).to.equal(11);
       model.set('z', y * 2);
     });
     model.when(['z'], function (z) {
-      expect(z).toBe(22);
+      expect(z).to.equal(22);
       done();
     });
     model.set('w', 5);
@@ -194,9 +194,9 @@ describe('model', function() {
     var model = Model(),
         theThing = { foo: "bar" };
     model.when('x', function (x) {
-      expect(x).toBe(5);
-      expect(this).toBe(theThing);
-      expect(this.foo).toBe("bar");
+      expect(x).to.equal(5);
+      expect(this).to.equal(theThing);
+      expect(this.foo).to.equal("bar");
       done();
     }, theThing);
     model.set('x', 5);
@@ -252,7 +252,7 @@ describe('model', function() {
         if(fWasSetTo25) {
           throw new Error('f set to 25 more than once.');
         }
-        expect(f).toBe(25);
+        expect(f).to.equal(25);
         fWasSetTo25 = true;
         done();
       }
@@ -269,11 +269,11 @@ describe('model', function() {
         });
     model.set('x', 5);
     setTimeout(function () {
-      expect(xValue).toBe(5);
+      expect(xValue).to.equal(5);
       model.cancel(whens);
       model.set('x', 6);
       setTimeout(function () {
-        expect(xValue).toBe(5);
+        expect(xValue).to.equal(5);
         done();
       }, 0);
     }, 0);
@@ -288,14 +288,14 @@ describe('model', function() {
     model.set('x', 5);
     model.set('y', 10);
     setTimeout(function () {
-      expect(xValue).toBe(5);
-      expect(yValue).toBe(10);
+      expect(xValue).to.equal(5);
+      expect(yValue).to.equal(10);
       model.cancel(whens);
       model.set('x', 6);
       model.set('y', 11);
       setTimeout(function () {
-        expect(xValue).toBe(5);
-        expect(yValue).toBe(10);
+        expect(xValue).to.equal(5);
+        expect(yValue).to.equal(10);
         done();
       }, 0);
     }, 0);
@@ -308,19 +308,19 @@ describe('model', function() {
         whenY = model.when('y', function (y) { yValue = y; });
     model.set('x', 5);
     setTimeout(function () {
-      expect(xValue).toBe(5);
+      expect(xValue).to.equal(5);
       model.cancel(whenX);
       model.set('x', 6);
       model.set('y', 10);
       setTimeout(function () {
-        expect(xValue).toBe(5);
-        expect(yValue).toBe(10);
+        expect(xValue).to.equal(5);
+        expect(yValue).to.equal(10);
         model.cancel(whenY);
         model.set('x', 7);
         model.set('y', 11);
         setTimeout(function () {
-          expect(xValue).toBe(5);
-          expect(yValue).toBe(10);
+          expect(xValue).to.equal(5);
+          expect(yValue).to.equal(10);
           done();
         }, 0);
       }, 0);

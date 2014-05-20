@@ -69,7 +69,16 @@ function Model(){
         // `model.cancel(whens)`
         //
         //  * `whens` the object returned from `when` or a chain of `when` calls
-        cancel: cancel
+        cancel: cancel,
+
+        // ## model.detectFlowGraph
+        //
+        // Detects the data flow graph between model properties.
+        //
+        // `model.detectFlowGraph(callback)`
+        //
+        //  * `callback` gets called with the updated flow graph each time it changes.
+        detectFlowGraph: detectFlowGraph
       },
 
       // # Internals
@@ -136,11 +145,9 @@ function Model(){
         // Extract the values for each dependency property.
         var args = dependencies.map(get);
 
-        // Only call the function if all values are defined.
+        // Call the callback function if all values are defined.
         if(allAreDefined(args)) {
-
-          // Call `fn` with the dependency property values.
-          fn.apply(thisArg, args);
+          applyFn(fn, thisArg, args, dependencies);
         }
       });
 
@@ -169,6 +176,14 @@ function Model(){
         callbacks: callbacks
       };
     };
+  }
+
+  function applyFn(fn, thisArg, args, dependencies){
+
+    // Call `fn` with the dependency property values.
+    fn.apply(thisArg, args);
+
+    // TODO use dependencies to detect flow graph
   }
 
   // ## cancel
@@ -201,6 +216,11 @@ function Model(){
     callbacks[key] = callbacks[key].filter(function (callback) {
       return callback !== callbackToRemove;
     });
+  }
+
+  // ## detectFlowGraph
+  function detectFlowGraph(callback){
+    
   }
 
   return model;

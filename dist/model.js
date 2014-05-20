@@ -296,10 +296,6 @@ define('model/model',[], function () {
       }, 500);
     }
 
-    model.detectFlowGraph(function(graph){
-      console.log(JSON.stringify(graph, null, 2));
-    });
-
     return model;
   };
 

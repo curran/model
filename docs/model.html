@@ -240,12 +240,11 @@ as arguments to the callback, in the same order specified by <code>dependencies<
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p><code>detectFlowGraphCallback</code> is the callback function called with
-the data flow graph as it is detected.</p>
+              <p>A function used for detecting the data flow graph.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        detectFlowGraphCallback;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        recordLambda;</pre></div></div>
             
         </li>
         
@@ -515,7 +514,7 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(detectFlowGraphCallback) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(recordLambda) {</pre></div></div>
             
         </li>
         
@@ -556,9 +555,9 @@ invoking the callback function.</p>
             
             <div class="content"><div class='highlight'><pre>      fn.apply(thisArg, args);
 
-      <span class="hljs-keyword">if</span>(detectFlowGraphCallback) {
+      <span class="hljs-keyword">if</span>(recordLambda) {
         setKeyValue = _setKeyValue;
-        console.log(<span class="hljs-string">'detected ('</span> + dependencies.join(<span class="hljs-string">', '</span>) + <span class="hljs-string">') -&gt; ('</span> + <span class="hljs-built_in">Object</span>.keys(changedProperties) + <span class="hljs-string">')'</span>);
+        recordLambda(dependencies, <span class="hljs-built_in">Object</span>.keys(changedProperties));
       }
     }</pre></div></div>
             
@@ -679,14 +678,7 @@ for the given key.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">detectFlowGraph</span><span class="hljs-params">(callback)</span>{</span>
-      detectFlowGraphCallback = callback;
-    }
-
-    model.detectFlowGraph(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>});
-
-    <span class="hljs-keyword">return</span> model;
-  };</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">detectFlowGraph</span><span class="hljs-params">(callback)</span>{</span></pre></div></div>
             
         </li>
         
@@ -696,6 +688,87 @@ for the given key.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Keeps track of which lambdas have been seen.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> nodes = {},
+          links = [];
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">propertyNode</span><span class="hljs-params">(name)</span> {</span>
+        <span class="hljs-keyword">return</span> nodes[name] || (nodes[name] = {
+          type: <span class="hljs-string">'property'</span>,
+          name: name
+        });
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Records a collection of nodes and edges in the
+flow graph created by a single “when” callback.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      recordLambda = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, changedProperties)</span> {</span>
+        <span class="hljs-keyword">var</span> key = dependencies.join(<span class="hljs-string">','</span>) + <span class="hljs-string">'|'</span> + changedProperties.join(<span class="hljs-string">','</span>),
+            lambda = nodes[key];
+        <span class="hljs-keyword">if</span>(!lambda){
+          lambda = nodes[key] = { type: <span class="hljs-string">'lambda'</span> };
+          dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
+            links.push({
+              source: propertyNode(property),
+              target: lambda
+            });
+          });
+          changedProperties.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
+            links.push({
+              source: lambda,
+              target: propertyNode(property)
+            });
+          });
+        }
+      };
+      
+      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        callback({
+          nodes: <span class="hljs-built_in">Object</span>.keys(nodes).map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, i)</span> {</span>
+            <span class="hljs-keyword">var</span> node = nodes[key];
+            node.index = i;
+            <span class="hljs-keyword">return</span> node;
+          }),
+          links: links.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(link)</span> {</span>
+            <span class="hljs-keyword">return</span> {
+              source: link.source.index,
+              target: link.target.index
+            };
+          })
+        });
+      }, <span class="hljs-number">500</span>);
+    }
+
+    model.detectFlowGraph(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(graph)</span>{</span>
+      console.log(<span class="hljs-built_in">JSON</span>.stringify(graph, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+    });
+
+    <span class="hljs-keyword">return</span> model;
+  };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <h2 id="debounce">debounce</h2>
 <p>Returns a debounced version of the given function.
@@ -726,11 +799,11 @@ Why does this work? See <a href="https://tom-fitzhenry.me.uk/blog/2013/10/breadt
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <h2 id="allaredefined">allAreDefined</h2>
 <p>Returns true if all values in the given array

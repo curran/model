@@ -95,9 +95,8 @@ define([], function () {
         //  * Values are values set on the model
         values = {},
 
-        // `detectFlowGraphCallback` is the callback function called with
-        // the data flow graph as it is detected.
-        detectFlowGraphCallback;
+        // A function used for detecting the data flow graph.
+        recordLambda;
 
     // ## set
     function set(keyOrObject, value){
@@ -188,7 +187,7 @@ define([], function () {
       var _setKeyValue, changedProperties;
 
       // If the flow graph should be detected,
-      if(detectFlowGraphCallback) {
+      if(recordLambda) {
 
         // temporarily tap into the `setKeyValue`
         // function in order to intercept and record
@@ -205,9 +204,9 @@ define([], function () {
       // Call `fn` with the dependency property values.
       fn.apply(thisArg, args);
 
-      if(detectFlowGraphCallback) {
+      if(recordLambda) {
         setKeyValue = _setKeyValue;
-        console.log('detected (' + dependencies.join(', ') + ') -> (' + Object.keys(changedProperties) + ')');
+        recordLambda(dependencies, Object.keys(changedProperties));
       }
     }
 
@@ -245,10 +244,60 @@ define([], function () {
 
     // ## detectFlowGraph
     function detectFlowGraph(callback){
-      detectFlowGraphCallback = callback;
+
+      // Keeps track of which lambdas have been seen.
+      var nodes = {},
+          links = [];
+
+      function propertyNode(name) {
+        return nodes[name] || (nodes[name] = {
+          type: 'property',
+          name: name
+        });
+      }
+
+      // Records a collection of nodes and edges in the
+      // flow graph created by a single "when" callback.
+      recordLambda = function (dependencies, changedProperties) {
+        var key = dependencies.join(',') + '|' + changedProperties.join(','),
+            lambda = nodes[key];
+        if(!lambda){
+          lambda = nodes[key] = { type: 'lambda' };
+          dependencies.forEach(function (property) {
+            links.push({
+              source: propertyNode(property),
+              target: lambda
+            });
+          });
+          changedProperties.forEach(function (property) {
+            links.push({
+              source: lambda,
+              target: propertyNode(property)
+            });
+          });
+        }
+      };
+      
+      setTimeout(function () {
+        callback({
+          nodes: Object.keys(nodes).map(function (key, i) {
+            var node = nodes[key];
+            node.index = i;
+            return node;
+          }),
+          links: links.map(function (link) {
+            return {
+              source: link.source.index,
+              target: link.target.index
+            };
+          })
+        });
+      }, 500);
     }
 
-    model.detectFlowGraph(function(){});
+    model.detectFlowGraph(function(graph){
+      console.log(JSON.stringify(graph, null, 2));
+    });
 
     return model;
   };

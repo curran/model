@@ -94,7 +94,11 @@ define('model/model',[], function () {
         // `values` is an object containing property values.
         //  * Keys are property names
         //  * Values are values set on the model
-        values = {};
+        values = {},
+
+        // `detectFlowGraphCallback` is the callback function called with
+        // the data flow graph as it is detected.
+        detectFlowGraphCallback;
 
     // ## set
     function set(keyOrObject, value){
@@ -182,11 +186,30 @@ define('model/model',[], function () {
     }
 
     function applyFn(fn, thisArg, args, dependencies){
+      var _setKeyValue, changedProperties;
+
+      // If the flow graph should be detected,
+      if(detectFlowGraphCallback) {
+
+        // temporarily tap into the `setKeyValue`
+        // function in order to intercept and record
+        // all properties that change as a result of 
+        // invoking the callback function.
+        _setKeyValue = setKeyValue;
+        changedProperties = {};
+        setKeyValue = function (key, value){
+          changedProperties[key] = true;
+          _setKeyValue(key, value);
+        };
+      }
 
       // Call `fn` with the dependency property values.
       fn.apply(thisArg, args);
 
-      // TODO use dependencies to detect flow graph
+      if(detectFlowGraphCallback) {
+        setKeyValue = _setKeyValue;
+        console.log('detected (' + dependencies.join(', ') + ') -> (' + Object.keys(changedProperties) + ')');
+      }
     }
 
     // ## cancel
@@ -223,8 +246,10 @@ define('model/model',[], function () {
 
     // ## detectFlowGraph
     function detectFlowGraph(callback){
-      // TODO 
+      detectFlowGraphCallback = callback;
     }
+
+    model.detectFlowGraph(function(){});
 
     return model;
   };

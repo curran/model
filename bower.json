@@ -1,6 +1,6 @@
 {
   "name": "model",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "homepage": "https://github.com/curran/model",
   "authors": [
     "curran <curran.kelleher@gmail.com>"
@@ -21,14 +21,15 @@
     "countLines.sh",
     "docs",
     "examples",
+    "gulpfile.js",
     "images",
     "lib",
     "node_modules",
     "package.json",
     "requireConfig.js",
     "server.js",
-    "spec",
-    "src"
+    "src",
+    "tests"
   ],
   "devDependencies": {
     "d3": "~3.4.6",

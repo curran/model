@@ -80,7 +80,7 @@ define('model/model',[], function () {
           //
           // `model.detectFlowGraph(callback)`
           //
-          //  * `callback` gets called with the updated flow graph each time it changes.
+          //  * `callback` gets called with the flow graph.
           detectFlowGraph: detectFlowGraph
         },
 

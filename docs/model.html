@@ -720,7 +720,7 @@ flow graph created by a single “when” callback.</p>
             <div class="content"><div class='highlight'><pre>      recordLambda = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, changedProperties)</span> {</span>
         <span class="hljs-keyword">var</span> key = dependencies.join(<span class="hljs-string">','</span>) + <span class="hljs-string">'|'</span> + changedProperties.join(<span class="hljs-string">','</span>),
             lambda = nodes[key];
-        <span class="hljs-keyword">if</span>(!lambda){
+        <span class="hljs-keyword">if</span>(!lambda &amp;&amp; changedProperties.length &gt; <span class="hljs-number">0</span>){
           lambda = nodes[key] = { type: <span class="hljs-string">'lambda'</span> };
           dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
             links.push({
@@ -753,10 +753,6 @@ flow graph created by a single “when” callback.</p>
         });
       }, <span class="hljs-number">500</span>);
     }
-
-    model.detectFlowGraph(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(graph)</span>{</span>
-      console.log(<span class="hljs-built_in">JSON</span>.stringify(graph, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
-    });
 
     <span class="hljs-keyword">return</span> model;
   };</pre></div></div>

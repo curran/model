@@ -79,7 +79,7 @@ define([], function () {
           //
           // `model.detectFlowGraph(callback)`
           //
-          //  * `callback` gets called with the updated flow graph each time it changes.
+          //  * `callback` gets called with the flow graph.
           detectFlowGraph: detectFlowGraph
         },
 
@@ -261,7 +261,7 @@ define([], function () {
       recordLambda = function (dependencies, changedProperties) {
         var key = dependencies.join(',') + '|' + changedProperties.join(','),
             lambda = nodes[key];
-        if(!lambda){
+        if(!lambda && changedProperties.length > 0){
           lambda = nodes[key] = { type: 'lambda' };
           dependencies.forEach(function (property) {
             links.push({
@@ -294,10 +294,6 @@ define([], function () {
         });
       }, 500);
     }
-
-    model.detectFlowGraph(function(graph){
-      console.log(JSON.stringify(graph, null, 2));
-    });
 
     return model;
   };

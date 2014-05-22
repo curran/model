@@ -262,7 +262,7 @@ define('model/model',[], function () {
       recordLambda = function (dependencies, changedProperties) {
         var key = dependencies.join(',') + '|' + changedProperties.join(','),
             lambda = nodes[key];
-        if(!lambda){
+        if(!lambda && changedProperties.length > 0){
           lambda = nodes[key] = { type: 'lambda' };
           dependencies.forEach(function (property) {
             links.push({
@@ -295,10 +295,6 @@ define('model/model',[], function () {
         });
       }, 500);
     }
-
-    model.detectFlowGraph(function(graph){
-      console.log(JSON.stringify(graph, null, 2));
-    });
 
     return model;
   };

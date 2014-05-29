@@ -74,6 +74,11 @@ define('model/model',[], function () {
           //  * `whens` the object returned from `when` or a chain of `when` calls
           cancel: cancel,
 
+          // ## model.on
+          //
+          // Listens for changes in properties.
+          on: on,
+
           // ## model.detectFlowGraph
           //
           // Detects the data flow graph between model properties.

@@ -8,22 +8,26 @@ A functional reactive model library. Provides:
    * `get(propertyName)` to get a value
  * A `when` function, which allows declaration of data dependency graphs in a [functional reactive](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming) style. 
 
+Usable via [Bower](http://bower.io/): `bower install model`
+
 Check out the
 
  * [User Guide](http://curran.github.io/model/docs/ModelSpec.html)
  * [Documentation](http://curran.github.io/model/docs/model.html)
  * Examples
-   * [D3 Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
-   * [D3 Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
-   * [D3 Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
-   * [D3 Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
-   * [D3 Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
-   * [D3 Choropleth](https://github.com/curran/model/tree/gh-pages/examples/d3Choropleth)
-   * [D3 Linked Choropleth and Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedChoropleth)
-   * [D3 Parallel Coordinates](https://github.com/curran/model/tree/gh-pages/examples/d3ParallelCoordinates)
-   * [D3 Force Directed Graph](https://github.com/curran/model/tree/gh-pages/examples/d3ForceDirectedGraph)
-
-Usable via [Bower](http://bower.io/): `bower install model`
+   * D3
+     * [Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
+     * [Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LineChart)
+     * [Scatter Plot](https://github.com/curran/model/tree/gh-pages/examples/d3ScatterPlot)
+     * [Linked Views](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews)
+     * [Stacked Area Chart](https://github.com/curran/model/tree/gh-pages/examples/d3StackedArea)
+     * [Choropleth](https://github.com/curran/model/tree/gh-pages/examples/d3Choropleth)
+     * [Linked Choropleth and Line Chart](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedChoropleth)
+     * [Parallel Coordinates](https://github.com/curran/model/tree/gh-pages/examples/d3ParallelCoordinates)
+     * [Force Directed Graph](https://github.com/curran/model/tree/gh-pages/examples/d3ForceDirectedGraph)
+   * Bootstrap
+     * [Interactive List](https://github.com/curran/model/tree/gh-pages/examples/bootstrapListGroup)
+     * [Table](https://github.com/curran/model/tree/gh-pages/examples/bootstrapTable)
 
 ## Motivation
 

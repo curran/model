@@ -1,4 +1,58 @@
 
+define('detectFlowGraph',[], function () {
+  return function (callback){
+
+    // Keeps track of which lambdas have been seen.
+    var nodes = {},
+        links = [];
+
+    function propertyNode(name) {
+      return nodes[name] || (nodes[name] = {
+        type: 'property',
+        name: name
+      });
+    }
+
+    // Records a collection of nodes and edges in the
+    // flow graph created by a single "when" callback.
+    recordLambda = function (dependencies, changedProperties) {
+      var key = dependencies.join(',') + '|' + changedProperties.join(','),
+          lambda = nodes[key];
+      if(!lambda && changedProperties.length > 0){
+        lambda = nodes[key] = { type: 'lambda' };
+        dependencies.forEach(function (property) {
+          links.push({
+            source: propertyNode(property),
+            target: lambda
+          });
+        });
+        changedProperties.forEach(function (property) {
+          links.push({
+            source: lambda,
+            target: propertyNode(property)
+          });
+        });
+      }
+    };
+    
+    setTimeout(function () {
+      callback({
+        nodes: Object.keys(nodes).map(function (key, i) {
+          var node = nodes[key];
+          node.index = i;
+          return node;
+        }),
+        links: links.map(function (link) {
+          return {
+            source: link.source.index,
+            target: link.target.index
+          };
+        })
+      });
+    }, 500);
+  };
+});
+
 // A functional reactive model library.
 //
 // By Curran Kelleher 4/17/2014
@@ -9,7 +63,7 @@
 //
 // For example: `var model = Model();`
 
-define('model/model',[], function () {
+define('model/model',['detectFlowGraph'], function (detectFlowGraph) {
 
   return function () {
 
@@ -140,8 +194,28 @@ define('model/model',[], function () {
     }
 
     // ## when
+    //
+    // `chainableWhen` is a wrapper for the `when` function
+    // that supports method chaining.
     function chainableWhen(){
+
+      // The array of added callbacks for canceling later.
+      // Each object in this array has the following properties:
+      // 
+      //  * `property` the string property name associated with the callback
+      //  * `fn` the function that gets invoked in response to changes in values for the model property `property`.
       var callbacks = [];
+
+      // This function ultimately gets called when
+      // `model.when` is invoked. The return value from
+      // `when` is an objects that has a property `when`
+      // that is the same function as `model.when`.
+      // This pattern allows method chaining of the form
+      //
+      //     model
+      //       .when(['a', 'b'], function (a, b) { ... })
+      //       .when(['a', 'b'], function (a, b) { ... });
+      //
       return function when(dependencies, fn, thisArg){
 
         // Support passing a single string as `dependencies`
@@ -246,59 +320,6 @@ define('model/model',[], function () {
       callbacks[key] = callbacks[key].filter(function (callback) {
         return callback !== callbackToRemove;
       });
-    }
-
-    // ## detectFlowGraph
-    function detectFlowGraph(callback){
-
-      // Keeps track of which lambdas have been seen.
-      var nodes = {},
-          links = [];
-
-      function propertyNode(name) {
-        return nodes[name] || (nodes[name] = {
-          type: 'property',
-          name: name
-        });
-      }
-
-      // Records a collection of nodes and edges in the
-      // flow graph created by a single "when" callback.
-      recordLambda = function (dependencies, changedProperties) {
-        var key = dependencies.join(',') + '|' + changedProperties.join(','),
-            lambda = nodes[key];
-        if(!lambda && changedProperties.length > 0){
-          lambda = nodes[key] = { type: 'lambda' };
-          dependencies.forEach(function (property) {
-            links.push({
-              source: propertyNode(property),
-              target: lambda
-            });
-          });
-          changedProperties.forEach(function (property) {
-            links.push({
-              source: lambda,
-              target: propertyNode(property)
-            });
-          });
-        }
-      };
-      
-      setTimeout(function () {
-        callback({
-          nodes: Object.keys(nodes).map(function (key, i) {
-            var node = nodes[key];
-            node.index = i;
-            return node;
-          }),
-          links: links.map(function (link) {
-            return {
-              source: link.source.index,
-              target: link.target.index
-            };
-          })
-        });
-      }, 500);
     }
 
     return model;

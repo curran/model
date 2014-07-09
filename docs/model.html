@@ -37,7 +37,7 @@ No need to use <code>new</code>.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+define([<span class="hljs-string">'detectFlowGraph'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(detectFlowGraph)</span> {</span>
 
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
@@ -367,12 +367,12 @@ as arguments to the callback, in the same order specified by <code>dependencies<
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <h2 id="when">when</h2>
+<p><code>chainableWhen</code> is a wrapper for the <code>when</code> function
+that supports method chaining.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">chainableWhen</span><span class="hljs-params">()</span>{</span>
-      <span class="hljs-keyword">var</span> callbacks = [];
-      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">when</span><span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">chainableWhen</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -382,6 +382,48 @@ as arguments to the callback, in the same order specified by <code>dependencies<
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>The array of added callbacks for canceling later.
+Each object in this array has the following properties:</p>
+<ul>
+<li><code>property</code> the string property name associated with the callback</li>
+<li><code>fn</code> the function that gets invoked in response to changes in values for the model property <code>property</code>.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> callbacks = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>This function ultimately gets called when
+<code>model.when</code> is invoked. The return value from
+<code>when</code> is an objects that has a property <code>when</code>
+that is the same function as <code>model.when</code>.
+This pattern allows method chaining of the form</p>
+<pre><code>model
+  .when([<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span> ... })
+  .when([<span class="hljs-string">'a'</span>, <span class="hljs-string">'b'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a, b)</span> {</span> ... });
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">when</span><span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Support passing a single string as <code>dependencies</code></p>
 
@@ -394,11 +436,11 @@ as arguments to the callback, in the same order specified by <code>dependencies<
         </li>
         
         
-        <li id="section-19">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
 on the next tick of the JavaScript event loop.</p>
@@ -410,11 +452,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Extract the values for each dependency property.</p>
 
@@ -425,11 +467,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Call the callback function if all values are defined.</p>
 
@@ -443,11 +485,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> once for initialization.</p>
 
@@ -458,11 +500,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> when dependency properties change.</p>
 <p>Multiple sequential dependency property changes
@@ -476,11 +518,11 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Listen for changes on the property.</p>
 
@@ -491,11 +533,11 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Store the added callbacks for canceling later.</p>
 
@@ -520,11 +562,11 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>If the flow graph should be detected,</p>
 
@@ -535,11 +577,11 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>temporarily tap into the <code>setKeyValue</code>
 function in order to intercept and record
@@ -559,11 +601,11 @@ invoking the callback function.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Call <code>fn</code> with the dependency property values.</p>
 
@@ -580,11 +622,11 @@ invoking the callback function.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <h2 id="cancel">cancel</h2>
 
@@ -599,11 +641,11 @@ invoking the callback function.</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <h2 id="on">on</h2>
 <p>Adds a change listener for a property.</p>
@@ -615,11 +657,11 @@ invoking the callback function.</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>If there is not already a list
 of callbacks for the given key,</p>
@@ -631,11 +673,11 @@ of callbacks for the given key,</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>then create one.</p>
 
@@ -647,11 +689,11 @@ of callbacks for the given key,</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Add the callback to the list of callbacks
 for the given key.</p>
@@ -664,11 +706,11 @@ for the given key.</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <h2 id="off">off</h2>
 <p>Removes a change listener for a property.</p>
@@ -679,45 +721,10 @@ for the given key.</p>
       callbacks[key] = callbacks[key].filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(callback)</span> {</span>
         <span class="hljs-keyword">return</span> callback !== callbackToRemove;
       });
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <h2 id="detectflowgraph">detectFlowGraph</h2>
+    }
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">detectFlowGraph</span><span class="hljs-params">(callback)</span>{</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>Keeps track of which lambdas have been seen.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> nodes = {},
-          links = [];
-
-      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">propertyNode</span><span class="hljs-params">(name)</span> {</span>
-        <span class="hljs-keyword">return</span> nodes[name] || (nodes[name] = {
-          type: <span class="hljs-string">'property'</span>,
-          name: name
-        });
-      }</pre></div></div>
+    <span class="hljs-keyword">return</span> model;
+  };</pre></div></div>
             
         </li>
         
@@ -727,60 +734,6 @@ for the given key.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>Records a collection of nodes and edges in the
-flow graph created by a single “when” callback.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      recordLambda = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, changedProperties)</span> {</span>
-        <span class="hljs-keyword">var</span> key = dependencies.join(<span class="hljs-string">','</span>) + <span class="hljs-string">'|'</span> + changedProperties.join(<span class="hljs-string">','</span>),
-            lambda = nodes[key];
-        <span class="hljs-keyword">if</span>(!lambda &amp;&amp; changedProperties.length &gt; <span class="hljs-number">0</span>){
-          lambda = nodes[key] = { type: <span class="hljs-string">'lambda'</span> };
-          dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
-            links.push({
-              source: propertyNode(property),
-              target: lambda
-            });
-          });
-          changedProperties.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span>
-            links.push({
-              source: lambda,
-              target: propertyNode(property)
-            });
-          });
-        }
-      };
-      
-      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-        callback({
-          nodes: <span class="hljs-built_in">Object</span>.keys(nodes).map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(key, i)</span> {</span>
-            <span class="hljs-keyword">var</span> node = nodes[key];
-            node.index = i;
-            <span class="hljs-keyword">return</span> node;
-          }),
-          links: links.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(link)</span> {</span>
-            <span class="hljs-keyword">return</span> {
-              source: link.source.index,
-              target: link.target.index
-            };
-          })
-        });
-      }, <span class="hljs-number">500</span>);
-    }
-
-    <span class="hljs-keyword">return</span> model;
-  };</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <h2 id="debounce">debounce</h2>
 <p>Returns a debounced version of the given function.
@@ -811,11 +764,11 @@ Why does this work? See <a href="https://tom-fitzhenry.me.uk/blog/2013/10/breadt
         </li>
         
         
-        <li id="section-39">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <h2 id="allaredefined">allAreDefined</h2>
 <p>Returns true if all values in the given array

@@ -1,6 +1,20 @@
 // A functional reactive model library.
 //
 // Curran Kelleher July 2014
+// # Public API
+//
+// `Model()`
+//
+//  * The model constructor function.
+//  * Using "new" is optional.
+//  * Examples: `var model = Model()`, `var model = new Model()`
+//  * The returned `model` object can be treated as a plain JavaScript Object
+//    for setting and getting property values.
+//  * Examples: `model.x = 5;` `console.log(model.x)`
+//
+// `model.when(properties, callback [, thisArg])`
+//
+// # Implementation
 define([], function () {
 
   // Returns a function which when called schedules

@@ -303,13 +303,16 @@ through the data dependency graph. This is similar to computed properties in Emb
             
             <div class="content"><div class='highlight'><pre>  it(<span class="hljs-string">'should compute fullName from firstName and lastName'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
     <span class="hljs-keyword">var</span> model = Model();
+
     model.when([<span class="hljs-string">'firstName'</span>, <span class="hljs-string">'lastName'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(firstName, lastName)</span> {</span>
       model.fullName = firstName + <span class="hljs-string">' '</span> + lastName;
     });
+
     model.when(<span class="hljs-string">'fullName'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fullName)</span> {</span>
       expect(fullName).to.equal(<span class="hljs-string">'John Doe'</span>);
       done();
     });
+
     model.firstName = <span class="hljs-string">'John'</span>;
     model.lastName = <span class="hljs-string">'Doe'</span>;
   });

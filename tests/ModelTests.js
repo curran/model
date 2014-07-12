@@ -141,13 +141,16 @@ describe('model', function() {
   // through the data dependency graph. This is similar to computed properties in Ember.js.
   it('should compute fullName from firstName and lastName', function(done) {
     var model = Model();
+
     model.when(['firstName', 'lastName'], function (firstName, lastName) {
       model.fullName = firstName + ' ' + lastName;
     });
+
     model.when('fullName', function (fullName) {
       expect(fullName).to.equal('John Doe');
       done();
     });
+
     model.firstName = 'John';
     model.lastName = 'Doe';
   });

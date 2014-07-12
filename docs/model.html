@@ -29,6 +29,18 @@
               </div>
               <p>A functional reactive model library.</p>
 <p>Curran Kelleher July 2014</p>
+<h1 id="public-api">Public API</h1>
+<p><code>Model()</code></p>
+<ul>
+<li>The model constructor function.</li>
+<li>Using “new” is optional.</li>
+<li>Examples: <code>var model = Model()</code>, <code>var model = new Model()</code></li>
+<li>The returned <code>model</code> object can be treated as a plain JavaScript Object
+for setting and getting property values.</li>
+<li>Examples: <code>model.x = 5;</code> <code>console.log(model.x)</code></li>
+</ul>
+<p><code>model.when(properties, callback [, thisArg])</code></p>
+<h1 id="implementation">Implementation</h1>
 
             </div>
             

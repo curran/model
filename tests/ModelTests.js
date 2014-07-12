@@ -1,6 +1,8 @@
 // Unit tests for `model.js`.
 //
 // Read through this to learn how to use the library.
+//
+// By Curran Kelleher July 2014
 var requirejs = require('requirejs'),
     expect = require('chai').expect;
 
@@ -326,4 +328,3 @@ describe('model', function() {
 //    }, 0);
 //  });
 });
-// By Curran Kelleher 4/25/2014

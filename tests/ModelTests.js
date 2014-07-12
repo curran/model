@@ -264,6 +264,24 @@ describe('model', function() {
     model.a = 5;
   });
 
+  it('should remove listeners', function(done) {
+    var model = Model(),
+        xValue,
+        whens = model.when('x', function (x) {
+          xValue = x;
+        });
+    model.x = 5;
+    setTimeout(function () {
+      expect(xValue).to.equal(5);
+      model.removeListeners();
+      model.x = 6;
+      setTimeout(function () {
+        expect(xValue).to.equal(5);
+        done();
+      }, 0);
+    }, 0);
+  });
+
 //  // `when` callbacks can be removed using `cancel`.
 //  it('should cancel a single callback', function(done) {
 //    var model = Model(),

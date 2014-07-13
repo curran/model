@@ -26,7 +26,6 @@ define(['d3', 'model'], function (d3, Model) {
           .style('text-anchor', 'end'),
         model = Model();
 
-
     model.when('yLabel', yAxisLabel.text, yAxisLabel);
 
     model.when('margin', function (margin) {

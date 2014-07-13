@@ -5,6 +5,8 @@
 // of the model are updated. There are no redundant calls to visualization
 // update code when multiple properties are changed simultaneously.
 //
+// By Curran Kelleher July 2014
+//
 // Define the bar chart AMD module using the
 // `define()` function provided by Require.js.
 define(['d3', 'model'], function (d3, Model) {
@@ -37,8 +39,8 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['size', 'margin'], function (size, margin) {
-      model.set('width', size.width - margin.left - margin.right);
-      model.set('height', size.height - margin.top - margin.bottom);
+      model.width = size.width - margin.left - margin.right;
+      model.height = size.height - margin.top - margin.bottom;
     });
 
     model.when('height', function (height) {

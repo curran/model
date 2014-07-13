@@ -5,7 +5,7 @@
 // with random values, to illustrate that the chart
 // is dynamic and reacts to changes in its model.
 //
-// Curran Kelleher 4/17/2014
+// Curran Kelleher July 2014
 require(['d3', 'barChart'], function (d3, BarChart) {
   var div = document.getElementById('barChartContainer'),
       barChart = BarChart(div);
@@ -26,7 +26,7 @@ require(['d3', 'barChart'], function (d3, BarChart) {
     window.addEventListener('resize', setSizeFromDiv);
 
     // Set the data
-    barChart.set('data', data);
+    barChart.set.data = data;
 
     // Reset data each second
     setInterval(function () {
@@ -36,13 +36,18 @@ require(['d3', 'barChart'], function (d3, BarChart) {
         return Math.random() < 0.5;
       });
 
-      barChart.set('data', randomSample);
+      barChart.data = randomSample;
     }, 1000);
 
     // Randomly change the margin every 1.7 seconds.
     function random(){ return Math.random() * 100; }
     setInterval(function () {
-      barChart.set('margin', {top: random(), right: random(), bottom: random(), left: random()});
+      barChart.margin = {
+        top: random(),
+        right: random(),
+        bottom: random(),
+        left: random()
+      };
     }, 1700);
 
     // Change the Y axis label every 600 ms.
@@ -52,14 +57,14 @@ require(['d3', 'barChart'], function (d3, BarChart) {
       return possibilities[i];
     }
     setInterval(function () {
-      barChart.set('yLabel', randomString());
+      barChart.yLabel = randomString();
     }, 600);
   });
 
   function setSizeFromDiv(){
-    barChart.set('size', {
+    barChart.size = {
       width: div.clientWidth,
       height: div.clientHeight
-    });
+    };
   }
 });

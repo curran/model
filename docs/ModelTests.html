@@ -499,13 +499,13 @@ through the following two paths simultaneously:</p>
   it(<span class="hljs-string">'should remove listeners'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
     <span class="hljs-keyword">var</span> model = Model(),
         xValue,
-        whens = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+        listener = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
           xValue = x;
         });
     model.x = <span class="hljs-number">5</span>;
     setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
       expect(xValue).to.equal(<span class="hljs-number">5</span>);
-      model.removeListeners();
+      model.removeListener(listener);
       model.x = <span class="hljs-number">6</span>;
       setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
         expect(xValue).to.equal(<span class="hljs-number">5</span>);

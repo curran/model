@@ -59,9 +59,9 @@ dependency properties.</li>
 </li>
 <li><code>thisArg</code> An optional argument bound to <code>this</code> in the callback.</li>
 </ul>
-<p><code>model.removeListeners()</code></p>
+<p><code>model.removeListener(listenerToRemove)</code></p>
 <ul>
-<li>Removes all listeners added by calls to <code>when</code>.</li>
+<li>Removes the listener returned by <code>when</code>.</li>
 </ul>
 <p><code>model.set(values)</code></p>
 <ul>
@@ -280,7 +280,7 @@ to the given dependency properties.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> listener = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> listener = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -352,6 +352,7 @@ when any dependency properties change.</p>
         }
         listeners[property].push(listener);
       });
+      <span class="hljs-keyword">return</span> listener;
     }</pre></div></div>
             
         </li>
@@ -600,13 +601,12 @@ an array of strings as the <code>properties</code> argument.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>Set up the callback to be invoked with property values
-once initially, when any property changes, but only
-when all property values are defined.</p>
+              <p>For each dependency property, track it using
+Object.defineProperty where setters invoke listeners.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        addListener(properties, callback, thisArg);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        properties.forEach(trackProperty);</pre></div></div>
             
         </li>
         
@@ -617,12 +617,13 @@ when all property values are defined.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>For each dependency property, track it using
-Object.defineProperty where setters invoke listeners.</p>
+              <p>Set up the callback to be invoked with property values
+once initially, when any property changes, but only
+when all property values are defined.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        properties.forEach(trackProperty);
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> addListener(properties, callback, thisArg);
       },</pre></div></div>
             
         </li>
@@ -634,11 +635,11 @@ Object.defineProperty where setters invoke listeners.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <h4 id="model-removelisteners">model.removeListeners</h4>
+              <h4 id="model-removelistener">model.removeListener</h4>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      removeListeners: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      removeListener: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(listenerToRemove)</span> {</span></pre></div></div>
             
         </li>
         
@@ -649,13 +650,11 @@ Object.defineProperty where setters invoke listeners.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Simply reassigning <code>listeners</code> removes references to the
-old listeners, causing them to be garbage collected.</p>
+              <p>For each key that has listeners,</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        listeners = {};
-      },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-built_in">Object</span>.keys(listeners).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(property)</span> {</span></pre></div></div>
             
         </li>
         
@@ -666,11 +665,15 @@ old listeners, causing them to be garbage collected.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <h4 id="model-set">model.set</h4>
+              <p>remove the given listener from its array.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(values)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>          listeners[property] = listeners[property].filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(listener)</span> {</span>
+            <span class="hljs-keyword">return</span> listener !== listenerToRemove;
+          });
+        });
+      },</pre></div></div>
             
         </li>
         
@@ -680,6 +683,21 @@ old listeners, causing them to be garbage collected.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <h4 id="model-set">model.set</h4>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(values)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Copy values from <code>values</code> to <code>model</code>.</p>
 

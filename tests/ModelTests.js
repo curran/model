@@ -267,13 +267,13 @@ describe('model', function() {
   it('should remove listeners', function(done) {
     var model = Model(),
         xValue,
-        whens = model.when('x', function (x) {
+        listener = model.when('x', function (x) {
           xValue = x;
         });
     model.x = 5;
     setTimeout(function () {
       expect(xValue).to.equal(5);
-      model.removeListeners();
+      model.removeListener(listener);
       model.x = 6;
       setTimeout(function () {
         expect(xValue).to.equal(5);

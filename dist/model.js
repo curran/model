@@ -30,9 +30,9 @@
 //      dependency properties.
 //  * `thisArg` An optional argument bound to `this` in the callback.
 //
-// `model.removeListeners()`
+// `model.removeListener(listenerToRemove)`
 //
-//  * Removes all listeners added by calls to `when`.
+//  * Removes the listener returned by `when`.
 //
 // `model.set(values)`
 //
@@ -126,7 +126,7 @@ define('model/model',[], function () {
       // Define a listener function that invokes the callback,
       // passing as arguments the model property values corresponding
       // to the given dependency properties.
-      var listener = debounce(function(){
+      var listener = debounce(function () {
 
         // Extract the property values into an array.
         var args = properties.map(function (property) {
@@ -150,6 +150,7 @@ define('model/model',[], function () {
         }
         listeners[property].push(listener);
       });
+      return listener;
     }
 
     // ### trackProperty
@@ -224,22 +225,27 @@ define('model/model',[], function () {
           properties = [properties];
         }
 
-        // Set up the callback to be invoked with property values
-        // once initially, when any property changes, but only
-        // when all property values are defined.
-        addListener(properties, callback, thisArg);
-
         // For each dependency property, track it using
         // Object.defineProperty where setters invoke listeners.
         properties.forEach(trackProperty);
+
+        // Set up the callback to be invoked with property values
+        // once initially, when any property changes, but only
+        // when all property values are defined.
+        return addListener(properties, callback, thisArg);
       },
 
-      // #### model.removeListeners
-      removeListeners: function () {
+      // #### model.removeListener
+      removeListener: function (listenerToRemove) {
 
-        // Simply reassigning `listeners` removes references to the
-        // old listeners, causing them to be garbage collected.
-        listeners = {};
+        // For each key that has listeners,
+        Object.keys(listeners).forEach(function (property) {
+
+          // remove the given listener from its array.
+          listeners[property] = listeners[property].filter(function (listener) {
+            return listener !== listenerToRemove;
+          });
+        });
       },
 
       // #### model.set

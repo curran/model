@@ -15,8 +15,6 @@ describe('model', function() {
 
   var Model = requirejs('model');
 
-  console.log(Model);
-
   it('should create a model and listen for changes to a single property', function(done) {
 
     // Create a new model by calling `Model()`.
@@ -309,5 +307,47 @@ describe('model', function() {
         }, 0);
       }, 0);
     }, 0);
+  });
+  it('should detect a flow graph', function(done) {
+    var model = Model();
+    model.when('x', function (x) {
+      model.y = x * 2;
+    });
+
+    // The changed properties must be tracked
+    // by calling `when` in order for flow detection to work.
+    model.when('y', function (y) {});
+
+    model.detectFlowGraph(function (graph) {
+      var xId, yId, lambdaId;
+
+      //console.log(JSON.stringify(graph, null, 2));
+      expect(graph.nodes.length).to.equal(3);
+      expect(graph.links.length).to.equal(2);
+
+      graph.nodes.forEach(function (node) {
+        if(node.type === 'lambda') {
+          lambdaId = node.index;
+        } else if(node.type === 'property') {
+          if(node.name === 'x') {
+            xId = node.index;
+          } else if(node.name === 'y') {
+            yId = node.index;
+          }
+        }
+      });
+
+      graph.links.forEach(function (link) {
+        if(link.source === xId){
+          expect(link.target).to.equal(lambdaId);
+        } else if(link.source === lambdaId){
+          expect(link.target).to.equal(yId);
+        }
+      });
+
+      done();
+    });
+
+    model.x = 5;
   });
 });

@@ -23,14 +23,17 @@ countLines(){
   echo "  " $total in total
 }
 
+echo Examples:
+cd examples
+countLines
+cd ../
+
+echo Unit tests:
+cd tests
+countLines
+cd ../
+
 echo Core files:
 cd src
 countLines
-
-echo Examples:
-cd ../examples
-countLines
-
-echo Unit tests:
-cd ../spec
-countLines
+cd ../

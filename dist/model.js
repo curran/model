@@ -115,11 +115,20 @@ define('model/model',[], function () {
         //  * Keys are property names.
         //  * Values are the property values of the model.
         values = {},
+        
+        // Tracks which properties change inside a callback,
+        // used for detecting the flow graph. This is normally
+        // null, but becomes an object that stores which properties
+        // change when a callback is being called.
+        changedProperties,
+
+        // A function used for detecting the data flow graph.
+        recordLambda,
 
         // The object returned, containing the public API.
         model;
 
-    // ### addListener
+    // #### addListener
     // This function deals with calling the callback.
     function addListener(properties, callback, thisArg){
 
@@ -135,7 +144,23 @@ define('model/model',[], function () {
 
         // Call the callback if all properties are defined.
         if(allAreDefined(args)) {
+          // If the flow graph is being detected,
+          if(recordLambda) {
+            // Prepare for recording which properties change
+            // inside the callback.
+            changedProperties = {};
+          }
+
+          // Call the callback.
           callback.apply(thisArg, args);
+
+          // If the flow graph is being detected,
+          if(recordLambda) {
+
+            // record this listener as a lambda node
+            // in the flow graph.
+            recordLambda(properties);
+          }
         }
       });
 
@@ -153,7 +178,7 @@ define('model/model',[], function () {
       return listener;
     }
 
-    // ### trackProperty
+    // #### trackProperty
     // This function deals with tracking properties.
     function trackProperty(property){
 
@@ -184,6 +209,12 @@ define('model/model',[], function () {
           // When a property is assigned on `model` (e.g. `model.x = 5`),
           set: function(value) {
 
+            // If the flow graph is being detected,
+            if(changedProperties) {
+              // mark the property as changed.
+              changedProperties[property] = true;
+            }
+
             // assign the internal value, and
             values[property] = value;
 
@@ -204,58 +235,117 @@ define('model/model',[], function () {
       }
     }
 
-    // ### Model
-    // Define the public API object.
-    // See also [Object.create docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
+    // ### Public Methods
+    //
+    // #### when
+    // Tracks properties and sets up the callback
+    // to be called appropriately.
+    function when(properties, callback, thisArg) {
+
+      // Support passing either single string or 
+      // an array of strings as the `properties` argument.
+      if(!(properties instanceof Array)) {
+        properties = [properties];
+      }
+
+      // For each dependency property, track it using
+      // Object.defineProperty where setters invoke listeners.
+      properties.forEach(trackProperty);
+
+      // Set up the callback to be invoked with property values
+      // once initially, when any property changes, but only
+      // when all property values are defined.
+      return addListener(properties, callback, thisArg);
+    }
+
+    // #### removeListener
+    // Removes a listener added by a call to `when`.
+    function removeListener(listenerToRemove) {
+
+      // For each key that has listeners,
+      Object.keys(listeners).forEach(function (property) {
+
+        // remove the given listener from its array.
+        listeners[property] = listeners[property].filter(function (listener) {
+          return listener !== listenerToRemove;
+        });
+      });
+    }
+
+    // #### set
+    // Copies values from `values` to `model`.
+    function set(values){
+      Object.keys(values).forEach(function (property) {
+        model[property] = values[property];
+      });
+    }
+
+    // #### detectFlowGraph
+    // Detects the flow graph that executes within
+    // the given `wait` time (in ms).
+    function detectFlowGraph(callback, wait){
+      var nodes = {},
+          links = [];
+
+      // Default wait time.
+      wait = wait || 50;
+
+      function propertyNode(name) {
+        return nodes[name] || (nodes[name] = { type: 'property', name: name });
+      }
+
+      function lambdaNodeKey(inProperties, outProperties) {
+        return inProperties.join(',') + '|' + outProperties.join(',');
+      }
+
+      recordLambda = function (inProperties) {
+        var outProperties = Object.keys(changedProperties),
+            key = lambdaNodeKey(inProperties, outProperties),
+            lambda = nodes[key];
+        if(!lambda && outProperties.length > 0){
+          lambda = nodes[key] = { type: 'lambda' };
+          inProperties.forEach(function (property) {
+            links.push({
+              source: propertyNode(property),
+              target: lambda
+            });
+          });
+          outProperties.forEach(function (property) {
+            links.push({
+              source: lambda,
+              target: propertyNode(property)
+            });
+          });
+        }
+      };
+      setTimeout(function () {
+        callback({
+          nodes: Object.keys(nodes).map(function (key, i) {
+            var node = nodes[key];
+            node.index = i;
+            return node;
+          }),
+          links: links.map(function (link) {
+            return {
+              source: link.source.index,
+              target: link.target.index
+            };
+          })
+        });
+      }, wait);
+    }
+
+    // Define the public API object. See also [Object.create docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
     //
     // The object passed to `Object.create` becomes the prototype of `model`,
     // so methods are callable but do not appear as "own properties" of the object.
     //
-    // This means it is possible to call `JSON.stringify(model)` to serialize models.
+    // This makes it is possible to call `JSON.stringify(model)` to serialize models.
     model = Object.create({
-
-      // #### model.when
-      // Tracks properties and sets up the callback
-      // to be called appropriately.
-      when: function (properties, callback, thisArg) {
-
-        // Support passing either single string or 
-        // an array of strings as the `properties` argument.
-        if(!(properties instanceof Array)) {
-          properties = [properties];
-        }
-
-        // For each dependency property, track it using
-        // Object.defineProperty where setters invoke listeners.
-        properties.forEach(trackProperty);
-
-        // Set up the callback to be invoked with property values
-        // once initially, when any property changes, but only
-        // when all property values are defined.
-        return addListener(properties, callback, thisArg);
-      },
-
-      // #### model.removeListener
-      removeListener: function (listenerToRemove) {
-
-        // For each key that has listeners,
-        Object.keys(listeners).forEach(function (property) {
-
-          // remove the given listener from its array.
-          listeners[property] = listeners[property].filter(function (listener) {
-            return listener !== listenerToRemove;
-          });
-        });
-      },
-
-      // #### model.set
-      set: function (values) {
-
-        // Copy values from `values` to `model`.
-        Object.keys(values).forEach(function (property) {
-          model[property] = values[property];
-        });
-      }
+      when: when,
+      removeListener: removeListener,
+      set: set,
+      detectFlowGraph: detectFlowGraph
     });
 
     return model;

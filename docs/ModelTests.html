@@ -45,8 +45,6 @@ describe(<span class="hljs-string">'model'</span>, <span class="hljs-function"><
 
   <span class="hljs-keyword">var</span> Model = requirejs(<span class="hljs-string">'model'</span>);
 
-  console.log(Model);
-
   it(<span class="hljs-string">'should create a model and listen for changes to a single property'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span></pre></div></div>
             
         </li>
@@ -541,6 +539,72 @@ through the following two paths simultaneously:</p>
         }, <span class="hljs-number">0</span>);
       }, <span class="hljs-number">0</span>);
     }, <span class="hljs-number">0</span>);
+  });
+  it(<span class="hljs-string">'should detect a flow graph'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model();
+    model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span>
+      model.y = x * <span class="hljs-number">2</span>;
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>The changed properties must be tracked
+by calling <code>when</code> in order for flow detection to work.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.when(<span class="hljs-string">'y'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span>});
+
+    model.detectFlowGraph(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(graph)</span> {</span>
+      <span class="hljs-keyword">var</span> xId, yId, lambdaId;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>console.log(JSON.stringify(graph, null, 2));</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      expect(graph.nodes.length).to.equal(<span class="hljs-number">3</span>);
+      expect(graph.links.length).to.equal(<span class="hljs-number">2</span>);
+
+      graph.nodes.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(node)</span> {</span>
+        <span class="hljs-keyword">if</span>(node.type === <span class="hljs-string">'lambda'</span>) {
+          lambdaId = node.index;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(node.type === <span class="hljs-string">'property'</span>) {
+          <span class="hljs-keyword">if</span>(node.name === <span class="hljs-string">'x'</span>) {
+            xId = node.index;
+          } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(node.name === <span class="hljs-string">'y'</span>) {
+            yId = node.index;
+          }
+        }
+      });
+
+      graph.links.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(link)</span> {</span>
+        <span class="hljs-keyword">if</span>(link.source === xId){
+          expect(link.target).to.equal(lambdaId);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(link.source === lambdaId){
+          expect(link.target).to.equal(yId);
+        }
+      });
+
+      done();
+    });
+
+    model.x = <span class="hljs-number">5</span>;
   });
 });</pre></div></div>
             

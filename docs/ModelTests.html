@@ -512,86 +512,37 @@ through the following two paths simultaneously:</p>
         done();
       }, <span class="hljs-number">0</span>);
     }, <span class="hljs-number">0</span>);
-  });</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p> // <code>when</code> callbacks can be removed using <code>cancel</code>.
- it(‘should cancel a single callback’, function(done) {
-   var model = Model(),
-       xValue,
-       whens = model.when(‘x’, function (x) {
-         xValue = x;
-       });
-   model.set(‘x’, 5);
-   setTimeout(function () {
-     expect(xValue).to.equal(5);
-     model.cancel(whens);
-     model.set(‘x’, 6);
-     setTimeout(function () {
-       expect(xValue).to.equal(5);
-       done();
-     }, 0);
-   }, 0);
- });</p>
-<p> it(‘should cancel multiple callbacks’, function(done) {
-   var model = Model(),
-       xValue,
-       yValue,
-       whens = model.when(‘x’, function (x) { xValue = x; })
-                    .when(‘y’, function (y) { yValue = y; });
-   model.set(‘x’, 5);
-   model.set(‘y’, 10);
-   setTimeout(function () {
-     expect(xValue).to.equal(5);
-     expect(yValue).to.equal(10);
-     model.cancel(whens);
-     model.set(‘x’, 6);
-     model.set(‘y’, 11);
-     setTimeout(function () {
-       expect(xValue).to.equal(5);
-       expect(yValue).to.equal(10);
-       done();
-     }, 0);
-   }, 0);
- });
- it(‘should cancel callbacks independently’, function(done) {
-   var model = Model(),
-       xValue,
-       yValue,
-       whenX = model.when(‘x’, function (x) { xValue = x; }),
-       whenY = model.when(‘y’, function (y) { yValue = y; });
-   model.set(‘x’, 5);
-   setTimeout(function () {
-     expect(xValue).to.equal(5);
-     model.cancel(whenX);
-     model.set(‘x’, 6);
-     model.set(‘y’, 10);
-     setTimeout(function () {
-       expect(xValue).to.equal(5);
-       expect(yValue).to.equal(10);
-       model.cancel(whenY);
-       model.set(‘x’, 7);
-       model.set(‘y’, 11);
-       setTimeout(function () {
-         expect(xValue).to.equal(5);
-         expect(yValue).to.equal(10);
-         done();
-       }, 0);
-     }, 0);
-   }, 0);
- });</p>
+  });
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>});</pre></div></div>
+  it(<span class="hljs-string">'should cancel multiple listeners separately'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+    <span class="hljs-keyword">var</span> model = Model(),
+        xValue,
+        yValue,
+        xListener = model.when(<span class="hljs-string">'x'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x)</span> {</span> xValue = x; }),
+        yListener = model.when(<span class="hljs-string">'y'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(y)</span> {</span> yValue = y; });
+    model.x = <span class="hljs-number">5</span>;
+    model.y = <span class="hljs-number">10</span>;
+    setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+      expect(xValue).to.equal(<span class="hljs-number">5</span>);
+      expect(yValue).to.equal(<span class="hljs-number">10</span>);
+      model.removeListener(xListener);
+      model.x = <span class="hljs-number">6</span>;
+      model.y = <span class="hljs-number">11</span>;
+      setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+        expect(xValue).to.equal(<span class="hljs-number">5</span>);
+        expect(yValue).to.equal(<span class="hljs-number">11</span>);
+        model.removeListener(yListener);
+        model.x = <span class="hljs-number">7</span>;
+        model.y = <span class="hljs-number">12</span>;
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+          expect(xValue).to.equal(<span class="hljs-number">5</span>);
+          expect(yValue).to.equal(<span class="hljs-number">11</span>);
+          done();
+        }, <span class="hljs-number">0</span>);
+      }, <span class="hljs-number">0</span>);
+    }, <span class="hljs-number">0</span>);
+  });
+});</pre></div></div>
             
         </li>
         

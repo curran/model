@@ -282,70 +282,32 @@ describe('model', function() {
     }, 0);
   });
 
-//  // `when` callbacks can be removed using `cancel`.
-//  it('should cancel a single callback', function(done) {
-//    var model = Model(),
-//        xValue,
-//        whens = model.when('x', function (x) {
-//          xValue = x;
-//        });
-//    model.set('x', 5);
-//    setTimeout(function () {
-//      expect(xValue).to.equal(5);
-//      model.cancel(whens);
-//      model.set('x', 6);
-//      setTimeout(function () {
-//        expect(xValue).to.equal(5);
-//        done();
-//      }, 0);
-//    }, 0);
-//  });
-//
-//  it('should cancel multiple callbacks', function(done) {
-//    var model = Model(),
-//        xValue,
-//        yValue,
-//        whens = model.when('x', function (x) { xValue = x; })
-//                     .when('y', function (y) { yValue = y; });
-//    model.set('x', 5);
-//    model.set('y', 10);
-//    setTimeout(function () {
-//      expect(xValue).to.equal(5);
-//      expect(yValue).to.equal(10);
-//      model.cancel(whens);
-//      model.set('x', 6);
-//      model.set('y', 11);
-//      setTimeout(function () {
-//        expect(xValue).to.equal(5);
-//        expect(yValue).to.equal(10);
-//        done();
-//      }, 0);
-//    }, 0);
-//  });
-//  it('should cancel callbacks independently', function(done) {
-//    var model = Model(),
-//        xValue,
-//        yValue,
-//        whenX = model.when('x', function (x) { xValue = x; }),
-//        whenY = model.when('y', function (y) { yValue = y; });
-//    model.set('x', 5);
-//    setTimeout(function () {
-//      expect(xValue).to.equal(5);
-//      model.cancel(whenX);
-//      model.set('x', 6);
-//      model.set('y', 10);
-//      setTimeout(function () {
-//        expect(xValue).to.equal(5);
-//        expect(yValue).to.equal(10);
-//        model.cancel(whenY);
-//        model.set('x', 7);
-//        model.set('y', 11);
-//        setTimeout(function () {
-//          expect(xValue).to.equal(5);
-//          expect(yValue).to.equal(10);
-//          done();
-//        }, 0);
-//      }, 0);
-//    }, 0);
-//  });
+  it('should cancel multiple listeners separately', function(done) {
+    var model = Model(),
+        xValue,
+        yValue,
+        xListener = model.when('x', function (x) { xValue = x; }),
+        yListener = model.when('y', function (y) { yValue = y; });
+    model.x = 5;
+    model.y = 10;
+    setTimeout(function () {
+      expect(xValue).to.equal(5);
+      expect(yValue).to.equal(10);
+      model.removeListener(xListener);
+      model.x = 6;
+      model.y = 11;
+      setTimeout(function () {
+        expect(xValue).to.equal(5);
+        expect(yValue).to.equal(11);
+        model.removeListener(yListener);
+        model.x = 7;
+        model.y = 12;
+        setTimeout(function () {
+          expect(xValue).to.equal(5);
+          expect(yValue).to.equal(11);
+          done();
+        }, 0);
+      }, 0);
+    }, 0);
+  });
 });

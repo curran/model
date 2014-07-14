@@ -3,18 +3,22 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
   var div = document.getElementById('parallelCoordinatesContainer'),
       parallelCoordinates = ParallelCoordinates(div);
 
-  parallelCoordinates.set('margin', { top: 20, right: 20, bottom: 30, left: 40 });
+  parallelCoordinates.margin = {
+    top: 20,
+    right: 20,
+    bottom: 30,
+    left: 40
+  };
 
-  // This callback fires with the selected data as the user filters.
+  // This callback fires with the selected data reacting to user interaction.
   parallelCoordinates.when('selectedData', function (selectedData) {
     console.log(selectedData.length);
   });
 
-
   d3.csv('cars.csv', function(error, data) {
 
     // Set the data
-    parallelCoordinates.set('data', data);
+    parallelCoordinates.data = data;
 
     // Reset data each second
     setInterval(function () {
@@ -35,7 +39,7 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
             return Math.random() < 0.1;
           });
 
-      parallelCoordinates.set('data', randomSample);
+      parallelCoordinates.data = randomSample;
     }, 1000);
   });
 
@@ -46,9 +50,9 @@ require(['d3', 'parallelCoordinates'], function (d3, ParallelCoordinates) {
   window.addEventListener('resize', setSizeFromDiv);
 
   function setSizeFromDiv(){
-    parallelCoordinates.set('size', {
+    parallelCoordinates.size = {
       width: div.clientWidth,
       height: div.clientHeight
-    });
+    };
   }
 });

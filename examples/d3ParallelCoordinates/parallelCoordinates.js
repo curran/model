@@ -39,8 +39,8 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['size', 'margin'], function (size, margin) {
-      model.set('width', size.width - margin.left - margin.right);
-      model.set('height', size.height - margin.top - margin.bottom);
+      model.width = size.width - margin.left - margin.right;
+      model.height = size.height - margin.top - margin.bottom;
     });
     
     model.when(['width', 'height', 'data'], function(width, height, cars) {
@@ -121,8 +121,8 @@ define(['d3', 'model'], function (d3, Model) {
       dimension.select('.brush').each(function(d) {
         d3.select(this).call(y[d].brush);
       }).selectAll('rect')
-          .attr('x', -8)
-          .attr('width', 16);
+        .attr('x', -8)
+        .attr('width', 16);
     });
 
     function position(d) {
@@ -150,7 +150,7 @@ define(['d3', 'model'], function (d3, Model) {
           });
       foregroundPaths.style('display', 'none');
       selectedPaths.style('display', null);
-      model.set('selectedData', selectedPaths.data());
+      model.selectedData = selectedPaths.data();
     }
 
     return model;

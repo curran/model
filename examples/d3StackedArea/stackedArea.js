@@ -23,22 +23,22 @@ define(['d3', 'model'], function (d3, Model) {
         svg = d3.select(div).append('svg'),
         g = svg.append('g'),
         xAxisG =  g.append('g')
-            .attr('class', 'x axis'), 
+          .attr('class', 'x axis'), 
         yAxisG =  g.append('g')
-            .attr('class', 'y axis'), 
+          .attr('class', 'y axis'), 
         model = Model();
 
     model.when(['margin'], function (margin) {
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     });
 
-    model.when(['size'], function (size) {
+    model.when('size', function (size) {
       svg.attr('width', size.width).attr('height', size.height);
     });
 
     model.when(['size', 'margin'], function (size, margin) {
-      model.set('width', size.width - margin.left - margin.right);
-      model.set('height', size.height - margin.top - margin.bottom);
+      model.width = size.width - margin.left - margin.right;
+      model.height = size.height - margin.top - margin.bottom;
     });
 
     model.when(['height'], function (height) {
@@ -46,11 +46,13 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['width', 'height', 'data'], function (width, height, data) {
+      console.log(JSON.stringify(data, null, 2));
       var names = d3.keys(data[0]).filter(function(key) { return key !== 'date'; }),
           layers = stack(names.map(function(name) {
             return {
               name: name,
               values: data.map(function(d) {
+                console.log(typeof d[name]);
                 return { date: d.date, y: d[name] / 100 };
               })
             };
@@ -79,9 +81,14 @@ define(['d3', 'model'], function (d3, Model) {
       // Plot each area label
       layerG.append('text');
       layer.select('g text')
-        .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-        .attr('transform', function(d) { return 'translate(' + x(d.value.date) + ',' + y(d.value.y0 + d.value.y / 2) + ')'; })
-        .attr('x', -6)
+        .datum(function(d) {
+          return {
+            name: d.name,
+            value: d.values[d.values.length - 1]
+          };
+        }).attr('transform', function(d) {
+          return 'translate(' + x(d.value.date) + ',' + y(d.value.y0 + d.value.y / 2) + ')';
+        }).attr('x', -6)
         .attr('dy', '.35em')
         .text(function(d) { return d.name; });
 

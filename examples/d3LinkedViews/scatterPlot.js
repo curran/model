@@ -71,8 +71,8 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['box', 'margin'], function (box, margin) {
-      model.set('width', box.width - margin.left - margin.right);
-      model.set('height', box.height - margin.top - margin.bottom);
+      model.width = box.width - margin.left - margin.right;
+      model.height = box.height - margin.top - margin.bottom;
     });
 
     model.when('width', function (width) {
@@ -130,7 +130,7 @@ define(['d3', 'model'], function (d3, Model) {
         selectedData = search(e[0][0], e[0][1], e[1][0], e[1][1]);
         dots.classed('selected', function(d) { return d.selected; });
       }
-      model.set('selectedData', brush.empty() ? model.get('data') : selectedData);
+      model.selectedData = brush.empty() ? model.data : selectedData;
     }
 
     // Find the nodes within the specified rectangle.

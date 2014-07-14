@@ -47,8 +47,8 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['box', 'margin'], function (box, margin) {
-      model.set('width', box.width - margin.left - margin.right);
-      model.set('height', box.height - margin.top - margin.bottom);
+      model.width = box.width - margin.left - margin.right;
+      model.height = box.height - margin.top - margin.bottom;
     });
 
     model.when('height', function (height) {

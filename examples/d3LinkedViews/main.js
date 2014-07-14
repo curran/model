@@ -31,8 +31,7 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
   // Compute the aggregated iris data in response to brushing
   // in the scatter plot, and pass it into the bar chart.
   scatterPlot.when('selectedData', function (scatterData) {
-    var speciesCounts = {},
-        barData = [];
+    var speciesCounts = {};
 
     // Aggregate scatter plot data by counting 
     // the number of irises for each species.
@@ -44,15 +43,13 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     });
 
     // Flatten the object containing species counts into an array.
-    barData = Object.keys(speciesCounts).map(function (species) {
+    // Update the bar chart with the aggregated data.
+    barChart.data = Object.keys(speciesCounts).map(function (species) {
       return {
         species: species,
         count: speciesCounts[species]
       };
     });
-
-    // Update the bar chart with the aggregated data.
-    barChart.set('data', barData);
   });
 
   // Load the iris data.
@@ -69,7 +66,7 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
     window.addEventListener('resize', setSizes);
 
     // Set the data.
-    scatterPlot.set('data', data);
+    scatterPlot.data = data;
   });
 
   // Sets the `box` property on each visualization
@@ -77,19 +74,19 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
   function setSizes(){
   
     // Put the scatter plot on the left.
-    scatterPlot.set('box', {
+    scatterPlot.box = {
       x: 0,
       y: 0,
       width: div.clientWidth / 2,
       height: div.clientHeight
-    });
+    };
 
     // Put the bar chart on the right.
-    barChart.set('box', {
+    barChart.box = {
       x: div.clientWidth / 2,
       y: 0,
       width: div.clientWidth / 2,
       height: div.clientHeight
-    });
+    };
   }
 });

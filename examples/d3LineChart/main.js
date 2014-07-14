@@ -30,7 +30,7 @@ require(['d3', 'lineChart'], function (d3, LineChart) {
     window.addEventListener('resize', setSizeFromDiv);
 
     // Set the data
-    lineChart.set('data', data);
+    lineChart.data = data;
 
     // Reset data each second
     setInterval(function () {
@@ -40,13 +40,18 @@ require(['d3', 'lineChart'], function (d3, LineChart) {
         return Math.random() < 0.1;
       });
 
-      lineChart.set('data', randomSample);
+      lineChart.data = randomSample;
     }, 1000);
 
     // Randomly change the margin every 1.7 seconds.
     function random(){ return Math.random() * 100; }
     setInterval(function () {
-      lineChart.set('margin', {top: random(), right: random(), bottom: random(), left: random()});
+      lineChart.margin = {
+        top: random(),
+        right: random(),
+        bottom: random(),
+        left: random()
+      };
     }, 1700);
 
     // Change the Y axis label every 600 ms.
@@ -56,14 +61,14 @@ require(['d3', 'lineChart'], function (d3, LineChart) {
       return possibilities[i];
     }
     setInterval(function () {
-      lineChart.set('yLabel', randomString());
+      lineChart.yLabel = randomString();
     }, 600);
   });
 
   function setSizeFromDiv(){
-    lineChart.set('size', {
+    lineChart.size = {
       width: div.clientWidth,
       height: div.clientHeight
-    });
+    };
   }
 });

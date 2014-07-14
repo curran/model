@@ -1,0 +1,25 @@
+#container {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.node {
+  stroke: black;
+  stroke-width: 1.5px;
+}
+.nodeLabel {
+  font-size: 2em;
+  /* Center text horizontally */
+  text-anchor: middle;
+}
+
+.link {
+  stroke: black;
+}
+.arrow {
+  /* stroke-width controls arrowhead size */
+  stroke-width: 1.5px;
+}

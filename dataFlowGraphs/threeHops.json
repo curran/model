@@ -1,0 +1,62 @@
+{
+  "nodes": [
+    {
+      "type": "lambda",
+      "index": 0
+    },
+    {
+      "type": "property",
+      "name": "w",
+      "index": 1
+    },
+    {
+      "type": "property",
+      "name": "x",
+      "index": 2
+    },
+    {
+      "type": "lambda",
+      "index": 3
+    },
+    {
+      "type": "property",
+      "name": "y",
+      "index": 4
+    },
+    {
+      "type": "lambda",
+      "index": 5
+    },
+    {
+      "type": "property",
+      "name": "z",
+      "index": 6
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 0
+    },
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ]
+}

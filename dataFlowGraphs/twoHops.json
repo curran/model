@@ -1,0 +1,45 @@
+{
+  "nodes": [
+    {
+      "type": "lambda",
+      "index": 0
+    },
+    {
+      "type": "property",
+      "name": "x",
+      "index": 1
+    },
+    {
+      "type": "property",
+      "name": "y",
+      "index": 2
+    },
+    {
+      "type": "lambda",
+      "index": 3
+    },
+    {
+      "type": "property",
+      "name": "z",
+      "index": 4
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 0
+    },
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ]
+}

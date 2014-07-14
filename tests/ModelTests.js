@@ -4,12 +4,24 @@
 //
 // By Curran Kelleher July 2014
 var requirejs = require('requirejs'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    fs = require('fs');
 
 requirejs.config({
   baseUrl: 'dist',
   nodeRequire: require
 });
+
+// Detects the model dependency graph then
+// writes the graph to disk for later visualization.
+function outputDataFlowGraph(name, model){
+  model.detectFlowGraph(function (graph) {
+    var json = JSON.stringify(graph, null, 2);
+    fs.writeFile('./dataFlowGraphs/' + name + '.json', json, function(err) {
+      if(err) console.log(err);
+    }); 
+  });
+}
 
 describe('model', function() {
 
@@ -137,6 +149,8 @@ describe('model', function() {
   // This pattern can be used to define a data dependency graph
   // using a functional reactive style. The model system automatically propagates changes
   // through the data dependency graph. This is similar to computed properties in Ember.js.
+  //
+  // <iframe src="../examples/dataFlowDiagram/#fullName" width="450" height="200" frameBorder="0"></iframe>
   it('should compute fullName from firstName and lastName', function(done) {
     var model = Model();
 
@@ -149,10 +163,13 @@ describe('model', function() {
       done();
     });
 
+    outputDataFlowGraph('fullName', model);
+
     model.firstName = 'John';
     model.lastName = 'Doe';
   });
 
+  // <iframe src="../examples/dataFlowDiagram/#twoHops" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes two hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['x'], function (x) {
@@ -166,9 +183,13 @@ describe('model', function() {
       expect(z).to.equal(22);
       done();
     });
+
+    outputDataFlowGraph('twoHops', model);
+
     model.x = 10;
   });
 
+  // <iframe src="../examples/dataFlowDiagram/#threeHops" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes three hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['w'], function (w) {
@@ -187,6 +208,9 @@ describe('model', function() {
       expect(z).to.equal(22);
       done();
     });
+
+    outputDataFlowGraph('threeHops', model);
+
     model.w = 5;
   });
 
@@ -204,25 +228,26 @@ describe('model', function() {
     model.x = 5;
   });
 
+  // Updates through a data dependency graph propagate in a
+  // breadth-first manner.
+  //
+  // Here is a data dependency graph that can test this
+  // (data flowing left to right):
+  //```
+  //   b  d
+  // a      f
+  //   c  e
+  //```
+  //
+  // When "a" changes, "f" should update once only, after the changes propagated
+  // through the following two paths simultaneously:
+  // 
+  //  * a -> b -> d -> f
+  //  * a -> c -> e -> f
+  //
+  // <iframe src="../examples/dataFlowDiagram/#breadthFirst" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes in breadth first iterations', function (done) {
-    // Updates through a data dependency graph propagate in a
-    // breadth-first manner.
-    //
-    // Here is a data dependency graph that can test this
-    // (data flowing left to right):
-    //```
-    //   b  d
-    // a      f
-    //   c  e
-    //```
-    //
-    // When "a" changes, "f" should update once only, after the changes propagated
-    // through the following two paths simultaneously:
-    // 
-    //  * a -> b -> d -> f
-    //  * a -> c -> e -> f
-    var model = Model(),
-        fWasSetTo25 = false;
+    var model = Model();
 
     // a -> (b, c)
     model.when('a', function (a) {
@@ -248,17 +273,12 @@ describe('model', function() {
     });
 
     model.when('f', function (f) {
-      if(f == 15){
-        model.a = 10;
-      } else {
-        if(fWasSetTo25) {
-          throw new Error('f set to 25 more than once.');
-        }
-        expect(f).to.equal(25);
-        fWasSetTo25 = true;
-        done();
-      }
+      expect(f).to.equal(15);
+      done();
     });
+    
+    outputDataFlowGraph('breadthFirst', model);
+
     model.a = 5;
   });
 
@@ -308,6 +328,8 @@ describe('model', function() {
       }, 0);
     }, 0);
   });
+
+  // <iframe src="../examples/dataFlowDiagram/#simple" width="450" height="200" frameBorder="0"></iframe>
   it('should detect a flow graph', function(done) {
     var model = Model();
     model.when('x', function (x) {
@@ -344,6 +366,11 @@ describe('model', function() {
           expect(link.target).to.equal(yId);
         }
       });
+
+      // Detect the flow graph again
+      // and output the file for later visualization.
+      outputDataFlowGraph('simple', model);
+      model.x = 10;
 
       done();
     });

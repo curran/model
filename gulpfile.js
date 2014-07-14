@@ -1,3 +1,6 @@
+// The gulpfile that runs the build process for model.js.
+//
+// Curran Kelleher July 2014
 var gulp = require('gulp'),
     mocha = require('gulp-mocha'),
     rjs = require('gulp-requirejs'),

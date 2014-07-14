@@ -12,8 +12,8 @@ Usable via [Bower](http://bower.io/): `bower install model`
 
 Check out the
 
- * [User Guide](http://curran.github.io/model/docs/ModelSpec.html)
  * [Documentation](http://curran.github.io/model/docs/model.html)
+ * [Unit Tests](http://curran.github.io/model/docs/ModelSpec.html)
  * Examples
    * D3
      * [Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)

@@ -24,18 +24,14 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
         countiesG = g.append('g').attr('class', 'counties'),
         states = g.append('path').attr('class', 'states'),
         zoomBehavior = d3.behavior.zoom().on('zoom', function () {
-          model.set({
-            pan: d3.event.translate,
-            zoom: d3.event.scale
-          });
+          model.pan = d3.event.translate;
+          model.zoom = d3.event.scale;
         }),
         model = Model();
 
     // Set default pan & zoom
-    model.set({
-      pan: [0, 0],
-      zoom: 1
-    });
+    model.pan = [0, 0];
+    model.zoom = 1;
 
     // Set pan & zoom in response to interaction
     svg.call(zoomBehavior);
@@ -50,7 +46,7 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       data.forEach(function (d) {
         dataById[d[idField]] = +d[colorField];
       });
-      model.set('dataById', dataById);
+      model.dataById = dataById;
     });
 
     model.when(['us', 'size'], function (us, size) {

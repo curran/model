@@ -5,12 +5,13 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
   var div = document.getElementById('container'),
       forceDirectedGraph = ForceDirectedGraph(div);
 
+  // Choose a random color scale periodically.
   setInterval(function () {
-    forceDirectedGraph.set('color', [
+    forceDirectedGraph.color = [
       d3.scale.category20,
       d3.scale.category20b,
       d3.scale.category20c
-    ][Math.floor(Math.random() * 3)]());;
+    ][Math.floor(Math.random() * 3)];
   }, 1200);
 
   setInterval(function () {
@@ -22,29 +23,29 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
 
   d3.json('miserables.json', function(error, data) {
 
-    forceDirectedGraph.set('data', data);
+    forceDirectedGraph.data = data;
 
     setInterval(function () {
       var names = {};
-      forceDirectedGraph.set('data', {
+      forceDirectedGraph.data = {
         nodes: data.nodes.filter(function(d){
           return Math.random() < 0.5 ? (names[d.name] = true) : false;
         }),
         links: data.links.filter(function(d){
           return names[d.source.name] && names[d.target.name];
         })
-      });
+      };
     }, 3000);
   });
 
   setSizeFromDiv();
   window.addEventListener('resize', setSizeFromDiv);
   function setSizeFromDiv(){
-    forceDirectedGraph.set('box', {
+    forceDirectedGraph.box = {
       x: 0,
       y: 0,
       width: div.clientWidth,
       height: div.clientHeight
-    });
+    };
   }
 });

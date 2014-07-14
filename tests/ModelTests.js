@@ -1,26 +1,25 @@
 // Unit tests for `model.js`.
 //
-// Read through this to learn how to use the library.
-//
 // By Curran Kelleher July 2014
 var requirejs = require('requirejs'),
     expect = require('chai').expect,
-    fs = require('fs');
+    fs = require('fs'),
+    writeDataFlowFiles = false;
 
-requirejs.config({
-  baseUrl: 'dist',
-  nodeRequire: require
-});
+// Point require.js to the built model.js source.
+requirejs.config({ baseUrl: 'dist' });
 
 // Detects the model dependency graph then
 // writes the graph to disk for later visualization.
 function outputDataFlowGraph(name, model){
-  model.detectFlowGraph(function (graph) {
-    var json = JSON.stringify(graph, null, 2);
-    fs.writeFile('./dataFlowGraphs/' + name + '.json', json, function(err) {
-      if(err) console.log(err);
-    }); 
-  });
+  if(writeDataFlowFiles){
+    model.detectFlowGraph(function (graph) {
+      var json = JSON.stringify(graph, null, 2);
+      fs.writeFile('./dataFlowGraphs/' + name + '.json', json, function(err) {
+        if(err) console.log(err);
+      }); 
+    });
+  }
 }
 
 describe('model', function() {
@@ -231,14 +230,6 @@ describe('model', function() {
   // Updates through a data dependency graph propagate in a
   // breadth-first manner.
   //
-  // Here is a data dependency graph that can test this
-  // (data flowing left to right):
-  //```
-  //   b  d
-  // a      f
-  //   c  e
-  //```
-  //
   // When "a" changes, "f" should update once only, after the changes propagated
   // through the following two paths simultaneously:
   // 
@@ -249,25 +240,22 @@ describe('model', function() {
   it('should propagate changes in breadth first iterations', function (done) {
     var model = Model();
 
-    // a -> (b, c)
+    /* a -> (b, c) */
     model.when('a', function (a) {
-      model.set({
-        b: a + 1,
-        c: a + 2
-      });
+      model.set({ b: a + 1, c: a + 2 });
     }); 
 
-    // b -> d
+    /* b -> d */
     model.when('b', function (b) {
       model.d = b + 1;
     });
 
-    // c -> e
+    /* c -> e */
     model.when('c', function (c) {
       model.e = c + 1;
     });
 
-    // (d, e) -> f
+    /* (d, e) -> f */
     model.when(['d', 'e'], function (d, e) { 
       model.f = d + e;
     });

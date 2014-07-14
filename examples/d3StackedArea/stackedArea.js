@@ -46,13 +46,11 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['width', 'height', 'data'], function (width, height, data) {
-      console.log(JSON.stringify(data, null, 2));
       var names = d3.keys(data[0]).filter(function(key) { return key !== 'date'; }),
           layers = stack(names.map(function(name) {
             return {
               name: name,
               values: data.map(function(d) {
-                console.log(typeof d[name]);
                 return { date: d.date, y: d[name] / 100 };
               })
             };

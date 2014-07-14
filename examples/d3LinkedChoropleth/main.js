@@ -59,7 +59,7 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
       var id = d.properties.name;
       d.id = naturalEarthToUnitedNations[id] || id;
     });
-    choropleth.set('countries', countries);
+    choropleth.countries = countries;
   });
 
   d3.csv('un_locations.csv', function (error, locations) {
@@ -79,16 +79,16 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
         return d.country;
       });
 
-      lineChart.set('data', data);
+      lineChart.data = data;
 
-      lineChart.set('selectedYear', d3.max(data, function (d) {
+      lineChart.selectedYear = d3.max(data, function (d) {
         return d.date.getFullYear();
-      }));
+      });
 
       lineChart.when('selectedYear', function (selectedYear) {
-        choropleth.set('data', data.filter(function (d) {
+        choropleth.data = data.filter(function (d) {
           return d.date.getFullYear() == selectedYear;
-        }));
+        });
       });
 
       choropleth.when('visibleRegions', function (visibleRegions) {
@@ -96,9 +96,9 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
         visibleRegions.forEach(function (d) {
           visibleCountries[d.id] = true;
         });
-        lineChart.set('data', data.filter(function (d) {
+        lineChart.data = data.filter(function (d) {
           return visibleCountries[d.country];
-        }));
+        });
       });
     });
   });
@@ -107,19 +107,19 @@ require(['d3', 'choropleth', 'lineChart'], function (d3, Choropleth, LineChart) 
   window.addEventListener('resize', setSizes);
   function setSizes(){
     var ratio = 2 / 3;
-    choropleth.set('box', {
+    choropleth.box = {
       x: 0,
       y: 0,
       width: div.clientWidth,
       height: div.clientHeight * ratio
-    });
+    };
 
-    lineChart.set('box', {
+    lineChart.box = {
       x: 0,
       y: div.clientHeight * ratio,
       width: div.clientWidth,
       height: div.clientHeight * (1 - ratio)
-    });
+    };
   }
 
 });

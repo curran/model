@@ -62,7 +62,7 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       data.forEach(function (d) {
         dataById[d[idField]] = +d[colorField];
       });
-      model.set('dataById', dataById);
+      model.dataById = dataById;
     });
 
     model.when(['countries', 'box'], function (countries, box) {
@@ -113,7 +113,7 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
           rect.right < (box.x + box.width)
         );
       }).data();
-      model.set('visibleRegions', visibleRegions);
+      model.visibleRegions = visibleRegions;
     });
     
 

@@ -48,7 +48,7 @@ define(['d3', 'model'], function (d3, Model) {
       }
       mouseTarget.on('mousemove', function () {
         var selectedYear = getSelectedYear();
-        model.set('selectedYear', selectedYear);
+        model.selectedYear = selectedYear;
         if(!previousSelectedYear) {
           previousSelectedYear = selectedYear;
         }
@@ -58,7 +58,7 @@ define(['d3', 'model'], function (d3, Model) {
       });
       mouseTarget.on('mouseout', function () {
         if(previousSelectedYear) {
-          model.set('selectedYear', previousSelectedYear);
+          model.selectedYear = previousSelectedYear;
         }
       });
     }());
@@ -85,8 +85,8 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     model.when(['box', 'margin'], function (box, margin) {
-      model.set('width', box.width - margin.left - margin.right);
-      model.set('height', box.height - margin.top - margin.bottom);
+      model.width = box.width - margin.left - margin.right;
+      model.height = box.height - margin.top - margin.bottom;
     });
 
     model.when('width', function (width) {

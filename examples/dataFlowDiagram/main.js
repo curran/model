@@ -17,6 +17,12 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
     // Set the data on the graph visualization.
     forceDirectedGraph.data = graph;
 
+    // Extract the scale and translate from the saved data.
+    if(graph.scale && graph.translate) {
+      forceDirectedGraph.scale = graph.scale;
+      forceDirectedGraph.translate = graph.translate;
+    }
+
     // Whenever the user manually positions nodes,
     forceDirectedGraph.when(['data', 'scale', 'translate'], function (data, scale, translate) {
 
@@ -52,18 +58,15 @@ require(['d3', 'forceDirectedGraph'], function (d3, ForceDirectedGraph) {
     xmlhttp.send(JSON.stringify(json));
   }
 
-
-  function initializeZoom(){
-    var scale = div.clientWidth * 1 / 800;
-    forceDirectedGraph.set({
-      scale: scale,
-      translate: [
-        div.clientWidth / 2 * (1 - scale),
-        div.clientHeight / 2 * (1 - scale)
-      ]
-    });
-  }
-  initializeZoom();
+  // initialize zoom
+  var scale = div.clientWidth * 1 / 800;
+  forceDirectedGraph.set({
+    scale: scale,
+    translate: [
+      div.clientWidth / 2 * (1 - scale),
+      div.clientHeight / 2 * (1 - scale)
+    ]
+  });
 
   setSizeFromDiv();
   window.addEventListener('resize', setSizeFromDiv);

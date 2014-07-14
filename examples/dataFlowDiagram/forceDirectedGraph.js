@@ -13,7 +13,10 @@ define(['d3', 'model'], function (d3, Model) {
           .linkDistance(140)
           .gravity(0.03),
         zoom = d3.behavior.zoom()
-          .on('zoom', zoomed),
+          .on('zoom', function (){
+            model.scale = zoom.scale();
+            model.translate = zoom.translate();
+          }),
         svg = d3.select(div)
           .append('svg')
           .style('position', 'absolute')
@@ -31,16 +34,18 @@ define(['d3', 'model'], function (d3, Model) {
         nodeSize = 20,
         arrowWidth = 8;
     
-    model.when(['box', 'scale', 'translate'], function (box, scale, translate) {
-      zoom.scale(scale);
-      zoom.translate(translate);
-      zoom.event(svg);
-    });
+    model.when(['scale', 'translate'], function (scale, translate) {
 
-    // Transform the g element on panning and zooming.
-    function zoomed(){
-      g.attr('transform', 'translate(' + zoom.translate() + ')scale(' + zoom.scale() + ')');
-    }
+      // In the case the scale and translate were set externally,
+      if(zoom.scale() !== scale){
+
+        // update the internal D3 zoom state.
+        zoom.scale(scale);
+        zoom.translate(translate);
+      }
+
+      g.attr('transform', 'translate(' + translate + ')scale(' + scale + ')');
+    });
 
     // Stop propagation of drag events here so that both
     // dragging nodes and panning are possible.
@@ -50,12 +55,12 @@ define(['d3', 'model'], function (d3, Model) {
     });
 
     force.drag().on('dragend', function () {
-      console.log('drag end');
-      var graph = model.get('data'),
+      var graph = model.data,
           nodes = graph.nodes;
 
       nodes.forEach(function (d) { d.fixed = true; });
 
+      // Reassign the data to trigger writing to the server.
       model.data = graph;
     });
     

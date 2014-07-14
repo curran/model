@@ -22,6 +22,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "express": "^4.0.0",
+    "body-parser": "^1.2.0",
     "gulp": "^3.6.2",
     "gulp-docco": "0.0.4",
     "gulp-jshint": "^1.5.5",

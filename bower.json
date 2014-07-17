@@ -1,6 +1,6 @@
 {
   "name": "model",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "homepage": "https://github.com/curran/model",
   "authors": [
     "curran <curran.kelleher@gmail.com>"
@@ -13,12 +13,11 @@
     ".git",
     ".gitignore",
     ".travis.yml",
-    "Gruntfile.js",
     "LICENSE",
     "README.md",
-    "SpecRunner.html",
     "bower.json",
     "countLines.sh",
+    "dataFlowGraphs",
     "docs",
     "examples",
     "gulpfile.js",
@@ -26,7 +25,7 @@
     "lib",
     "node_modules",
     "package.json",
-    "requireConfig.js",
+    "sandbox",
     "server.js",
     "src",
     "tests"

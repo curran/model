@@ -84,7 +84,7 @@ Combining `when` and `set` enables creating reactive data dependency graphs. Thi
 
 ```javascript
 model.when(['firstName', 'lastName'], function (firstName, lastName) {
-  model.set('fullName', firstName + ' ' + lastName);
+  model.fullName = firstName + ' ' + lastName;
 });
 ```
 
@@ -92,11 +92,11 @@ model.when(['firstName', 'lastName'], function (firstName, lastName) {
 
 The following example demonstrates construction of a data dependency graph in which the flow propagates two hops from x to y to z.
 ```javascript
-model.when(['x'], function (x) {
-  model.set('y', x + 1);
+model.when('x', function (x) {
+  model.y = x + 1;
 });
-model.when(['y'], function (y) {
-  model.set('z', y * 2);
+model.when('y', function (y) {
+  model.z = y * 2;
 });
 ```
 
@@ -153,4 +153,4 @@ Pull requests welcome! Potential contributions include:
    * [Icicle Plot](http://mbostock.github.io/d3/talk/20111018/partition.html)
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
-By [Curran Kelleher](https://github.com/curran/portfolio) 4/17/2014
+By [Curran Kelleher](https://github.com/curran/portfolio) July 2014

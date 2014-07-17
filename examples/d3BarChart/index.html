@@ -1,17 +1,20 @@
-<!--
-  An example of a data driven visualization using model.js.
-
-  Curran Kelleher 4/16/2014
--->
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
+    <title>Bar Chart Example</title>
     <link rel="stylesheet" href="styles.css">
-    <script data-main="main.js" src="../../lib/requirejs/require.js"></script>
-    <script src="../requireConfig.js"></script>
+    <script data-main="main" src="../../lib/requirejs/require.js"></script>
+    <script>
+    require.config({
+      paths: {
+        d3: '../../lib/d3/d3.min',
+        model: '../../dist/model'
+      }
+    });
+    </script>
   </head>
   <body>
-    <div id="barChartContainer"></div>
+    <div id="container"></div>
   </body>
 </html>

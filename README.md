@@ -28,6 +28,7 @@ Check out the
    * Bootstrap
      * [Interactive List](https://github.com/curran/model/tree/gh-pages/examples/bootstrapListGroup)
      * [Table](https://github.com/curran/model/tree/gh-pages/examples/bootstrapTable)
+   * [Bootstrap and D3](https://github.com/curran/model/tree/gh-pages/examples/d3Bootstrap)
 
 ## Motivation
 

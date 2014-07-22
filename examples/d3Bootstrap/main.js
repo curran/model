@@ -1,19 +1,34 @@
-require(["d3", "scatterPlot"], function (d3, ScatterPlot) {
-  var container = document.getElementById("container"),
-      scatterPlot = ScatterPlot(container);
+require(["d3", "scatterPlot", "listGroup"], function (d3, ScatterPlot, ListGroup) {
+  var scatterPlotContainer = document.getElementById("scatterPlotContainer"),
+      scatterPlot = ScatterPlot(scatterPlotContainer),
+      xListGroup = ListGroup(document.getElementById("xListGroupContainer")),
+      yListGroup = ListGroup(document.getElementById("yListGroupContainer"));
 
   // Load the data.
   d3.tsv("../data/iris.tsv", type, function(error, data) {
-    scatterPlot.set({
-      xAttribute: "sepalLength",
-      // TODO add x label
-      yAttribute: "sepalWidth",
-      yAxisLabel: "Sepal Width",
-      data: data
+    var attributes = Object.keys(data[0]).filter(function (d) {
+      return d !== "species";
     });
-    setInterval(function () {
-      scatterPlot.data = data.filter(function(){ return Math.random() < 0.5 });
-    }, 1000);
+
+    xListGroup.set({
+      data: attributes,
+      selectedItem: "sepalLength"
+    });
+
+    yListGroup.set({
+      data: attributes,
+      selectedItem: "sepalWidth"
+    });
+
+    xListGroup.when("selectedItem", function (selectedItem) {
+      scatterPlot.xAttribute = selectedItem;
+    });
+
+    yListGroup.when("selectedItem", function (selectedItem) {
+      scatterPlot.yAttribute = selectedItem;
+    });
+
+    scatterPlot.data = data;
   });
 
   // Called on each data element from the original table.
@@ -27,8 +42,8 @@ require(["d3", "scatterPlot"], function (d3, ScatterPlot) {
   // Dynamic resize.
   function computeBox(){
     scatterPlot.box = {
-      width: container.clientWidth,
-      height: container.clientHeight
+      width: scatterPlotContainer.clientWidth,
+      height: scatterPlotContainer.clientHeight
     };
   }
   computeBox();

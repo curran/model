@@ -3,15 +3,15 @@ model.js
 
 A functional reactive model library. Provides:
 
- * Models similar to [Backbone Models](http://backbonejs.org/#Model) in that you can call
-   * `set(propertyName, value)` to set a value, and
-   * `get(propertyName)` to get a value
+ * Models similar to [Backbone Models](http://backbonejs.org/#Model)
  * A `when` function, which allows declaration of data dependency graphs in a [functional reactive](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming) style. 
 
 Usable via [Bower](http://bower.io/): `bower install model`
 
 Check out the
 
+ * [Reactive Visualization Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
+   * [Presentation on GitHub](https://github.com/curran/screencasts/tree/gh-pages/reactiveDataVis), [Incremental Bar Chart Example Code](http://curran.github.io/screencasts/reactiveDataVis/examples/viewer/index.html#/) (use left/right arrows)
  * [Documentation](http://curran.github.io/model/docs/model.html)
  * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * Examples

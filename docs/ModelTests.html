@@ -646,6 +646,56 @@ and output the file for later visualization.</p>
 
     model.x = <span class="hljs-number">5</span>;
   });
+
+  it(<span class="hljs-string">'should handle Model(defaults) constructor API'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+
+    <span class="hljs-keyword">var</span> model = Model({ x: <span class="hljs-number">5</span>, y: <span class="hljs-number">10</span> });
+
+    expect(model.x).to.equal(<span class="hljs-number">5</span>);
+    expect(model.y).to.equal(<span class="hljs-number">10</span>);
+
+    expect(model.defaults.x).to.equal(<span class="hljs-number">5</span>);
+    expect(model.defaults.y).to.equal(<span class="hljs-number">10</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Test immutability of defaults</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.defaults.x = <span class="hljs-number">50</span>;
+    expect(model.defaults.x).to.equal(<span class="hljs-number">5</span>);
+
+    model.x = <span class="hljs-number">500</span>;
+
+    model.when([<span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+      expect(x).to.equal(<span class="hljs-number">500</span>);
+      expect(model.defaults.x).to.equal(<span class="hljs-number">5</span>);
+      expect(y).to.equal(<span class="hljs-number">10</span>);
+      done();
+    });
+  });
+
+  it(<span class="hljs-string">'Models should work with JSON stringify and parse API '</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> {</span>
+
+    <span class="hljs-keyword">var</span> model1 = Model({ x: <span class="hljs-number">5</span>, y: <span class="hljs-number">10</span> }),
+        json1 = <span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">JSON</span>.stringify(model1)),
+        model2 = Model(json1);
+
+    model2.when([<span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(x, y)</span> {</span>
+      expect(x).to.equal(<span class="hljs-number">5</span>);
+      expect(y).to.equal(<span class="hljs-number">10</span>);
+      done();
+    });
+
+  });
 });</pre></div></div>
             
         </li>

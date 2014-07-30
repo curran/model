@@ -390,10 +390,17 @@ describe('model', function() {
     });
   });
 
-  //it('Models should work with JSON stringify and parse API ', function(done) {
+  it('Models should work with JSON stringify and parse API ', function(done) {
 
-  //  // Create a new model by calling `Model()`.
-  //  var model = Model({ x: 5, y: 10 });
+    var model1 = Model({ x: 5, y: 10 }),
+        json1 = JSON.parse(JSON.stringify(model1)),
+        model2 = Model(json1);
 
-  //});
+    model2.when(['x', 'y'], function (x, y) {
+      expect(x).to.equal(5);
+      expect(y).to.equal(10);
+      done();
+    });
+
+  });
 });

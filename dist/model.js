@@ -5,10 +5,11 @@
 //
 // ## Public API
 //
-// `var model = Model();`
+// `var model = Model([defaults]);`
 //
 //  * The model constructor function.
 //  * Using "new" is optional.
+//  * The optional `defaults` constructor argument is an object literal that specifies default model property values.
 //  * The returned `model` object can be treated as a plain JavaScript Object
 //    for setting and getting property values, e.g.
 //    * `model.x = 5;`
@@ -94,8 +95,7 @@ define('model/model',[], function () {
   }
 
   // The Model constructor function, returned as the AMD module.
-  return function Model() {
-
+  return function Model(defaults) {
     // ### Private Variables
     //
     // Stores listener functions.
@@ -347,6 +347,27 @@ define('model/model',[], function () {
       set: set,
       detectFlowGraph: detectFlowGraph
     });
+
+    // ### `defaults`
+    if (defaults) {
+      // Make defaults object immutable via [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+      Object.freeze(defaults);
+
+      // Set the default values passed into the Model constructor on the model.
+      model.set(defaults);
+
+      // Define `model.defaults` via [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+      Object.defineProperty(model, "defaults", {
+
+        // Make `model.defaults` read-only.
+        value: defaults,
+        writable: false,
+        configurable: false,
+
+        // Prevents JSON.serialize from including `defaults` as a property.
+        enumerable: false
+      });
+    }
 
     return model;
   };

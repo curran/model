@@ -365,4 +365,35 @@ describe('model', function() {
 
     model.x = 5;
   });
+
+  it('should handle Model(defaults) constructor API', function(done) {
+
+    var model = Model({ x: 5, y: 10 });
+
+    expect(model.x).to.equal(5);
+    expect(model.y).to.equal(10);
+
+    expect(model.defaults.x).to.equal(5);
+    expect(model.defaults.y).to.equal(10);
+
+    // Test immutability of defaults
+    model.defaults.x = 50;
+    expect(model.defaults.x).to.equal(5);
+
+    model.x = 500;
+
+    model.when(['x', 'y'], function (x, y) {
+      expect(x).to.equal(500);
+      expect(model.defaults.x).to.equal(5);
+      expect(y).to.equal(10);
+      done();
+    });
+  });
+
+  //it('Models should work with JSON stringify and parse API ', function(done) {
+
+  //  // Create a new model by calling `Model()`.
+  //  var model = Model({ x: 5, y: 10 });
+
+  //});
 });

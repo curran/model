@@ -4,16 +4,38 @@ model.js
 A functional reactive model library. Provides:
 
  * Models similar to [Backbone Models](http://backbonejs.org/#Model)
- * A `when` function, which allows declaration of data dependency graphs in a [functional reactive](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming) style. 
+ * A `when` function, which allows declaration of data dependency graphs in a [functional reactive](http://stackoverflow.com/questions/1028250/what-is-functional-reactive-programming) style
+
+Here is some example code that defines a reactive function that computes the full name of a person based on their first and last names:
+```javascript
+var person = Model();
+
+person.when(["firstName", "lastName"], function (firstName, lastName) {
+  model.fullName = firstName + " " + lastName;
+});
+
+person.when("fullName", function (fullName) {
+  console.log("Hello " + fullName);
+});
+
+// Causes "Hello Joe Schmoe" to print.
+person.set({
+  firstName: "Joe",
+  lastName: "Schmoe"
+});
+```
+
+This is a visual representation of the data flow graph constructed by the above code:
+<img src="http://curran.github.io/model/images/computedProperty.png">
 
 Usable via [Bower](http://bower.io/): `bower install model`
 
 Check out the
 
- * [Reactive Visualization Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
+ * [Model.js Annotated Source](http://curran.github.io/model/docs/model.html)
+ * [Model.js Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
+ * [Model.js Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
    * [Presentation on GitHub](https://github.com/curran/screencasts/tree/gh-pages/reactiveDataVis), [Incremental Bar Chart Example Code](http://curran.github.io/screencasts/reactiveDataVis/examples/viewer/index.html#/) (use left/right arrows)
- * [Documentation](http://curran.github.io/model/docs/model.html)
- * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * Examples
    * D3
      * [Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)
@@ -81,7 +103,7 @@ As this was the only usage pattern I encountered with models when using Backbone
 
 ## Data Dependency Graphs
 
-Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
+Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember.jsj](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
 
 ```javascript
 model.when(['firstName', 'lastName'], function (firstName, lastName) {

@@ -1,9 +1,25 @@
 define(["d3", "model"], function (d3, Model) {
   return function BarChart (container) {
-    var model = Model(),
+    var defaults = {
+          margin: {
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+          },
+          yAxisNumTicks: 10,
+          yAxisTickFormat: ""
+        },
+        model = Model(defaults),
         xAxis = d3.svg.axis().orient("bottom"),
-        yAxis = d3.svg.axis().orient("left").ticks(10, "%"),
-        svg = d3.select(container).append("svg"),
+        yAxis = d3.svg.axis().orient("left")
+        svg = d3.select(container).append('svg')
+
+          // Use absolute positioning on the SVG element 
+          // so that CSS can be used to position the div later
+          // according to the model `box.x` and `box.y` properties.
+          .style('position', 'absolute'),
+
         g = svg.append("g"),
         xAxisG = g.append("g").attr("class", "x axis"),
         yAxisG = g.append("g").attr("class", "y axis"),
@@ -13,19 +29,34 @@ define(["d3", "model"], function (d3, Model) {
           .attr("dy", ".71em")
           .style("text-anchor", "end");
 
-    model.margin = {top: 20, right: 20, bottom: 30, left: 40};
-
+    // Encapsulate D3 Conventional Margins.
+    // See also http://bl.ocks.org/mbostock/3019563
     model.when(["box", "margin"], function (box, margin) {
       model.width = box.width - margin.left - margin.right,
       model.height = box.height - margin.top - margin.bottom;
     });
-
-    model.when("box", function (box) {
-      svg.attr("width", box.width).attr("height", box.height);
-    });
-
     model.when("margin", function (margin) {
       g.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    });
+
+    // Adjust Y axis tick mark parameters.
+    // See https://github.com/mbostock/d3/wiki/Quantitative-Scales#linear_tickFormat
+    model.when(['yAxisNumTicks', 'yAxisTickFormat'], function (count, format) {
+      yAxis.ticks(count, format);
+    });
+
+    // Respond to changes in size and offset.
+    model.when("box", function (box) {
+
+      // Resize the svg element that contains the visualization.
+      svg.attr("width", box.width).attr("height", box.height);
+
+      // Set the CSS `left` and `top` properties
+      // to move the SVG element to `(box.x, box.y)`
+      // relative to the container div to apply the offset.
+      svg
+        .style('left', box.x + 'px')
+        .style('top', box.y + 'px');
     });
 
     model.when("height", function (height) {

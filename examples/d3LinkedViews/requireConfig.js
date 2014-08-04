@@ -1,8 +1,11 @@
-// The configuration for Require.js.
-// Curran Kelleher 4/17/2014
+// The configuration for Require.js
+// that specifies where to load modules from.
+//
+// Curran Kelleher, August 2014
 require.config({
-  // Map the `model` module name to the model lib.
   paths: {
-    model: '../../src/model'
+    model: '../../src/model',
+    d3: '../../lib/d3/d3.min',
+    barChart: '../d3BarChart/barChart'
   }
 });

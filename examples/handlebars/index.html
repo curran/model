@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reactive Template Example</title>
+    <!--
+      This is an example of how Handlebars templates
+      can be used with Model.js.
+
+      Curran Kelleher August 2014
+    -->
+
+    <script src="handlebars.js"></script>
+
+    <!-- This Handlebars template reacts to changes in the model. -->
+    <script type="text/x-handlebars-template" id="name-template" dependencies="fullName">
+      Hello {{fullName}}!
+    </script>
+
+    <!-- Configure require.js module paths. -->
+    <script>
+      require.config({
+        paths: {
+          model: '../../dist/model',
+          // TODO use Handlebars as an AMD module.
+        }
+      });
+    </script>
+
+    <!-- Run main.js. -->
+    <script data-main="main" src="../../lib/requirejs/require.js"></script>
+  </head>
+  <body>
+
+    <!-- This container will contain the rendered view. -->
+    <div id="container"></div>
+  </body>
+</html>

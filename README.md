@@ -11,7 +11,7 @@ Here is some example code that defines a reactive function that computes the ful
 var person = Model();
 
 person.when(["firstName", "lastName"], function (firstName, lastName) {
-  model.fullName = firstName + " " + lastName;
+  person.fullName = firstName + " " + lastName;
 });
 
 person.when("fullName", function (fullName) {

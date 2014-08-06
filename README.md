@@ -110,7 +110,7 @@ As this was the only usage pattern I encountered with models when using Backbone
 
 ## Data Dependency Graphs
 
-Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember.jsj](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
+Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember.js](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
 
 ```javascript
 model.when(['firstName', 'lastName'], function (firstName, lastName) {

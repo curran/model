@@ -1,3 +1,5 @@
+This example is out of date, and is replaced by the [model-contrib bar chart example](http://curran.github.io/model-contrib/#/examples/barChart).
+
 An example model-driven bar chart using `model.js`. Draws from the [D3 bar chart example](http://bl.ocks.org/mbostock/3885304).
 
 [Run the bar chart](http://curran.github.io/model/examples/d3BarChart/)

@@ -1,7 +1,7 @@
 model.js
 ========
 
-A functional reactive model library.
+A functional reactive model library. See also [model-contrib](http://curran.github.io/model-contrib/#/).
 
 Usable via [Bower](http://bower.io/): `bower install model`
 
@@ -10,11 +10,12 @@ Features:
  * Models similar to [Backbone Models](http://backbonejs.org/#Model)
    * Create them like this `var model = Model();`
    * Set or get values like this `model.x = 5; console.log(model.x);`
- * A `when` function, which allows declaration of data flow graphs
+ * A `when` function allows declaration of data flow graphs
 
 Model.js manages the execution flow of the data flow graphs you define.
 
 This example code computes `lastName` from `firstName` and `lastName`:
+
 ```javascript
 var person = Model();
 
@@ -38,10 +39,10 @@ This is a visual representation of the data flow graph constructed by the above 
 
 Check out the
 
+ * [Model.js API Docs](http://curran.github.io/model/docs/model.html)
+ * [Model.js Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * [Model.js Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
    * [Presentation on GitHub](https://github.com/curran/screencasts/tree/gh-pages/reactiveDataVis), [Incremental Bar Chart Example Code](http://curran.github.io/screencasts/reactiveDataVis/examples/viewer/index.html#/) (use left/right arrows)
- * [Model.js Annotated Source](http://curran.github.io/model/docs/model.html)
- * [Model.js Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * Examples
    * D3
      * [Bar Chart](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart)

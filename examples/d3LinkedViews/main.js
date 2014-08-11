@@ -21,7 +21,7 @@ require(['d3', 'scatterPlot', 'barChart'], function (d3, ScatterPlot, BarChart) 
   });
 
   // Configure the bar chart to use the aggregated iris data.
-  barChart.set({
+   barChart.set({
     xAttribute: 'species',
     yAttribute: 'count',
     yAxisLabel: 'number of irises',

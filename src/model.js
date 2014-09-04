@@ -349,23 +349,8 @@ define([], function () {
 
     // ### `defaults`
     if (defaults) {
-      // Make defaults object immutable via [Object.freeze](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
-      Object.freeze(defaults);
-
       // Set the default values passed into the Model constructor on the model.
       model.set(defaults);
-
-      // Define `model.defaults` via [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
-      Object.defineProperty(model, "defaults", {
-
-        // Make `model.defaults` read-only.
-        value: defaults,
-        writable: false,
-        configurable: false,
-
-        // Prevents JSON.serialize from including `defaults` as a property.
-        enumerable: false
-      });
     }
 
     return model;

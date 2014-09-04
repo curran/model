@@ -946,74 +946,11 @@ so methods are callable but do not appear as “own properties” of the object.
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
-              <p>Make defaults object immutable via <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze">Object.freeze</a></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-built_in">Object</span>.freeze(defaults);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
               <p>Set the default values passed into the Model constructor on the model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      model.set(defaults);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p>Define <code>model.defaults</code> via <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">Object.defineProperty</a></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-built_in">Object</span>.defineProperty(model, <span class="hljs-string">"defaults"</span>, {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
-              <p>Make <code>model.defaults</code> read-only.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        value: defaults,
-        writable: <span class="hljs-literal">false</span>,
-        configurable: <span class="hljs-literal">false</span>,</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-52">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
-              </div>
-              <p>Prevents JSON.serialize from including <code>defaults</code> as a property.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        enumerable: <span class="hljs-literal">false</span>
-      });
+            <div class="content"><div class='highlight'><pre>      model.set(defaults);
     }
 
     <span class="hljs-keyword">return</span> model;

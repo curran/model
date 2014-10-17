@@ -20,7 +20,7 @@ This example code computes `lastName` from `firstName` and `lastName`:
 var person = Model();
 
 person.when(["firstName", "lastName"], function (firstName, lastName) {
-  person.fullName = firstName + " " + lastName;
+  this.fullName = firstName + " " + lastName;
 });
 
 person.when("fullName", function (fullName) {

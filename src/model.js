@@ -243,7 +243,7 @@ define([], function () {
 
       // Make sure the default "this." becomes 
       // the object you called ".when" on
-      thisArg = thisArg || this
+      thisArg = thisArg || this;
 
       // Support passing either single string or 
       // an array of strings as the `properties` argument.

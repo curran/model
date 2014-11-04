@@ -707,6 +707,22 @@ to be called appropriately.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
+              <p>Make sure the default “this.” becomes 
+the object you called “.when” on</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      thisArg = thisArg || <span class="hljs-keyword">this</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
               <p>Support passing either single string or 
 an array of strings as the <code>properties</code> argument.</p>
 
@@ -719,11 +735,11 @@ an array of strings as the <code>properties</code> argument.</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>For each dependency property, track it using
 Object.defineProperty where setters invoke listeners.</p>
@@ -735,11 +751,11 @@ Object.defineProperty where setters invoke listeners.</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Set up the callback to be invoked with property values
 once initially, when any property changes, but only
@@ -753,11 +769,11 @@ when all property values are defined.</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <h4 id="removelistener">removeListener</h4>
 <p>Removes a listener added by a call to <code>when</code>.</p>
@@ -769,11 +785,11 @@ when all property values are defined.</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>For each key that has listeners,</p>
 
@@ -784,11 +800,11 @@ when all property values are defined.</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>remove the given listener from its array.</p>
 
@@ -803,11 +819,11 @@ when all property values are defined.</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <h4 id="set">set</h4>
 <p>Copies values from <code>values</code> to <code>model</code>.</p>
@@ -823,11 +839,11 @@ when all property values are defined.</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <h4 id="detectflowgraph">detectFlowGraph</h4>
 <p>Detects the flow graph that executes within
@@ -842,11 +858,11 @@ the given <code>wait</code> time (in ms).</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Default wait time.</p>
 
@@ -902,11 +918,11 @@ the given <code>wait</code> time (in ms).</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Define the public API object. See also <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create">Object.create docs</a>.</p>
 <p>The object passed to <code>Object.create</code> becomes the prototype of <code>model</code>,
@@ -925,11 +941,11 @@ so methods are callable but do not appear as “own properties” of the object.
         </li>
         
         
-        <li id="section-47">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <h3 id="-defaults-"><code>defaults</code></h3>
 
@@ -940,11 +956,11 @@ so methods are callable but do not appear as “own properties” of the object.
         </li>
         
         
-        <li id="section-48">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>Set the default values passed into the Model constructor on the model.</p>
 

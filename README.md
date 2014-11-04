@@ -20,7 +20,7 @@ This example code computes `lastName` from `firstName` and `lastName`:
 var person = Model();
 
 person.when(["firstName", "lastName"], function (firstName, lastName) {
-  this.fullName = firstName + " " + lastName;
+  person.fullName = firstName + " " + lastName;
 });
 
 person.when("fullName", function (fullName) {
@@ -33,6 +33,15 @@ person.set({
   lastName: "Schmoe"
 });
 ```
+
+You could alternatively use the "this" keyword to refer to the model instance, like this:
+
+```javascript
+person.when(["firstName", "lastName"], function (firstName, lastName) {
+  this.fullName = firstName + " " + lastName;
+});
+```
+Thanks to [mathiasrw](https://github.com/mathiasrw) for this [contribution](https://github.com/curran/model/commit/e7f346c7de4188f2246f696cb787c0fdd7ce467e).
 
 This is a visual representation of the data flow graph constructed by the above code:
 <img src="http://curran.github.io/model/images/computedProperty.png">

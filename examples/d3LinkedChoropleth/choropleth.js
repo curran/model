@@ -19,7 +19,7 @@
 // By Curran Kelleher 4/22/2014
 define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
   return function (div) {
-    var quantize = d3.scale.quantize().domain([0, .15])
+    var colorScale = d3.scale.quantize().domain([0, .1])
           .range(d3.range(9).map(function(i) { return 'q' + i + '-9'; })),
         projection = d3.geo.equirectangular().translate([0, 0]).scale(1),
         path = d3.geo.path().projection(projection),
@@ -121,13 +121,11 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     model.when(['countryFeatures', 'dataById', 'colorField'], function (countryFeatures, dataById, colorField) {
       countries(countryFeatures)
         .attr('class', function(d) {
-          return quantize(dataById[d.id]);
+          return colorScale(dataById[d.id]);
         })
         .on('mouseover', function (d) {
-          var colorField = model.get('colorField');
-          tooltip
-            .style('visibility', 'visible')
-            .html(d.id + '<br>' + colorField + ': ' + format(Math.round(dataById[d.id] * 1000000000)));
+          var html = d.id + '<br>' + colorField + ': ' + format(Math.round(dataById[d.id] * 1000000000));
+          tooltip.style('visibility', 'visible').html(html);
         })
         .on('mousemove', function () {
           tooltip

@@ -2,7 +2,7 @@
 //
 // Draws from:
 //
-//  * Mike Bostock's Choropleth D3 examples
+//  * Mike Bostock"s Choropleth D3 examples
 //    http://bl.ocks.org/mbostock/4060606
 //    http://bl.ocks.org/mbostock/3757132
 //  * SVG Geometric Zooming example
@@ -15,31 +15,93 @@
 //    https://gist.github.com/biovisualize/1016860
 //  * CSS TEXT SHADOWS
 //    http://www.w3.org/Style/Examples/007/text-shadow.en.html#multiple
-// 
+//  * D3 Color legend
+//    http://stackoverflow.com/questions/21838013/d3-choropleth-map-with-legend
+//
 // By Curran Kelleher 4/22/2014
-define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
+// Updated 11/23/2014 to add color legend.
+define(["model", "d3", "topojson"], function (Model, d3, topojson) {
   return function (div) {
-    var colorScale = d3.scale.quantize().domain([0, .1])
-          .range(d3.range(9).map(function(i) { return 'q' + i + '-9'; })),
+    var colorScale = d3.scale.quantize().domain([0, 8 * 0.02])
+          .range(d3.range(8).map(function(i) { return "q" + (i + 1) + "-9"; })),
         projection = d3.geo.equirectangular().translate([0, 0]).scale(1),
         path = d3.geo.path().projection(projection),
-        svg = d3.select(div).append('svg').style('position', 'absolute'),
-        g = svg.append('g'),
-        countriesG = g.append('g').attr('class', 'counties'),
-        zoomBehavior = d3.behavior.zoom().on('zoom', function () {
+        svg = d3.select(div).append("svg").style("position", "absolute"),
+
+        // Define the hatching pattern used for missing data.
+        // Draws from http://stackoverflow.com/questions/13069446/simple-fill-pattern-in-svg-diagonal-hatching
+        defs = svg
+          .append("defs")
+          .append("pattern")
+            .attr("id", "diagonalHatch")
+            .attr("patternUnits", "userSpaceOnUse")
+            .attr("width", "4")
+            .attr("height", "4")
+          .append("path")
+            .attr("d", "M-1,1 l2,-2 \nM0,4 l4,-4 \nM3,5 l2,-2")
+            .attr("stroke", "gray")
+            .attr("stroke-width", "1px"),
+
+        g = svg.append("g"),
+        countriesG = g.append("g").attr("class", "counties"),
+        zoomBehavior = d3.behavior.zoom().on("zoom", function () {
           model.set({
             pan: d3.event.translate,
             zoom: d3.event.scale
           });
         }),
         tooltip = d3.select(div)
-          .append('div')
-          .attr('class', 'tooltip')
-          .style('position', 'absolute')
-          .style('z-index', '10')
-          .style('visibility', 'hidden');
+          .append("div")
+          .attr("class", "tooltip")
+          .style("position", "absolute")
+          .style("z-index", "10")
+          .style("visibility", "hidden"),
         model = Model(),
-        format = d3.format(',');
+        format = d3.format(","),
+        missingDataFill = "url(#diagonalHatch)",
+        legendEntries = colorScale.range().concat("missing"),
+        legend = svg.selectAll("g.legendEntry")
+          .data(legendEntries)
+          .enter()
+          .append("g").attr("class", "legendEntry");
+
+    legend
+      .append("rect")
+      .attr("x", 20)
+      .attr("y", function(d, i) {
+         return i * 30 + 20;
+      })
+     .attr("width", 20)
+     .attr("height", 20)
+     .attr("class", function(d){ 
+       return d === "missing" ? null : d;
+     })
+     .attr("fill", function(d){ 
+       return d === "missing" ? missingDataFill : null;
+     }); 
+
+    legend
+      .append("text")
+      .attr("x", 43)
+      .attr("y", function(d, i) {
+         return i * 30 + 20;
+      })
+      .attr("dy", "1.1em")
+      .style("font-size", "1.3em")
+      .text(function(d, i) {
+        if(d === "missing") {
+          return "Missing data";
+        } else {
+          var extent = colorScale.invertExtent(d).map(function (d) {
+            return Math.round(d * 1000000000);
+          });
+          if( i === colorScale.range().length - 1 ){
+            return "> " + format(+extent[0]);
+          } else {
+            return format(+extent[0]) + " - " + format(+extent[1]);
+          }
+        }
+      });
 
     // Set default pan & zoom
     model.set({
@@ -50,14 +112,14 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     // Set pan & zoom in response to interaction
     svg.call(zoomBehavior);
 
-    model.when('box', function (box) {
-      svg.attr('width', box.width)
-         .attr('height', box.height);
-      svg.style('left', box.x + 'px')
-        .style('top', box.y + 'px');
+    model.when("box", function (box) {
+      svg.attr("width", box.width)
+         .attr("height", box.height);
+      svg.style("left", box.x + "px")
+        .style("top", box.y + "px");
     });
 
-    model.when(['data', 'idField', 'colorField'], function (data, idField, colorField) {
+    model.when(["data", "idField", "colorField"], function (data, idField, colorField) {
       var dataById = {};
       data.forEach(function (d) {
         dataById[d[idField]] = +d[colorField];
@@ -65,7 +127,7 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
       model.dataById = dataById;
     });
 
-    model.when(['countries', 'box'], function (countries, box) {
+    model.when(["countries", "box"], function (countries, box) {
       var countryFeatures = topojson.feature(countries, countries.objects.countriesGeoJSON).features,
  
           // Fit the map on the display.
@@ -90,17 +152,17 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     });
 
     // Update the transform based pan & zoom
-    model.when(['pan', 'zoom'], function (pan, zoom) {
-      g.attr('transform', 'translate(' + pan + ')scale(' + zoom + ')');
+    model.when(["pan", "zoom"], function (pan, zoom) {
+      g.attr("transform", "translate(" + pan + ")scale(" + zoom + ")");
     });
 
     // Update the county polygons
-    model.when('countryFeatures', function (countryFeatures) {
-      countries(countryFeatures).attr('d', path)
-        .attr('fill', 'red');
+    model.when("countryFeatures", function (countryFeatures) {
+      countries(countryFeatures).attr("d", path)
+        .attr("fill", missingDataFill);
     });
 
-    model.when(['pan', 'zoom', 'countryFeatures', 'box'], function (pan, zoom, countryFeatures, box) {
+    model.when(["pan", "zoom", "countryFeatures", "box"], function (pan, zoom, countryFeatures, box) {
       var visibleRegions = countries(countryFeatures).filter(function () {
         // TODO make this more efficient by using a quadtree
         // in geo space and projecting pixel bounds to projected space
@@ -118,28 +180,28 @@ define(['model', 'd3', 'topojson'], function (Model, d3, topojson) {
     
 
     // Update the color only (not polygons) when the data changes
-    model.when(['countryFeatures', 'dataById', 'colorField'], function (countryFeatures, dataById, colorField) {
+    model.when(["countryFeatures", "dataById", "colorField"], function (countryFeatures, dataById, colorField) {
       countries(countryFeatures)
-        .attr('class', function(d) {
+        .attr("class", function(d) {
           return colorScale(dataById[d.id]);
         })
-        .on('mouseover', function (d) {
-          var html = d.id + '<br>' + colorField + ': ' + format(Math.round(dataById[d.id] * 1000000000));
-          tooltip.style('visibility', 'visible').html(html);
+        .on("mouseover", function (d) {
+          var html = d.id + "<br>" + colorField + ": " + format(Math.round(dataById[d.id] * 1000000000));
+          tooltip.style("visibility", "visible").html(html);
         })
-        .on('mousemove', function () {
+        .on("mousemove", function () {
           tooltip
-            .style('top', (event.pageY - 10) + 'px')
-            .style('left',(event.pageX + 10) + 'px');
+            .style("top", (event.pageY - 10) + "px")
+            .style("left",(event.pageX + 10) + "px");
         })
-        .on('mouseout', function () {
-          tooltip.style('visibility', 'hidden');
+        .on("mouseout", function () {
+          tooltip.style("visibility", "hidden");
         });
     });
 
     function countries(countryFeatures){
-      var countries = countriesG.selectAll('path').data(countryFeatures);
-      countries.enter().append('path');
+      var countries = countriesG.selectAll("path").data(countryFeatures);
+      countries.enter().append("path");
       return countries;
     }
 

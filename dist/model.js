@@ -1,4 +1,3 @@
-
 // A functional reactive model library.
 //
 // ## Public API
@@ -44,10 +43,10 @@
 //    * ... later on ..
 //    * `model.set(JSON.parse(json));`
 //
-define('model/model',[], function (){
+(function(){
 
   // The constructor function, accepting default values.
-  return function Model(defaults){
+  function Model(defaults){
 
     // The returned public API object.
     var model = {},
@@ -173,10 +172,10 @@ define('model/model',[], function (){
     }
 
     // Sets all of the given values on the model.
-    // Values is an object { property -> value }.
-    function set(values){
-      for(var property in values){
-        model[property] = values[property];
+    // `newValues` is an object { property -> value }.
+    function set(newValues){
+      for(var property in newValues){
+        model[property] = newValues[property];
       }
     }
 
@@ -190,7 +189,17 @@ define('model/model',[], function (){
     model.off = off;
     model.set = set;
     return model;
-  };
-});
+  }
 
-define('model', ['model/model'], function (main) { return main; });
+  // Support AMD (RequireJS), CommonJS (Node), and browser globals.
+  // Inspired by https://github.com/umdjs/umd
+  if (typeof define === "function" && define.amd) {
+    define([], function () {
+      return Model;
+    });
+  } else if (typeof exports === "object") {
+    module.exports = Model;
+  } else {
+    this.Model = Model;
+  }
+})();

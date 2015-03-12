@@ -79,7 +79,7 @@ will no longer be called when properties change.</li>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
             
         </li>
         
@@ -94,7 +94,7 @@ will no longer be called when properties change.</li>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">(defaults)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">(defaults)</span></span>{</pre></div></div>
             
         </li>
         
@@ -460,13 +460,13 @@ the object you called <code>.on</code> on.</p>
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Sets all of the given values on the model.
-Values is an object { property -&gt; value }.</p>
+<code>newValues</code> is an object { property -&gt; value }.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(values)</span></span>{
-      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> property <span class="hljs-keyword">in</span> values){
-        model[property] = values[property];
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(newValues)</span></span>{
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> property <span class="hljs-keyword">in</span> newValues){
+        model[property] = newValues[property];
       }
     }</pre></div></div>
             
@@ -504,8 +504,32 @@ Values is an object { property -&gt; value }.</p>
     model.off = off;
     model.set = set;
     <span class="hljs-keyword">return</span> model;
-  };
-});</pre></div></div>
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Support AMD (RequireJS), CommonJS (Node), and browser globals.
+Inspired by <a href="https://github.com/umdjs/umd">https://github.com/umdjs/umd</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">"function"</span> &amp;&amp; define.amd) {
+    define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">return</span> Model;
+    });
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">"object"</span>) {
+    <span class="hljs-built_in">module</span>.exports = Model;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">this</span>.Model = Model;
+  }
+})();</pre></div></div>
             
         </li>
         

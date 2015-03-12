@@ -1,6 +1,6 @@
 // Unit tests for `model.js`.
-//
-// By Curran Kelleher July 2014
+// 
+// Curran Kelleher March 2015
 var requirejs = require('requirejs'),
     expect = require('chai').expect,
     fs = require('fs'),
@@ -9,21 +9,9 @@ var requirejs = require('requirejs'),
 // Point require.js to the built model.js source.
 requirejs.config({ baseUrl: 'dist' });
 
-// Detects the model dependency graph then
-// writes the graph to disk for later visualization.
-function outputDataFlowGraph(name, model){
-  if(writeDataFlowFiles){
-    model.detectFlowGraph(function (graph) {
-      var json = JSON.stringify(graph, null, 2);
-      fs.writeFile('./dataFlowGraphs/' + name + '.json', json, function(err) {
-        if(err) console.log(err);
-      }); 
-    });
-  }
-}
-
 describe('model', function() {
 
+  // Load the library as an AMD module.
   var Model = requirejs('model');
 
   it('should create a model and listen for changes to a single property', function(done) {
@@ -148,8 +136,6 @@ describe('model', function() {
   // This pattern can be used to define a data dependency graph
   // using a functional reactive style. The model system automatically propagates changes
   // through the data dependency graph. This is similar to computed properties in Ember.js.
-  //
-  // <iframe src="../examples/dataFlowDiagram/#fullName" width="450" height="200" frameBorder="0"></iframe>
   it('should compute fullName from firstName and lastName', function(done) {
     var model = Model();
 
@@ -162,13 +148,10 @@ describe('model', function() {
       done();
     });
 
-    outputDataFlowGraph('fullName', model);
-
     model.firstName = 'John';
     model.lastName = 'Doe';
   });
 
-  // <iframe src="../examples/dataFlowDiagram/#twoHops" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes two hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['x'], function (x) {
@@ -183,12 +166,9 @@ describe('model', function() {
       done();
     });
 
-    outputDataFlowGraph('twoHops', model);
-
     model.x = 10;
   });
 
-  // <iframe src="../examples/dataFlowDiagram/#threeHops" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes three hops through a data dependency graph', function(done) {
     var model = Model();
     model.when(['w'], function (w) {
@@ -207,8 +187,6 @@ describe('model', function() {
       expect(z).to.equal(22);
       done();
     });
-
-    outputDataFlowGraph('threeHops', model);
 
     model.w = 5;
   });
@@ -235,8 +213,6 @@ describe('model', function() {
   // 
   //  * a -> b -> d -> f
   //  * a -> c -> e -> f
-  //
-  // <iframe src="../examples/dataFlowDiagram/#breadthFirst" width="450" height="200" frameBorder="0"></iframe>
   it('should propagate changes in breadth first iterations', function (done) {
     var model = Model();
 
@@ -265,9 +241,42 @@ describe('model', function() {
       done();
     });
     
-    outputDataFlowGraph('breadthFirst', model);
-
     model.a = 5;
+  });
+
+  it('should support model.on', function() {
+    var model = Model({ x: 4 });
+    model.on("x", function(newValue, oldValue){
+      expect(newValue).to.equal(5);
+      expect(oldValue).to.equal(4);
+      expect(this).to.equal(model);
+    });
+    model.x = 5;
+  });
+
+  it('should support model.on with thisArg', function() {
+    var model = Model(),
+        that = { foo: "bar" };
+    model.on("x", function(newValue, oldValue){
+      expect(this.foo).to.equal("bar");
+    }, that);
+    model.x = 5;
+  });
+
+  it('should support model.off', function() {
+    var model = Model(),
+        invocationCount = 0,
+        callback = function(newValue, oldValue){
+          invocationCount++;
+        };
+    model.on("x", callback);
+    model.x = 5;
+    expect(invocationCount).to.equal(1);
+    model.x = 6;
+    expect(invocationCount).to.equal(2);
+    model.off("x", callback);
+    model.x = 7;
+    expect(invocationCount).to.equal(2);
   });
 
   it('should remove listeners', function(done) {
@@ -288,7 +297,28 @@ describe('model', function() {
     }, 0);
   });
 
-  it('should cancel multiple listeners separately', function(done) {
+  it('should remove listeners for multiple properties', function(done) {
+    var model = Model(),
+        xValue,
+        listener = model.when(["x", "y", "z"], function (x, y, z) {
+          xValue = x;
+        });
+    model.x = 5;
+    model.y = 6;
+    model.z = 7;
+    setTimeout(function () {
+      expect(xValue).to.equal(5);
+      model.removeListener(listener);
+      model.x = 8;
+      model.y = 9;
+      setTimeout(function () {
+        expect(xValue).to.equal(5);
+        done();
+      }, 0);
+    }, 0);
+  });
+
+  it('should remove multiple listeners separately', function(done) {
     var model = Model(),
         xValue,
         yValue,
@@ -315,55 +345,6 @@ describe('model', function() {
         }, 0);
       }, 0);
     }, 0);
-  });
-
-  // <iframe src="../examples/dataFlowDiagram/#simple" width="450" height="200" frameBorder="0"></iframe>
-  it('should detect a flow graph', function(done) {
-    var model = Model();
-    model.when('x', function (x) {
-      model.y = x * 2;
-    });
-
-    // The changed properties must be tracked
-    // by calling `when` in order for flow detection to work.
-    model.when('y', function (y) {});
-
-    model.detectFlowGraph(function (graph) {
-      var xId, yId, lambdaId;
-
-      //console.log(JSON.stringify(graph, null, 2));
-      expect(graph.nodes.length).to.equal(3);
-      expect(graph.links.length).to.equal(2);
-
-      graph.nodes.forEach(function (node) {
-        if(node.type === 'lambda') {
-          lambdaId = node.index;
-        } else if(node.type === 'property') {
-          if(node.name === 'x') {
-            xId = node.index;
-          } else if(node.name === 'y') {
-            yId = node.index;
-          }
-        }
-      });
-
-      graph.links.forEach(function (link) {
-        if(link.source === xId){
-          expect(link.target).to.equal(lambdaId);
-        } else if(link.source === lambdaId){
-          expect(link.target).to.equal(yId);
-        }
-      });
-
-      // Detect the flow graph again
-      // and output the file for later visualization.
-      outputDataFlowGraph('simple', model);
-      model.x = 10;
-
-      done();
-    });
-
-    model.x = 5;
   });
 
   it('should handle Model(defaults) constructor API', function() {

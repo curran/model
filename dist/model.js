@@ -1,8 +1,6 @@
 
 // A functional reactive model library.
 //
-// By [Curran Kelleher](https://github.com/curran/portfolio) July 2014
-//
 // ## Public API
 //
 // `var model = Model([defaults]);`
@@ -15,7 +13,7 @@
 //    * `model.x = 5;`
 //    * `console.log(model.x);`
 //
-// `model.when(properties, callback [, thisArg]);`
+// `var listener = model.when(properties, callback [, thisArg]);`
 //
 //  * Listens for changes to the given dependency properties.
 //  * `properties` Either an array of strings or a string.
@@ -30,334 +28,167 @@
 //    * only once as a result of one or more changes to
 //      dependency properties.
 //  * `thisArg` An optional argument bound to `this` in the callback.
+//  * Returns a `listener` object that can be used to remove the callback.
 //
 // `model.removeListener(listenerToRemove)`
 //
-//  * Removes the listener returned by `when`.
+//  * Removes the listener returned by `when`. This means the callback
+//    will no longer be called when properties change.
 //
 // `model.set(values)`
 //
-//  * A convenience function for setting many model properties.
-//  * Assigns each property from the given `values` object.
+//  * A convenience function for setting many model properties at once.
+//  * Assigns each property from the given `values` object to the model.
 //  * This function can be used to deserialize models, e.g.:
 //    * `var json = JSON.stringify(model);`
 //    * ... later on ..
 //    * `model.set(JSON.parse(json));`
 //
-/* Here's some example code demonstrating how to use model.js.
- * This code computes a `fullName` property based on two others,
- * `firstName` and `lastName`.
+define('model/model',[], function (){
 
-var model = Model();
+  // The constructor function, accepting default values.
+  return function Model(defaults){
 
-model.when(['firstName', 'lastName'], function (firstName, lastName) {
-  model.fullName = firstName + ' ' + lastName;
-});
+    // The returned public API object.
+    var model = {},
 
-model.when('fullName', function (fullName) {
-  console.log(fullName); // prints 'John Doe'
-});
-
-model.firstName = 'John';
-model.lastName = 'Doe';
-*/
-
-// ## Implementation
-define('model/model',[], function () {
-
-  // ### Helper Functions
-  //
-  // Returns a function which when called schedules
-  // the original callback function to execute on the next
-  // tick of the JavaScript event loop. Multiple calls to the
-  // debounced function within a single tick of the event loop
-  // cause the original callback to be called only once.
-  //
-  // See also [debounce in Underscore.js](http://underscorejs.org/#debounce).
-  function debounce(callback){
-    var queued = false;
-    return function () {
-      if(!queued){
-        queued = true;
-        setTimeout(function () {
-          queued = false;
-          callback();
-        }, 0);
-      }
-    };
-  }
-
-  // Returns true if all elements of the given array are defined.
-  function allAreDefined(arr){
-    return !arr.some(function (d) {
-      return typeof d === 'undefined' || d === null;
-    });
-  }
-
-  // The Model constructor function, returned as the AMD module.
-  return function Model(defaults) {
-    // ### Private Variables
-    //
-    // Stores listener functions.
-    //
-    //  * Keys are property names.
-    //  * Values are arrays of listener functions.
-    var listeners = {},
-
-        // Flags which properties have been tracked.
-        //
-        //  * Keys are property names.
-        //  * Values are `true`.
-        trackedProperties = {},
-
-        // Stores the internal values for tracked properties.
-        //
-        //  * Keys are property names.
-        //  * Values are the property values of the model.
+        // The internal stored values for tracked properties. { property -> value }
         values = {},
-        
-        // Tracks which properties change inside a callback,
-        // used for detecting the flow graph. This is normally
-        // null, but becomes an object that stores which properties
-        // change when a callback is being called.
-        changedProperties,
 
-        // A function used for detecting the data flow graph.
-        recordLambda,
+        // The callback functions for each tracked property. { property -> [callback] }
+        listeners = {},
 
-        // The object returned, containing the public API.
-        model;
+        // The set of tracked properties. { property -> true }
+        trackedProperties = {};
 
-    // #### addListener
-    // This function deals with calling the callback.
-    function addListener(properties, callback, thisArg){
-
-      // Define a listener function that invokes the callback,
-      // passing as arguments the model property values corresponding
-      // to the given dependency properties.
-      var listener = debounce(function () {
-
-        // Extract the property values into an array.
-        var args = properties.map(function (property) {
-          return values[property];
-        });
-
-        // Call the callback if all properties are defined.
-        if(allAreDefined(args)) {
-          // If the flow graph is being detected,
-          if(recordLambda) {
-            // Prepare for recording which properties change
-            // inside the callback.
-            changedProperties = {};
-          }
-
-          // Call the callback.
-          callback.apply(thisArg, args);
-
-          // If the flow graph is being detected,
-          if(recordLambda) {
-
-            // record this listener as a lambda node
-            // in the flow graph.
-            recordLambda(properties);
-          }
-        }
-      });
-
-      // Invoke the listener once for initialization.
-      listener();
-
-      // Store the listener such that it get invoked
-      // when any dependency properties change.
-      properties.forEach(function(property){
-        if(!listeners[property]) {
-          listeners[property] = [];
-        }
-        listeners[property].push(listener);
-      });
-      return listener;
-    }
-
-    // #### trackProperty
-    // This function deals with tracking properties.
-    function trackProperty(property){
-
-      // If the property is not already tracked,
-      if(!trackedProperties[property]) {
-
-        // flag the property as tracked.
-        trackedProperties[property] = true;
-
-        // Copy the value that may have been previously assigned
-        // from the `model` object to the internal `values` object.
-        //
-        // This allows properties to be assigned before they are
-        // listened to using `model.when`.
-        values[property] = model[property];
-
-        // Track the property on the `model` object using setters and getters.
-        // See also [Object.defineProperty docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty).
-        Object.defineProperty(model, property, {
-          
-          // When a property is evaluated on `model`,
-          get: function () {
-
-            // return the internal value.
-            return values[property];
-          },
-
-          // When a property is assigned on `model` (e.g. `model.x = 5`),
-          set: function(value) {
-
-            // If the flow graph is being detected,
-            if(changedProperties) {
-              // mark the property as changed.
-              changedProperties[property] = true;
-            }
-
-            // assign the internal value, and
-            values[property] = value;
-
-            // notify listeners.
-            if(listeners[property]){
-              listeners[property].forEach(function (listener) {
-              
-                // Note that a single listener may be called many times
-                // if more than one of its dependency properties changes,
-                // or if a single dependency property changes more than once.
-                // These multiple calls collapse to a single call to the original
-                // callback because the listener is debounced.
-                listener();
-              });
-            }
-          }
-        });
-      }
-    }
-
-    // ### Public Methods
+    // The functional reactive "when" operator.
     //
-    // #### when
-    // Tracks properties and sets up the callback
-    // to be called appropriately.
-    function when(properties, callback, thisArg) {
-
-      // Make sure the default "this." becomes 
-      // the object you called ".when" on
+    //  * `properties` An array of property names (can also be a single property string).
+    //  * `callback` A callback function that is called:
+    //    * with property values as arguments, ordered corresponding to the properties array,
+    //    * only if all specified properties have values,
+    //    * once for initialization,
+    //    * whenever one or more specified properties change,
+    //    * on the next tick of the JavaScript event loop after properties change,
+    //    * only once as a result of one or more synchronous changes to dependency properties.
+    function when(properties, callback, thisArg){
+      
+      // Make sure the default `this` becomes 
+      // the object you called `.on` on.
       thisArg = thisArg || this;
 
-      // Support passing either single string or 
-      // an array of strings as the `properties` argument.
-      if(!(properties instanceof Array)) {
-        properties = [properties];
-      }
+      // Handle either an array or a single string.
+      properties = (properties instanceof Array) ? properties : [properties];
 
-      // For each dependency property, track it using
-      // Object.defineProperty where setters invoke listeners.
-      properties.forEach(trackProperty);
-
-      // Set up the callback to be invoked with property values
-      // once initially, when any property changes, but only
-      // when all property values are defined.
-      return addListener(properties, callback, thisArg);
-    }
-
-    // #### removeListener
-    // Removes a listener added by a call to `when`.
-    function removeListener(listenerToRemove) {
-
-      // For each key that has listeners,
-      Object.keys(listeners).forEach(function (property) {
-
-        // remove the given listener from its array.
-        listeners[property] = listeners[property].filter(function (listener) {
-          return listener !== listenerToRemove;
+      // This function will trigger the callback to be invoked.
+      var triggerCallback = debounce(function (){
+        var args = properties.map(function(property){
+          return values[property];
         });
+        if(allAreDefined(args)){
+          callback.apply(thisArg, args);
+        }
       });
+
+      // Trigger the callback once for initialization.
+      triggerCallback();
+      
+      // Trigger the callback whenever specified properties change.
+      properties.forEach(function(property){
+        on(property, triggerCallback);
+      });
+
+      // Return this function so it can be removed later.
+      return triggerCallback;
     }
 
-    // #### set
-    // Copies values from `values` to `model`.
-    function set(values){
-      Object.keys(values).forEach(function (property) {
-        model[property] = values[property];
-      });
-    }
-
-    // #### detectFlowGraph
-    // Detects the flow graph that executes within
-    // the given `wait` time (in ms).
-    function detectFlowGraph(callback, wait){
-      var nodes = {},
-          links = [];
-
-      // Default wait time.
-      wait = wait || 50;
-
-      function propertyNode(name) {
-        return nodes[name] || (nodes[name] = { type: 'property', name: name });
-      }
-
-      function lambdaNodeKey(inProperties, outProperties) {
-        return inProperties.join(',') + '|' + outProperties.join(',');
-      }
-
-      recordLambda = function (inProperties) {
-        var outProperties = Object.keys(changedProperties),
-            key = lambdaNodeKey(inProperties, outProperties),
-            lambda = nodes[key];
-        if(!lambda && outProperties.length > 0){
-          lambda = nodes[key] = { type: 'lambda' };
-          inProperties.forEach(function (property) {
-            links.push({
-              source: propertyNode(property),
-              target: lambda
-            });
-          });
-          outProperties.forEach(function (property) {
-            links.push({
-              source: lambda,
-              target: propertyNode(property)
-            });
-          });
+    // Returns a debounced version of the given function.
+    // See http://underscorejs.org/#debounce
+    function debounce(callback){
+      var queued = false;
+      return function () {
+        if(!queued){
+          queued = true;
+          setTimeout(function () {
+            queued = false;
+            callback();
+          }, 0);
         }
       };
-      setTimeout(function () {
-        callback({
-          nodes: Object.keys(nodes).map(function (key, i) {
-            var node = nodes[key];
-            node.index = i;
-            return node;
-          }),
-          links: links.map(function (link) {
-            return {
-              source: link.source.index,
-              target: link.target.index
-            };
-          })
+    }
+
+    // Returns true if all elements of the given array are defined, false otherwise.
+    function allAreDefined(arr){
+      return !arr.some(function (d) {
+        return typeof d === 'undefined' || d === null;
+      });
+    }
+
+    // Adds a change listener for a given property with Backbone-like behavior.
+    // Similar to http://backbonejs.org/#Events-on
+    function on(property, callback, thisArg){
+
+      // Make sure the default `this` becomes 
+      // the object you called `.on` on.
+      thisArg = thisArg || this;
+      getListeners(property).push(callback);
+      track(property, thisArg);
+    }
+    
+    // Gets or creates the array of listener functions for a given property.
+    function getListeners(property){
+      return listeners[property] || (listeners[property] = []);
+    }
+
+    // Tracks a property if it is not already tracked.
+    function track(property, thisArg){
+      if(!(property in trackedProperties)){
+        trackedProperties[property] = true;
+        values[property] = model[property];
+        Object.defineProperty(model, property, {
+          get: function () { return values[property]; },
+          set: function(newValue) {
+            var oldValue = values[property];
+            values[property] = newValue;
+            getListeners(property).forEach(function(callback){
+              callback.call(thisArg, newValue, oldValue);
+            });
+          }
         });
-      }, wait);
+      }
     }
 
-    // Define the public API object. See also [Object.create docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
-    //
-    // The object passed to `Object.create` becomes the prototype of `model`,
-    // so methods are callable but do not appear as "own properties" of the object.
-    //
-    // This makes it is possible to call `JSON.stringify(model)` to serialize models.
-    model = Object.create({
-      when: when,
-      removeListener: removeListener,
-      set: set,
-      detectFlowGraph: detectFlowGraph
-    });
-
-    // ### `defaults`
-    if (defaults) {
-      // Set the default values passed into the Model constructor on the model.
-      model.set(defaults);
+    // Removes a listener added using `when()`.
+    function removeListener(listener){
+      for(var property in listeners){
+        off(property, listener);
+      }
     }
 
+    // Removes a change listener added using `on`.
+    function off(property, callback){
+      listeners[property] = listeners[property].filter(function (listener) {
+        return listener !== callback;
+      });
+    }
+
+    // Sets all of the given values on the model.
+    // Values is an object { property -> value }.
+    function set(values){
+      for(var property in values){
+        model[property] = values[property];
+      }
+    }
+
+    // Transfer defaults passed into the constructor to the model.
+    set(defaults);
+
+    // Expose the public API.
+    model.when = when;
+    model.removeListener = removeListener;
+    model.on = on;
+    model.off = off;
+    model.set = set;
     return model;
   };
 });

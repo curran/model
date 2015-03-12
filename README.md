@@ -2,24 +2,26 @@ model.js
 ========
 
 A functional reactive model library - Model.js manages the execution flow of the data flow graphs you define.
-. Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.github.io/react/), but _simpler_ and designed specifically for making [D3](http://d3js.org/) easier to use.
+Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.github.io/react/), but _simpler_ and designed specifically for making [D3](http://d3js.org/) easier to use.
 
-
-## Public API
+ * [Annotated Source](http://curran.github.io/model/docs/model.html)
+ * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
 
 Installable via [Bower](http://bower.io/): `bower install model`.
 
-Model.js is exposed usable as:
+Usable as:
 
  * an AMD (RequireJS) module `define(["model"], function(Model){ ... });`
  * a CommonJS (Node) module `var Model = require("model");`
  * a browser global `<script src="model.js"></script>`
 
+## Public API
+
 `var model = Model([defaults]);`
 
  * The model constructor function.
  * Using "new" is optional.
- * The optional `defaults` constructor argument is an object literal that specifies default model property values.
+ * The optional `defaults` constructor argument is an object with default property values.
  * The returned `model` object can be treated as a plain JavaScript Object
    for setting and getting property values, e.g.
    * `model.x = 5;`
@@ -50,10 +52,12 @@ Model.js is exposed usable as:
 `model.on(property, callback(newValue, oldValue)[, thisArg])`
 
  * Adds a change listener for the given property.
+ * Kind of like [on in Backbone](http://backbonejs.org/#Events-on)
 
-`model.off(property, callback)
+`model.off(property, callback)`
 
  * Removes a change listener for the given property.
+ * Kind of like [off in Backbone](http://backbonejs.org/#Events-off)
 
 `model.set(values)`
 
@@ -67,8 +71,6 @@ Model.js is exposed usable as:
 
 ## See Also
 
- * [Annotated Source](http://curran.github.io/model/docs/model.html)
- * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * [Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
    * [Presentation on GitHub](https://github.com/curran/screencasts/tree/gh-pages/reactiveDataVis), [Incremental Bar Chart Example Code](http://curran.github.io/screencasts/reactiveDataVis/examples/viewer/index.html#/) (use left/right arrows)
  * Examples

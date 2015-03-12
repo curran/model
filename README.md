@@ -68,6 +68,44 @@ Usable as:
    * ... later on ..
    * `model.set(JSON.parse(json));`
 
+## Data Dependency Graphs
+
+Setting model properties in `when` callbacks enables creating reactive data dependency graphs. . As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
+
+```javascript
+model.when(['firstName', 'lastName'], function (firstName, lastName) {
+  model.fullName = firstName + ' ' + lastName;
+});
+```
+
+<img src="http://curran.github.io/model/images/computedProperty.png">
+
+The following example demonstrates construction of a data dependency graph in which the flow propagates two hops from x to y to z.
+```javascript
+model.when('x', function (x) {
+  model.y = x + 1;
+});
+model.when('y', function (y) {
+  model.z = y * 2;
+});
+```
+
+<img src="http://curran.github.io/model/images/dependencyGraph.png">
+
+This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. 
+
+## Building Reactive Visualizations
+
+As an example of how model.js data dependency graphs can be used for creating a reactive visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+
+<img src="http://curran.github.io/model/images/barChart.png">
+<img src="http://curran.github.io/model/images/barChartFlow.png">
+
+Multiple reactive visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
+
+<img src="http://curran.github.io/model/images/linkedViews.png">
+Brushing in the scatter plot causes the selected data to be aggregated and plotted in the bar chart ([run it!](http://curran.github.io/model/examples/d3LinkedViews/)).
+
 
 ## See Also
 
@@ -139,44 +177,6 @@ model.when(['width', 'height', 'data'], function (width, height, data) {
 
 As this was the only usage pattern I encountered with models when using Backbone for developing visualizations, I decided to introduce a new library that only contains the essential features needed from Backbone Models (in order to remove the Backbone dependency), and the `when` function, which appears in the world of Functional Reactive Programming and makes working with models for visualizations much nicer. This is why model.js was created.
 
-## Data Dependency Graphs
-
-Combining `when` and `set` enables creating reactive data dependency graphs. This is similar to [computed properties in Ember.js](http://emberjs.com/guides/object-model/computed-properties/). As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
-
-```javascript
-model.when(['firstName', 'lastName'], function (firstName, lastName) {
-  model.fullName = firstName + ' ' + lastName;
-});
-```
-
-<img src="http://curran.github.io/model/images/computedProperty.png">
-
-The following example demonstrates construction of a data dependency graph in which the flow propagates two hops from x to y to z.
-```javascript
-model.when('x', function (x) {
-  model.y = x + 1;
-});
-model.when('y', function (y) {
-  model.z = y * 2;
-});
-```
-
-<img src="http://curran.github.io/model/images/dependencyGraph.png">
-
-This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. 
-
-## Building Reactive Visualizations
-
-As an example of how model.js data dependency graphs can be used for creating a reactive visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
-
-<img src="http://curran.github.io/model/images/barChart.png">
-<img src="http://curran.github.io/model/images/barChartFlow.png">
-
-Multiple reactive visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
-
-<img src="http://curran.github.io/model/images/linkedViews.png">
-Brushing in the scatter plot causes the selected data to be aggregated and plotted in the bar chart ([run it!](http://curran.github.io/model/examples/d3LinkedViews/)).
-
 ## Related Work
 
 Inspired by
@@ -198,6 +198,7 @@ See also:
  * [wire.js](https://github.com/curran/phd/blob/dac07e2e8c38da7343645d7a07ec17a762120ea0/prototype/src/wire.js) The original implementation of the idea for this library, as an extension to Backbone Models.
  * [Backbone Pull Request](https://github.com/jashkenas/backbone/pull/3135)
  * [Model.js featured in Dashing D3.js](https://www.dashingd3js.com/data-visualization-and-d3-newsletter/data-visualization-and-d3-newsletter-issue-75)
+ * [Computed properties in Ember.js](http://emberjs.com/guides/object-model/computed-properties/) A similar system.
 
 ## Contributing
 

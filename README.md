@@ -1,56 +1,75 @@
 model.js
 ========
 
-A functional reactive model library. See also [model-contrib](http://curran.github.io/model-contrib/#/).
+A functional reactive model library - Model.js manages the execution flow of the data flow graphs you define.
+. Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.github.io/react/), but _simpler_ and designed specifically for making [D3](http://d3js.org/) easier to use.
 
-Usable via [Bower](http://bower.io/): `bower install model`
 
-Features:
+## Public API
 
- * Models similar to [Backbone Models](http://backbonejs.org/#Model)
-   * Create them like this `var model = Model();`
-   * Set or get values like this `model.x = 5; console.log(model.x);`
- * A `when` function allows declaration of data flow graphs
+Installable via [Bower](http://bower.io/): `bower install model`.
 
-Model.js manages the execution flow of the data flow graphs you define.
+Model.js is exposed usable as:
 
-This example code computes `lastName` from `firstName` and `lastName`:
+ * an AMD (RequireJS) module `define(["model"], function(Model){ ... });`
+ * a CommonJS (Node) module `var Model = require("model");`
+ * a browser global `<script src="model.js"></script>`
 
-```javascript
-var person = Model();
+`var model = Model([defaults]);`
 
-person.when(["firstName", "lastName"], function (firstName, lastName) {
-  person.fullName = firstName + " " + lastName;
-});
+ * The model constructor function.
+ * Using "new" is optional.
+ * The optional `defaults` constructor argument is an object literal that specifies default model property values.
+ * The returned `model` object can be treated as a plain JavaScript Object
+   for setting and getting property values, e.g.
+   * `model.x = 5;`
+   * `console.log(model.x);`
 
-person.when("fullName", function (fullName) {
-  console.log("Hello " + fullName);
-});
+`var listener = model.when(properties, callback [, thisArg]);`
 
-// Causes "Hello Joe Schmoe" to print.
-person.set({
-  firstName: "Joe",
-  lastName: "Schmoe"
-});
-```
+ * Listens for changes to the given dependency properties.
+ * `properties` Either an array of strings or a string.
+   Specifies the dependency properties.
+ * `callback` A callback function that is called:
+   * with dependency property values as arguments,
+   * only if all dependency properties have values,
+   * once for initialization,
+   * whenever one or more dependency properties change,
+   * on the next tick of the JavaScript event loop after 
+     dependency properties change,
+   * only once as a result of one or more changes to
+     dependency properties.
+ * `thisArg` An optional argument bound to `this` in the callback.
+ * Returns a `listener` object that can be used to remove the callback.
 
-You could alternatively use the "this" keyword to refer to the model instance, like this:
+`model.cancel(listener)`
 
-```javascript
-person.when(["firstName", "lastName"], function (firstName, lastName) {
-  this.fullName = firstName + " " + lastName;
-});
-```
-Thanks to [mathiasrw](https://github.com/mathiasrw) for this [contribution](https://github.com/curran/model/commit/e7f346c7de4188f2246f696cb787c0fdd7ce467e).
+ * Removes the listener returned by `when`. This means the callback
+   will no longer be called when properties change.
 
-This is a visual representation of the data flow graph constructed by the above code:
-<img src="http://curran.github.io/model/images/computedProperty.png">
+`model.on(property, callback(newValue, oldValue)[, thisArg])`
 
-Check out the
+ * Adds a change listener for the given property.
 
- * [Model.js API Docs](http://curran.github.io/model/docs/model.html)
- * [Model.js Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
- * [Model.js Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
+`model.off(property, callback)
+
+ * Removes a change listener for the given property.
+
+`model.set(values)`
+
+ * A convenience function for setting many model properties at once.
+ * Assigns each property from the given `values` object to the model.
+ * This function can be used to deserialize models, e.g.:
+   * `var json = JSON.stringify(model);`
+   * ... later on ..
+   * `model.set(JSON.parse(json));`
+
+
+## See Also
+
+ * [Annotated Source](http://curran.github.io/model/docs/model.html)
+ * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
+ * [Talk on YouTube](https://www.youtube.com/watch?v=TpZqVAtQs94) This talk presents Model.js and how it can be used to construct reactive data visualizations with D3. Presented in California at the Bay Area D3 Meetup, July 2014.
    * [Presentation on GitHub](https://github.com/curran/screencasts/tree/gh-pages/reactiveDataVis), [Incremental Bar Chart Example Code](http://curran.github.io/screencasts/reactiveDataVis/examples/viewer/index.html#/) (use left/right arrows)
  * Examples
    * D3
@@ -193,4 +212,4 @@ Pull requests welcome! Potential contributions include:
    * [Icicle Plot](http://mbostock.github.io/d3/talk/20111018/partition.html)
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
-By [Curran Kelleher](https://github.com/curran/portfolio) November 2014
+By [Curran Kelleher](https://github.com/curran/portfolio) March 2015

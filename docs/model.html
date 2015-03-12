@@ -28,54 +28,6 @@
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>A functional reactive model library.</p>
-<h2 id="public-api">Public API</h2>
-<p><code>var model = Model([defaults]);</code></p>
-<ul>
-<li>The model constructor function.</li>
-<li>Using “new” is optional.</li>
-<li>The optional <code>defaults</code> constructor argument is an object literal that specifies default model property values.</li>
-<li>The returned <code>model</code> object can be treated as a plain JavaScript Object
-for setting and getting property values, e.g.<ul>
-<li><code>model.x = 5;</code></li>
-<li><code>console.log(model.x);</code></li>
-</ul>
-</li>
-</ul>
-<p><code>var listener = model.when(properties, callback [, thisArg]);</code></p>
-<ul>
-<li>Listens for changes to the given dependency properties.</li>
-<li><code>properties</code> Either an array of strings or a string.
-Specifies the dependency properties.</li>
-<li><code>callback</code> A callback function that is called:<ul>
-<li>with dependency property values as arguments,</li>
-<li>only if all dependency properties have values,</li>
-<li>once for initialization,</li>
-<li>whenever one or more dependency properties change,</li>
-<li>on the next tick of the JavaScript event loop after 
-dependency properties change,</li>
-<li>only once as a result of one or more changes to
-dependency properties.</li>
-</ul>
-</li>
-<li><code>thisArg</code> An optional argument bound to <code>this</code> in the callback.</li>
-<li>Returns a <code>listener</code> object that can be used to remove the callback.</li>
-</ul>
-<p><code>model.removeListener(listenerToRemove)</code></p>
-<ul>
-<li>Removes the listener returned by <code>when</code>. This means the callback
-will no longer be called when properties change.</li>
-</ul>
-<p><code>model.set(values)</code></p>
-<ul>
-<li>A convenience function for setting many model properties at once.</li>
-<li>Assigns each property from the given <code>values</code> object to the model.</li>
-<li>This function can be used to deserialize models, e.g.:<ul>
-<li><code>var json = JSON.stringify(model);</code></li>
-<li>… later on ..</li>
-<li><code>model.set(JSON.parse(json));</code></li>
-</ul>
-</li>
-</ul>
 
             </div>
             
@@ -425,7 +377,7 @@ the object you called <code>.on</code> on.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeListener</span><span class="hljs-params">(listener)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancel</span><span class="hljs-params">(listener)</span></span>{
       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> property <span class="hljs-keyword">in</span> listeners){
         off(property, listener);
       }
@@ -499,7 +451,7 @@ the object you called <code>.on</code> on.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    model.when = when;
-    model.removeListener = removeListener;
+    model.cancel = cancel;
     model.on = on;
     model.off = off;
     model.set = set;
@@ -521,9 +473,7 @@ Inspired by <a href="https://github.com/umdjs/umd">https://github.com/umdjs/umd<
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">"function"</span> &amp;&amp; define.amd) {
-    define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-      <span class="hljs-keyword">return</span> Model;
-    });
+    define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> Model; });
   } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">"object"</span>) {
     <span class="hljs-built_in">module</span>.exports = Model;
   } <span class="hljs-keyword">else</span> {

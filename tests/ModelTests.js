@@ -288,7 +288,7 @@ describe("model", function() {
     expect(invocationCount).to.equal(2);
   });
 
-  it("should remove listeners", function(done) {
+  it("should cancel listeners", function(done) {
     var model = Model(),
         xValue,
         listener = model.when("x", function (x) {
@@ -297,7 +297,7 @@ describe("model", function() {
     model.x = 5;
     setTimeout(function () {
       expect(xValue).to.equal(5);
-      model.removeListener(listener);
+      model.cancel(listener);
       model.x = 6;
       setTimeout(function () {
         expect(xValue).to.equal(5);
@@ -306,7 +306,7 @@ describe("model", function() {
     }, 0);
   });
 
-  it("should remove listeners for multiple properties", function(done) {
+  it("should cancel listeners for multiple properties", function(done) {
     var model = Model(),
         xValue,
         listener = model.when(["x", "y", "z"], function (x, y, z) {
@@ -317,7 +317,7 @@ describe("model", function() {
     model.z = 7;
     setTimeout(function () {
       expect(xValue).to.equal(5);
-      model.removeListener(listener);
+      model.cancel(listener);
       model.x = 8;
       model.y = 9;
       setTimeout(function () {
@@ -327,7 +327,7 @@ describe("model", function() {
     }, 0);
   });
 
-  it("should remove multiple listeners separately", function(done) {
+  it("should cancel multiple listeners separately", function(done) {
     var model = Model(),
         xValue,
         yValue,
@@ -338,13 +338,13 @@ describe("model", function() {
     setTimeout(function () {
       expect(xValue).to.equal(5);
       expect(yValue).to.equal(10);
-      model.removeListener(xListener);
+      model.cancel(xListener);
       model.x = 6;
       model.y = 11;
       setTimeout(function () {
         expect(xValue).to.equal(5);
         expect(yValue).to.equal(11);
-        model.removeListener(yListener);
+        model.cancel(yListener);
         model.x = 7;
         model.y = 12;
         setTimeout(function () {

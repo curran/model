@@ -1,48 +1,5 @@
 // A functional reactive model library.
 //
-// ## Public API
-//
-// `var model = Model([defaults]);`
-//
-//  * The model constructor function.
-//  * Using "new" is optional.
-//  * The optional `defaults` constructor argument is an object literal that specifies default model property values.
-//  * The returned `model` object can be treated as a plain JavaScript Object
-//    for setting and getting property values, e.g.
-//    * `model.x = 5;`
-//    * `console.log(model.x);`
-//
-// `var listener = model.when(properties, callback [, thisArg]);`
-//
-//  * Listens for changes to the given dependency properties.
-//  * `properties` Either an array of strings or a string.
-//    Specifies the dependency properties.
-//  * `callback` A callback function that is called:
-//    * with dependency property values as arguments,
-//    * only if all dependency properties have values,
-//    * once for initialization,
-//    * whenever one or more dependency properties change,
-//    * on the next tick of the JavaScript event loop after 
-//      dependency properties change,
-//    * only once as a result of one or more changes to
-//      dependency properties.
-//  * `thisArg` An optional argument bound to `this` in the callback.
-//  * Returns a `listener` object that can be used to remove the callback.
-//
-// `model.removeListener(listenerToRemove)`
-//
-//  * Removes the listener returned by `when`. This means the callback
-//    will no longer be called when properties change.
-//
-// `model.set(values)`
-//
-//  * A convenience function for setting many model properties at once.
-//  * Assigns each property from the given `values` object to the model.
-//  * This function can be used to deserialize models, e.g.:
-//    * `var json = JSON.stringify(model);`
-//    * ... later on ..
-//    * `model.set(JSON.parse(json));`
-//
 (function(){
 
   // The constructor function, accepting default values.
@@ -158,7 +115,7 @@
     }
 
     // Removes a listener added using `when()`.
-    function removeListener(listener){
+    function cancel(listener){
       for(var property in listeners){
         off(property, listener);
       }
@@ -184,7 +141,7 @@
 
     // Expose the public API.
     model.when = when;
-    model.removeListener = removeListener;
+    model.cancel = cancel;
     model.on = on;
     model.off = off;
     model.set = set;
@@ -194,9 +151,7 @@
   // Support AMD (RequireJS), CommonJS (Node), and browser globals.
   // Inspired by https://github.com/umdjs/umd
   if (typeof define === "function" && define.amd) {
-    define([], function () {
-      return Model;
-    });
+    define([], function () { return Model; });
   } else if (typeof exports === "object") {
     module.exports = Model;
   } else {

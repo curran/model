@@ -70,7 +70,7 @@ Usable as:
 
 ## Data Dependency Graphs
 
-Setting model properties in `when` callbacks enables creating reactive data dependency graphs. . As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
+Setting model properties in `when` callbacks enables creating reactive data dependency graphs. As a simple example, consider a `fullName` property that is computed from `firstName` and `lastName`.
 
 ```javascript
 model.when(['firstName', 'lastName'], function (firstName, lastName) {

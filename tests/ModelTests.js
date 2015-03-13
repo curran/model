@@ -2,9 +2,7 @@
 // 
 // Curran Kelleher March 2015
 var requirejs = require("requirejs"),
-    expect = require("chai").expect,
-    fs = require("fs"),
-    writeDataFlowFiles = false;
+    expect = require("chai").expect;
 
 // Point require.js to the built model.js source.
 requirejs.config({ baseUrl: "dist" });
@@ -19,6 +17,14 @@ describe("model", function() {
 
   // Do some tests with the RequireJS version.
   var Model = ModelFromRequireJS;
+
+  // Detects the model dependency graph then
+  // writes the graph to disk for later visualization.
+  function printDataFlowGraph(){
+    var graph = Model.getFlowGraph(),
+        json = JSON.stringify(graph);
+    console.log(json);
+  }
 
   it("should create a model and listen for changes to a single property", function(done) {
 
@@ -146,6 +152,8 @@ describe("model", function() {
   // using a functional reactive style. The model system automatically propagates changes
   // through the data dependency graph. This is similar to computed properties in Ember.js.
   it("should compute fullName from firstName and lastName", function(done) {
+
+    Model.resetFlowGraph();
     var model = Model();
 
     model.when(["firstName", "lastName"], function (firstName, lastName) {
@@ -154,6 +162,7 @@ describe("model", function() {
 
     model.when("fullName", function (fullName) {
       expect(fullName).to.equal("John Doe");
+      printDataFlowGraph();
       done();
     });
 

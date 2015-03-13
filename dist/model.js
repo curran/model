@@ -2,6 +2,89 @@
 //
 (function(){
 
+  // The D3 conventional graph representation.
+  // See https://github.com/mbostock/d3/wiki/Force-Layout#nodes
+  var nodes, links, idCounter, map;
+
+  function resetFlowGraph(){
+    nodes = [];
+    links = [];
+    idCounter = 0;
+    map = {};
+  }
+
+  function getFlowGraph(){
+    return {
+      nodes: nodes,
+      links: links
+    };
+  }
+
+  resetFlowGraph();
+
+  // Adds the nodes and links to the data flow graph for one
+  // particular reactive function.
+  function updateLambda(modelId, lambdaId, inProperties, outProperties){
+    var lambda = lambdaNode(lambdaId);
+    inProperties.forEach(function(property){
+      link(propertyNode(modelId, property), lambda);
+    });
+    outProperties.forEach(function(property){
+      link(lambda, propertyNode(modelId, property));
+    });
+  }
+
+  function lambdaNode(id){
+    return getOrCreate(id, nodes, createLambda);
+  }
+
+  function createLambda(index){
+    return {
+      type: "lambda",
+      index: index
+    };
+  }
+
+  function propertyNode(modelId, property){
+    var id = modelId + "." + property;
+    return getOrCreate(id, nodes, createPropertyNode(property));
+  }
+
+  function createPropertyNode(property){
+    return function(index){
+      return {
+        type: "property",
+        index: index,
+        property: property
+      };
+    };
+  }
+
+  function link(sourceNode, destinationNode){
+    var source = sourceNode.index,
+        destination = destinationNode.index,
+        id = source + "-" + destination;
+    getOrCreate(id, links, createLink(source, destination));
+  }
+
+  function createLink(source, destination){
+    return function(index){
+      return {
+        source: source,
+        destination: destination
+      };
+    };
+  }
+
+  function getOrCreate(id, things, createThing){
+    var thing = map[id];
+    if(!thing){
+      thing = map[id] = createThing(things.length);
+      things.push(thing);
+    } 
+    return thing;
+  }
+
   // The constructor function, accepting default values.
   function Model(defaults){
 
@@ -15,7 +98,10 @@
         listeners = {},
 
         // The set of tracked properties. { property -> true }
-        trackedProperties = {};
+        trackedProperties = {},
+
+        modelId = idCounter++,
+        changedProperties = {};
 
     // The functional reactive "when" operator.
     //
@@ -28,6 +114,8 @@
     //    * on the next tick of the JavaScript event loop after properties change,
     //    * only once as a result of one or more synchronous changes to dependency properties.
     function when(properties, callback, thisArg){
+
+      var lambdaId = idCounter++;
       
       // Make sure the default `this` becomes 
       // the object you called `.on` on.
@@ -42,7 +130,11 @@
           return values[property];
         });
         if(allAreDefined(args)){
+          changedProperties = {};
+
           callback.apply(thisArg, args);
+
+          updateLambda(modelId, lambdaId, properties, Object.keys(changedProperties));
         }
       });
 
@@ -109,6 +201,8 @@
             getListeners(property).forEach(function(callback){
               callback.call(thisArg, newValue, oldValue);
             });
+
+            changedProperties[property] = true;
           }
         });
       }
@@ -147,6 +241,9 @@
     model.set = set;
     return model;
   }
+
+  Model.getFlowGraph = getFlowGraph;
+  Model.resetFlowGraph = resetFlowGraph;
 
   // Support AMD (RequireJS), CommonJS (Node), and browser globals.
   // Inspired by https://github.com/umdjs/umd

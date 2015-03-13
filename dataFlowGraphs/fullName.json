@@ -2,88 +2,36 @@
   "nodes": [
     {
       "type": "lambda",
-      "index": 0,
-      "weight": 3,
-      "x": 308.2311096330325,
-      "y": 103.79948661238994,
-      "px": 308.2311096330325,
-      "py": 103.79948661238994,
-      "isCircle": true,
-      "rectX": -20,
-      "rectWidth": 40,
-      "rightX": 308.2311096330325,
-      "leftX": 308.2311096330325,
-      "fixed": true
+      "index": 0
     },
     {
       "type": "property",
-      "name": "firstName",
       "index": 1,
-      "weight": 1,
-      "x": 171.02003533692437,
-      "y": 148.0719867997244,
-      "px": 171.02003533692437,
-      "py": 148.0719867997244,
-      "isCircle": false,
-      "rectX": -72.60318756103516,
-      "rectWidth": 145.2063751220703,
-      "textLength": 125.20637512207031,
-      "leftX": 118.41684777588921,
-      "rightX": 223.62322289795952,
-      "fixed": true
+      "property": "firstName"
     },
     {
       "type": "property",
-      "name": "lastName",
       "index": 2,
-      "weight": 1,
-      "x": 170.89424818216744,
-      "y": 60.39708050126066,
-      "px": 170.89424818216744,
-      "py": 60.39708050126066,
-      "isCircle": false,
-      "rectX": -69.33287048339844,
-      "rectWidth": 138.66574096679688,
-      "textLength": 118.66574096679688,
-      "leftX": 121.56137769876901,
-      "rightX": 220.22711866556588,
-      "fixed": true
+      "property": "lastName"
     },
     {
       "type": "property",
-      "name": "fullName",
       "index": 3,
-      "weight": 1,
-      "x": 438.15934998349985,
-      "y": 103.66452256656927,
-      "px": 438.15934998349985,
-      "py": 103.66452256656927,
-      "isCircle": false,
-      "rectX": -69.33287048339844,
-      "rectWidth": 138.66574096679688,
-      "textLength": 118.66574096679688,
-      "leftX": 388.8264795001014,
-      "rightX": 487.4922204668983,
-      "fixed": true
+      "property": "fullName"
     }
   ],
   "links": [
     {
       "source": 1,
-      "target": 0
+      "destination": 0
     },
     {
       "source": 2,
-      "target": 0
+      "destination": 0
     },
     {
       "source": 0,
-      "target": 3
+      "destination": 3
     }
-  ],
-  "scale": 1.070233060873279,
-  "translate": [
-    -96.1022675966853,
-    9.291451287607089
   ]
 }

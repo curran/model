@@ -6,6 +6,8 @@ Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.gith
 
  * [Annotated Source](http://curran.github.io/model/docs/model.html)
  * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
+ * Examples
+   [![](http://bl.ocks.org/curran/raw/9e04ccfebeb84bcdc76c/thumbnail.png)](http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c)
 
 Installable via [Bower](http://bower.io/): `bower install model`.
 

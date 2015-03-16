@@ -60,18 +60,18 @@
     };
   }
 
-  function link(sourceNode, destinationNode){
+  function link(sourceNode, targetNode){
     var source = sourceNode.index,
-        destination = destinationNode.index,
-        id = source + "-" + destination;
-    getOrCreate(id, links, createLink(source, destination));
+        target = targetNode.index,
+        id = source + "-" + target;
+    getOrCreate(id, links, createLink(source, target));
   }
 
-  function createLink(source, destination){
+  function createLink(source, target){
     return function(index){
       return {
         source: source,
-        destination: destination
+        target: target
       };
     };
   }

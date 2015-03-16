@@ -115,18 +115,18 @@ particular reactive function.</p>
     };
   }
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">link</span><span class="hljs-params">(sourceNode, destinationNode)</span></span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">link</span><span class="hljs-params">(sourceNode, targetNode)</span></span>{
     <span class="hljs-keyword">var</span> source = sourceNode.index,
-        destination = destinationNode.index,
-        id = source + <span class="hljs-string">"-"</span> + destination;
-    getOrCreate(id, links, createLink(source, destination));
+        target = targetNode.index,
+        id = source + <span class="hljs-string">"-"</span> + target;
+    getOrCreate(id, links, createLink(source, target));
   }
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createLink</span><span class="hljs-params">(source, destination)</span></span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createLink</span><span class="hljs-params">(source, target)</span></span>{
     <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index)</span></span>{
       <span class="hljs-keyword">return</span> {
         source: source,
-        destination: destination
+        target: target
       };
     };
   }

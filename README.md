@@ -205,6 +205,7 @@ See also:
  * [Backbone Pull Request](https://github.com/jashkenas/backbone/pull/3135)
  * [Model.js featured in Dashing D3.js](https://www.dashingd3js.com/data-visualization-and-d3-newsletter/data-visualization-and-d3-newsletter-issue-75)
  * [Computed properties in Ember.js](http://emberjs.com/guides/object-model/computed-properties/) A similar system.
+ * [Video Demo of Linked Choropleth from D3 Bay Area Meetup](https://youtu.be/ewJdCnO9eQo?t=5m29s)
 
 ## Contributing
 

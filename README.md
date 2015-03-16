@@ -8,6 +8,9 @@ Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.gith
  * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * Examples
    [![](http://bl.ocks.org/curran/raw/9e04ccfebeb84bcdc76c/thumbnail.png)](http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c)
+   [![](http://bl.ocks.org/curran/raw/3b811f05a0ce39d0d7cd/thumbnail.png)](http://bl.ocks.org/curran/3b811f05a0ce39d0d7cd)
+   [![](http://bl.ocks.org/curran/raw/015d34d6d3d562877e51/thumbnail.png)](http://bl.ocks.org/curran/015d34d6d3d562877e51)
+   [![](http://bl.ocks.org/curran/raw/015402cce2caa074551e/thumbnail.png)](http://bl.ocks.org/curran/015402cce2caa074551e)
 
 Installable via [Bower](http://bower.io/): `bower install model`.
 

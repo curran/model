@@ -1,0 +1,269 @@
+countryName,unCountryCode,alphaCode,locationTypeName
+WORLD,900,,Special groupings
+More developed regions,901,,Development group
+Less developed regions,902,,Development group
+Least developed countries,941,,Development group
+"Less developed regions, excluding least developed countries",934,,Development group
+"Less developed regions, excluding China",948,,Special groupings
+Sub-Saharan Africa,947,,Special groupings
+AFRICA,903,,Major Area
+Eastern Africa,910,,Region
+Burundi,108,BDI,Country/Area
+Comoros,174,COM,Country/Area
+Djibouti,262,DJI,Country/Area
+Eritrea,232,ERI,Country/Area
+Ethiopia,231,ETH,Country/Area
+Kenya,404,KEN,Country/Area
+Madagascar,450,MDG,Country/Area
+Malawi,454,MWI,Country/Area
+Mauritius,480,MUS,Country/Area
+Mayotte,175,MYT,Country/Area
+Mozambique,508,MOZ,Country/Area
+R�union,638,REU,Country/Area
+Rwanda,646,RWA,Country/Area
+Seychelles,690,SYC,Country/Area
+Somalia,706,SOM,Country/Area
+South Sudan,728,SSD,Country/Area
+Uganda,800,UGA,Country/Area
+United Republic of Tanzania,834,TZA,Country/Area
+Zambia,894,ZMB,Country/Area
+Zimbabwe,716,ZWE,Country/Area
+Middle Africa,911,,Region
+Angola,24,AGO,Country/Area
+Cameroon,120,CMR,Country/Area
+Central African Republic,140,CAF,Country/Area
+Chad,148,TCD,Country/Area
+Congo,178,COG,Country/Area
+Democratic Republic of the Congo,180,COD,Country/Area
+Equatorial Guinea,226,GNQ,Country/Area
+Gabon,266,GAB,Country/Area
+Sao Tome and Principe,678,STP,Country/Area
+Northern Africa,912,,Region
+Algeria,12,DZA,Country/Area
+Egypt,818,EGY,Country/Area
+Libya,434,LBY,Country/Area
+Morocco,504,MAR,Country/Area
+Sudan,729,SDN,Country/Area
+Tunisia,788,TUN,Country/Area
+Western Sahara,732,ESH,Country/Area
+Southern Africa,913,,Region
+Botswana,72,BWA,Country/Area
+Lesotho,426,LSO,Country/Area
+Namibia,516,NAM,Country/Area
+South Africa,710,ZAF,Country/Area
+Swaziland,748,SWZ,Country/Area
+Western Africa,914,,Region
+Benin,204,BEN,Country/Area
+Burkina Faso,854,BFA,Country/Area
+Cape Verde,132,CPV,Country/Area
+C�te d'Ivoire,384,CIV,Country/Area
+Gambia,270,GMB,Country/Area
+Ghana,288,GHA,Country/Area
+Guinea,324,GIN,Country/Area
+Guinea-Bissau,624,GNB,Country/Area
+Liberia,430,LBR,Country/Area
+Mali,466,MLI,Country/Area
+Mauritania,478,MRT,Country/Area
+Niger,562,NER,Country/Area
+Nigeria,566,NGA,Country/Area
+Saint Helena,654,SHN,Country/Area
+Senegal,686,SEN,Country/Area
+Sierra Leone,694,SLE,Country/Area
+Togo,768,TGO,Country/Area
+ASIA,935,,Major Area
+Eastern Asia,906,,Region
+China,156,CHN,Country/Area
+"China, Hong Kong SAR",344,HKG,Country/Area
+"China, Macao SAR",446,MAC,Country/Area
+Dem. People's Republic of Korea,408,PRK,Country/Area
+Japan,392,JPN,Country/Area
+Mongolia,496,MNG,Country/Area
+Republic of Korea,410,KOR,Country/Area
+Other non-specified areas,158,TWN,Country/Area
+South-Central Asia,921,,Region
+Central Asia,5500,,Region
+Kazakhstan,398,KAZ,Country/Area
+Kyrgyzstan,417,KGZ,Country/Area
+Tajikistan,762,TJK,Country/Area
+Turkmenistan,795,TKM,Country/Area
+Uzbekistan,860,UZB,Country/Area
+Southern Asia,5501,,Region
+Afghanistan,4,AFG,Country/Area
+Bangladesh,50,BGD,Country/Area
+Bhutan,64,BTN,Country/Area
+India,356,IND,Country/Area
+Iran (Islamic Republic of),364,IRN,Country/Area
+Maldives,462,MDV,Country/Area
+Nepal,524,NPL,Country/Area
+Pakistan,586,PAK,Country/Area
+Sri Lanka,144,LKA,Country/Area
+South-Eastern Asia,920,,Region
+Brunei Darussalam,96,BRN,Country/Area
+Cambodia,116,KHM,Country/Area
+Indonesia,360,IDN,Country/Area
+Lao People's Democratic Republic,418,LAO,Country/Area
+Malaysia,458,MYS,Country/Area
+Myanmar,104,MMR,Country/Area
+Philippines,608,PHL,Country/Area
+Singapore,702,SGP,Country/Area
+Thailand,764,THA,Country/Area
+Timor-Leste,626,TLS,Country/Area
+Viet Nam,704,VNM,Country/Area
+Western Asia,922,,Region
+Armenia,51,ARM,Country/Area
+Azerbaijan,31,AZE,Country/Area
+Bahrain,48,BHR,Country/Area
+Cyprus,196,CYP,Country/Area
+Georgia,268,GEO,Country/Area
+Iraq,368,IRQ,Country/Area
+Israel,376,ISR,Country/Area
+Jordan,400,JOR,Country/Area
+Kuwait,414,KWT,Country/Area
+Lebanon,422,LBN,Country/Area
+Oman,512,OMN,Country/Area
+Qatar,634,QAT,Country/Area
+Saudi Arabia,682,SAU,Country/Area
+State of Palestine,275,PSE,Country/Area
+Syrian Arab Republic,760,SYR,Country/Area
+Turkey,792,TUR,Country/Area
+United Arab Emirates,784,ARE,Country/Area
+Yemen,887,YEM,Country/Area
+EUROPE,908,,Major Area
+Eastern Europe,923,,Region
+Belarus,112,BLR,Country/Area
+Bulgaria,100,BGR,Country/Area
+Czech Republic,203,CZE,Country/Area
+Hungary,348,HUN,Country/Area
+Poland,616,POL,Country/Area
+Republic of Moldova,498,MDA,Country/Area
+Romania,642,ROU,Country/Area
+Russian Federation,643,RUS,Country/Area
+Slovakia,703,SVK,Country/Area
+Ukraine,804,UKR,Country/Area
+Northern Europe,924,,Region
+Channel Islands,830,CHI,Country/Area
+Denmark,208,DNK,Country/Area
+Estonia,233,EST,Country/Area
+Faeroe Islands,234,FRO,Country/Area
+Finland,246,FIN,Country/Area
+Iceland,352,ISL,Country/Area
+Ireland,372,IRL,Country/Area
+Isle of Man,833,IMN,Country/Area
+Latvia,428,LVA,Country/Area
+Lithuania,440,LTU,Country/Area
+Norway,578,NOR,Country/Area
+Sweden,752,SWE,Country/Area
+United Kingdom,826,GBR,Country/Area
+Southern Europe,925,,Region
+Albania,8,ALB,Country/Area
+Andorra,20,AND,Country/Area
+Bosnia and Herzegovina,70,BIH,Country/Area
+Croatia,191,HRV,Country/Area
+Gibraltar,292,GIB,Country/Area
+Greece,300,GRC,Country/Area
+Holy See,336,VAT,Country/Area
+Italy,380,ITA,Country/Area
+Malta,470,MLT,Country/Area
+Montenegro,499,MNE,Country/Area
+Portugal,620,PRT,Country/Area
+San Marino,674,SMR,Country/Area
+Serbia,688,SRB,Country/Area
+Slovenia,705,SVN,Country/Area
+Spain,724,ESP,Country/Area
+TFYR Macedonia,807,MKD,Country/Area
+Western Europe,926,,Region
+Austria,40,AUT,Country/Area
+Belgium,56,BEL,Country/Area
+France,250,FRA,Country/Area
+Germany,276,DEU,Country/Area
+Liechtenstein,438,LIE,Country/Area
+Luxembourg,442,LUX,Country/Area
+Monaco,492,MCO,Country/Area
+Netherlands,528,NLD,Country/Area
+Switzerland,756,CHE,Country/Area
+LATIN AMERICA AND THE CARIBBEAN,904,,Major Area
+Caribbean,915,,Region
+Anguilla,660,AIA,Country/Area
+Antigua and Barbuda,28,ATG,Country/Area
+Aruba,533,ABW,Country/Area
+Bahamas,44,BHS,Country/Area
+Barbados,52,BRB,Country/Area
+British Virgin Islands,92,VGB,Country/Area
+Caribbean Netherlands,535,BES,Country/Area
+Cayman Islands,136,CYM,Country/Area
+Cuba,192,CUB,Country/Area
+Cura�ao,531,CUW,Country/Area
+Dominica,212,DMA,Country/Area
+Dominican Republic,214,DOM,Country/Area
+Grenada,308,GRD,Country/Area
+Guadeloupe,312,GLP,Country/Area
+Haiti,332,HTI,Country/Area
+Jamaica,388,JAM,Country/Area
+Martinique,474,MTQ,Country/Area
+Montserrat,500,MSR,Country/Area
+Puerto Rico,630,PRI,Country/Area
+Saint Kitts and Nevis,659,KNA,Country/Area
+Saint Lucia,662,LCA,Country/Area
+Saint Vincent and the Grenadines,670,VCT,Country/Area
+Sint Maarten (Dutch part),534,SXM,Country/Area
+Trinidad and Tobago,780,TTO,Country/Area
+Turks and Caicos Islands,796,TCA,Country/Area
+United States Virgin Islands,850,VIR,Country/Area
+Central America,916,,Region
+Belize,84,BLZ,Country/Area
+Costa Rica,188,CRI,Country/Area
+El Salvador,222,SLV,Country/Area
+Guatemala,320,GTM,Country/Area
+Honduras,340,HND,Country/Area
+Mexico,484,MEX,Country/Area
+Nicaragua,558,NIC,Country/Area
+Panama,591,PAN,Country/Area
+South America,931,,Region
+Argentina,32,ARG,Country/Area
+Bolivia (Plurinational State of),68,BOL,Country/Area
+Brazil,76,BRA,Country/Area
+Chile,152,CHL,Country/Area
+Colombia,170,COL,Country/Area
+Ecuador,218,ECU,Country/Area
+Falkland Islands (Malvinas),238,FLK,Country/Area
+French Guiana,254,GUF,Country/Area
+Guyana,328,GUY,Country/Area
+Paraguay,600,PRY,Country/Area
+Peru,604,PER,Country/Area
+Suriname,740,SUR,Country/Area
+Uruguay,858,URY,Country/Area
+Venezuela (Bolivarian Republic of),862,VEN,Country/Area
+NORTHERN AMERICA,905,,Major Area
+Bermuda,60,BMU,Country/Area
+Canada,124,CAN,Country/Area
+Greenland,304,GRL,Country/Area
+Saint Pierre and Miquelon,666,SPM,Country/Area
+United States of America,840,USA,Country/Area
+OCEANIA,909,,Major Area
+Australia/New Zealand,927,,Region
+Australia,36,AUS,Country/Area
+New Zealand,554,NZL,Country/Area
+Melanesia,928,,Region
+Fiji,242,FJI,Country/Area
+New Caledonia,540,NCL,Country/Area
+Papua New Guinea,598,PNG,Country/Area
+Solomon Islands,90,SLB,Country/Area
+Vanuatu,548,VUT,Country/Area
+Micronesia,954,,Region
+Guam,316,GUM,Country/Area
+Kiribati,296,KIR,Country/Area
+Marshall Islands,584,MHL,Country/Area
+Micronesia (Fed. States of),583,FSM,Country/Area
+Nauru,520,NRU,Country/Area
+Northern Mariana Islands,580,MNP,Country/Area
+Palau,585,PLW,Country/Area
+Polynesia,957,,Region
+American Samoa,16,ASM,Country/Area
+Cook Islands,184,COK,Country/Area
+French Polynesia,258,PYF,Country/Area
+Niue,570,NIU,Country/Area
+Samoa,882,WSM,Country/Area
+Tokelau,772,TKL,Country/Area
+Tonga,776,TON,Country/Area
+Tuvalu,798,TUV,Country/Area
+Wallis and Futuna Islands,876,WLF,Country/Area

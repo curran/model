@@ -105,13 +105,13 @@ This pattern can be used to build up reactive data dependency graphs of arbitrar
 
 As an example of how data dependency graphs can be used for creating visualizations, consider this [bar chart](http://bl.ocks.org/curran/015d34d6d3d562877e51).
 
-![Bar Chart](http://curran.github.io/images/model/barChart.png)
+![Bar Chart](http://curran.github.io/images/model/barChart.png)](http://bl.ocks.org/curran/015d34d6d3d562877e51)
 
-This is what the bar chart looks like.
+This is the reactive data flow graph of the bar chart. 
 
 ![Bar Chart Flow](http://bl.ocks.org/curran/raw/015d34d6d3d562877e51/barChartFlow.png)
 
-This is the reactive flow of the bar chart. The diagram was constructed using the [reactive flow diagram renderer](http://bl.ocks.org/curran/5905182da50a4667dc00). Lambdas represent reactive functions, and labeled nodes represent model properties.
+The diagram was constructed using the [reactive flow diagram renderer](http://bl.ocks.org/curran/5905182da50a4667dc00). Lambdas represent reactive functions, and labeled nodes represent model properties.
 
 Though the entire reactive flow may seem complex, programming it is simple, because each reactive function is defined independently, only knowing about its direct dependencies and the properties that it changes. This is why functional reactive programming is so great.
 

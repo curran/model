@@ -101,12 +101,17 @@ model.when('y', function (y) {
 
 This pattern can be used to build up reactive data dependency graphs of arbitrary complexity. 
 
-## Building Reactive Visualizations
+## Reactive Visualizations
 
-As an example of how model.js data dependency graphs can be used for creating a reactive visualization, here is a diagram showing the data flow pipeline for the [bar chart example](https://github.com/curran/model/tree/gh-pages/examples/d3BarChart):
+As an example of how data dependency graphs can be used for creating visualizations, consider this [bar chart](http://bl.ocks.org/curran/015d34d6d3d562877e51).
 
-<img src="http://curran.github.io/model/images/barChart.png">
-<img src="http://curran.github.io/model/images/barChartFlow.png">
+![Bar Chart](http://curran.github.io/images/model/barChart.png)
+This is what the bar chart looks like.
+
+![Bar Chart Flow](http://gist.github.com/curran/015d34d6d3d562877e51/raw/7ddf656312f99643980a95d62e4238c91b6481b1/barChartFlow.png)
+This is the reactive flow of the bar chart. The diagram was constructed using the [reactive flow diagram renderer](http://bl.ocks.org/curran/5905182da50a4667dc00). Lambdas represent reactive functions, and labeled nodes represent model properties.
+
+Though the entire reactive flow may seem complex, programming it is simple, because each reactive function is defined independently, only knowing about its direct dependencies and the properties that it changes. This is why functional reactive programming is so great.
 
 Multiple reactive visualizations can be combined together to form visualization dashboards with multiple linked views. For example, take a look at the [linked views example](https://github.com/curran/model/tree/gh-pages/examples/d3LinkedViews), which looks like this:
 

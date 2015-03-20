@@ -2,7 +2,7 @@ model.js
 ========
 
 A functional reactive model library - Model.js manages the execution flow of the data flow graphs you define.
-Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.github.io/react/), but _simpler_ and designed specifically for making [D3](http://d3js.org/) easier to use.
+Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.github.io/react/), but _simpler_ and designed specifically for making [D3](http://d3js.org/) easier to use. Also check out [Chiasm](https://github.com/curran/chiasm), a visualization runtime engine build on Model.js.
 
  * [Annotated Source](http://curran.github.io/model/docs/model.html)
  * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)

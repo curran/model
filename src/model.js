@@ -1,5 +1,7 @@
-// ModelJS v0.2.0
+// ModelJS v0.2.1
+//
 // https://github.com/curran/model
+// 
 // Last updated by Curran Kelleher March 2015
 //
 // Includes contributions from

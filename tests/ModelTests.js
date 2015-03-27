@@ -378,4 +378,31 @@ describe("model", function() {
     });
 
   });
+
+  it("should support optionally specified properties with Model.None", function(done) {
+
+    var model = Model({
+      first: "John",
+      middle: Model.None,
+      last: "Smith"
+    });
+
+    model.when(["first", "middle", "last"], function (first, middle, last){
+      if(middle === Model.None){
+        model.full = first + " " + last;
+      } else {
+        model.full = first + " " + middle + " " + last;
+      }
+    });
+
+    model.when("full", function (full){
+      if(full === "John Smith") {
+        model.middle = "Clayton";
+      } else {
+        expect(full).to.equal("John Clayton Smith");
+        done();
+      }
+    });
+
+  });
 });

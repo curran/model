@@ -27,7 +27,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>A functional reactive model library.</p>
+              <p>ModelJS v0.2.0
+<a href="https://github.com/curran/model">https://github.com/curran/model</a>
+Last updated by Curran Kelleher March 2015</p>
+<p>Includes contributions from</p>
+<ul>
+<li>github.com/mathiasrw</li>
+<li>github.com/bollwyvl</li>
+<li>github.com/adle29</li>
+</ul>
+<p>The module is defined inside an immediately invoked function
+so it does not pullute the global namespace.</p>
 
             </div>
             
@@ -179,7 +189,7 @@ the object you called <code>.on</code> on.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> triggerCallback = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span></span>{
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> listener = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span></span>{
         <span class="hljs-keyword">var</span> args = properties.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span></span>{
           <span class="hljs-keyword">return</span> values[property];
         });
@@ -201,7 +211,7 @@ the object you called <code>.on</code> on.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      triggerCallback();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      listener();</pre></div></div>
             
         </li>
         
@@ -217,7 +227,7 @@ the object you called <code>.on</code> on.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>      properties.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span></span>{
-        on(property, triggerCallback);
+        on(property, listener);
       });</pre></div></div>
             
         </li>
@@ -229,11 +239,11 @@ the object you called <code>.on</code> on.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Return this function so it can be removed later.</p>
+              <p>Return this function so it can be removed later with <code>model.cancel(listener)</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> triggerCallback;
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> listener;
     }</pre></div></div>
             
         </li>
@@ -296,7 +306,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">on</span><span class="hljs-params">(property, callback, thisArg)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">on</span><span class="hljs-params">(property, callback, thisArg)</span></span>{
+      thisArg = thisArg || <span class="hljs-keyword">this</span>;
+      getListeners(property).push(callback);
+      track(property, thisArg);
+    }</pre></div></div>
             
         </li>
         
@@ -306,25 +320,6 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>Make sure the default <code>this</code> becomes 
-the object you called <code>.on</code> on.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      thisArg = thisArg || <span class="hljs-keyword">this</span>;
-      getListeners(property).push(callback);
-      track(property, thisArg);
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Gets or creates the array of listener functions for a given property.</p>
 
@@ -337,11 +332,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Tracks a property if it is not already tracked.</p>
 
@@ -367,13 +362,13 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
-              <p>Removes a listener added using <code>when()</code>.</p>
+              <p>Cancels a listener returned by a call to <code>model.when(...)</code>.</p>
 
             </div>
             
@@ -386,11 +381,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Removes a change listener added using <code>on</code>.</p>
 
@@ -405,11 +400,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Sets all of the given values on the model.
 <code>newValues</code> is an object { property -&gt; value }.</p>
@@ -425,11 +420,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Transfer defaults passed into the constructor to the model.</p>
 
@@ -440,13 +435,13 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Expose the public API.</p>
+              <p>Public API.</p>
 
             </div>
             
@@ -455,8 +450,33 @@ the object you called <code>.on</code> on.</p>
     model.on = on;
     model.off = off;
     model.set = set;
+
     <span class="hljs-keyword">return</span> model;
   }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Model.None is A representation for an optional Model property that is not specified.
+Model property values of null or undefined are not propagated through
+to when() listeners. If you want the when() listener to be invoked, but
+some of the properties may or may not be defined, you can use Model.None.
+This way, the when() listener is invoked even when the value is Model.None.
+This allows the “when” approach to support optional properties.</p>
+<p>For example usage, see this scatter plot example with optional size and color fields:
+<a href="http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c">http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c</a></p>
+<p>Inspired by Scala’s Option type.
+See <a href="http://alvinalexander.com/scala/using-scala-option-some-none-idiom-function-java-null">http://alvinalexander.com/scala/using-scala-option-some-none-idiom-function-java-null</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  Model.None = <span class="hljs-string">"__NONE__"</span>;</pre></div></div>
             
         </li>
         

@@ -1,5 +1,15 @@
-// A functional reactive model library.
+// ModelJS v0.2.0
+// https://github.com/curran/model
+// Last updated by Curran Kelleher March 2015
 //
+// Includes contributions from
+//
+//  * github.com/mathiasrw
+//  * github.com/bollwyvl
+//  * github.com/adle29
+//
+// The module is defined inside an immediately invoked function
+// so it does not pullute the global namespace.
 (function(){
 
   // The constructor function, accepting default values.
@@ -37,7 +47,7 @@
       properties = (properties instanceof Array) ? properties : [properties];
 
       // This function will trigger the callback to be invoked.
-      var triggerCallback = debounce(function (){
+      var listener = debounce(function (){
         var args = properties.map(function(property){
           return values[property];
         });
@@ -47,15 +57,15 @@
       });
 
       // Trigger the callback once for initialization.
-      triggerCallback();
+      listener();
       
       // Trigger the callback whenever specified properties change.
       properties.forEach(function(property){
-        on(property, triggerCallback);
+        on(property, listener);
       });
 
-      // Return this function so it can be removed later.
-      return triggerCallback;
+      // Return this function so it can be removed later with `model.cancel(listener)`.
+      return listener;
     }
 
     // Returns a debounced version of the given function.
@@ -83,9 +93,6 @@
     // Adds a change listener for a given property with Backbone-like behavior.
     // Similar to http://backbonejs.org/#Events-on
     function on(property, callback, thisArg){
-
-      // Make sure the default `this` becomes 
-      // the object you called `.on` on.
       thisArg = thisArg || this;
       getListeners(property).push(callback);
       track(property, thisArg);
@@ -114,7 +121,7 @@
       }
     }
 
-    // Removes a listener added using `when()`.
+    // Cancels a listener returned by a call to `model.when(...)`.
     function cancel(listener){
       for(var property in listeners){
         off(property, listener);
@@ -139,14 +146,29 @@
     // Transfer defaults passed into the constructor to the model.
     set(defaults);
 
-    // Expose the public API.
+    // Public API.
     model.when = when;
     model.cancel = cancel;
     model.on = on;
     model.off = off;
     model.set = set;
+
     return model;
   }
+  
+  // Model.None is A representation for an optional Model property that is not specified.
+  // Model property values of null or undefined are not propagated through
+  // to when() listeners. If you want the when() listener to be invoked, but
+  // some of the properties may or may not be defined, you can use Model.None.
+  // This way, the when() listener is invoked even when the value is Model.None.
+  // This allows the "when" approach to support optional properties.
+  //
+  // For example usage, see this scatter plot example with optional size and color fields:
+  // http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c
+  //
+  // Inspired by Scala's Option type.
+  // See http://alvinalexander.com/scala/using-scala-option-some-none-idiom-function-java-null
+  Model.None = "__NONE__";
 
   // Support AMD (RequireJS), CommonJS (Node), and browser globals.
   // Inspired by https://github.com/umdjs/umd

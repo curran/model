@@ -625,6 +625,33 @@ through the following two paths simultaneously:</p>
     });
 
   });
+
+  it(<span class="hljs-string">"should support optionally specified properties with Model.None"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> </span>{
+
+    <span class="hljs-keyword">var</span> model = Model({
+      first: <span class="hljs-string">"John"</span>,
+      middle: Model.None,
+      last: <span class="hljs-string">"Smith"</span>
+    });
+
+    model.when([<span class="hljs-string">"first"</span>, <span class="hljs-string">"middle"</span>, <span class="hljs-string">"last"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(first, middle, last)</span></span>{
+      <span class="hljs-keyword">if</span>(middle === Model.None){
+        model.full = first + <span class="hljs-string">" "</span> + last;
+      } <span class="hljs-keyword">else</span> {
+        model.full = first + <span class="hljs-string">" "</span> + middle + <span class="hljs-string">" "</span> + last;
+      }
+    });
+
+    model.when(<span class="hljs-string">"full"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(full)</span></span>{
+      <span class="hljs-keyword">if</span>(full === <span class="hljs-string">"John Smith"</span>) {
+        model.middle = <span class="hljs-string">"Clayton"</span>;
+      } <span class="hljs-keyword">else</span> {
+        expect(full).to.equal(<span class="hljs-string">"John Clayton Smith"</span>);
+        done();
+      }
+    });
+
+  });
 });</pre></div></div>
             
         </li>

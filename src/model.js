@@ -121,7 +121,7 @@
       }
     }
 
-    // Removes a listener returned by a call to `model.when(...)`.
+    // Cancels a listener returned by a call to `model.when(...)`.
     function cancel(listener){
       for(var property in listeners){
         off(property, listener);
@@ -155,6 +155,20 @@
 
     return model;
   }
+  
+  // Model.None is A representation for an optional Model property that is not specified.
+  // Model property values of null or undefined are not propagated through
+  // to when() listeners. If you want the when() listener to be invoked, but
+  // some of the properties may or may not be defined, you can use Model.None.
+  // This way, the when() listener is invoked even when the value is Model.None.
+  // This allows the "when" approach to support optional properties.
+  //
+  // For example usage, see this scatter plot example with optional size and color fields:
+  // http://bl.ocks.org/curran/9e04ccfebeb84bcdc76c
+  //
+  // Inspired by Scala's Option type.
+  // See http://alvinalexander.com/scala/using-scala-option-some-none-idiom-function-java-null
+  Model.None = "__NONE__";
 
   // Support AMD (RequireJS), CommonJS (Node), and browser globals.
   // Inspired by https://github.com/umdjs/umd

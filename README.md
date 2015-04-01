@@ -1,4 +1,4 @@
-model.js
+model.js [![Build Status](https://travis-ci.org/curran/model.svg?branch=gh-pages)](https://travis-ci.org/curran/model)
 ========
 
 A functional reactive model library - Model.js manages the execution flow of the data flow graphs you define.

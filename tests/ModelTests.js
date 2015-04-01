@@ -399,7 +399,7 @@ describe("model", function() {
       if(full === "John Smith") {
         model.middle = "Clayton";
       } else {
-        expect(full).to.equal("Joon Clayton Smith");
+        expect(full).to.equal("John Clayton Smith");
         done();
       }
     });

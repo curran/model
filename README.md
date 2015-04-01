@@ -105,7 +105,7 @@ This pattern can be used to build up reactive data dependency graphs of arbitrar
 
 As an example of how data dependency graphs can be used for creating visualizations, consider this [bar chart](http://bl.ocks.org/curran/015d34d6d3d562877e51).
 
-![Bar Chart](http://curran.github.io/images/model/barChart.png)](http://bl.ocks.org/curran/015d34d6d3d562877e51)
+[![Bar Chart](http://curran.github.io/images/model/barChart.png)](http://bl.ocks.org/curran/015d34d6d3d562877e51)
 
 This is the reactive data flow graph of the bar chart. 
 

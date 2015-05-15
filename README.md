@@ -234,4 +234,4 @@ Pull requests welcome! Potential contributions include:
    * [Icicle Plot](http://mbostock.github.io/d3/talk/20111018/partition.html)
  * Add a D3 example with UI elements such as a drop down menu for selecting fields to use in the visualization.
 
-By [Curran Kelleher](https://github.com/curran/portfolio) March 2015
+By [Curran Kelleher](https://github.com/curran/portfolio) May 2015

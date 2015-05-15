@@ -1,9 +1,9 @@
-
 {
   "name": "model",
-  "version": "0.0.2",
+  "version": "0.2.1",
   "description": "A functional reactive model library",
-  "main": "dist/model.js",
+  "main": "dist/model",
+  "format": "amd",
   "repository": {
     "type": "git",
     "url": "https://github.com/curran/model.git"

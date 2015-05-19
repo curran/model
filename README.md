@@ -10,6 +10,7 @@ Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.gith
  * [Unit Tests](http://curran.github.io/model/docs/ModelTests.html)
  * Examples:
 
+[![](http://bl.ocks.org/curran/raw/05780c9eb997b86eab76/thumbnail.png)](http://bl.ocks.org/curran/05780c9eb997b86eab76)
 [![](http://bl.ocks.org/curran/raw/9aafca5fba0c7fde13aa/thumbnail.png)](http://bl.ocks.org/curran/9aafca5fba0c7fde13aa)
 [![](http://curran.github.io/images/model/linkedChoroplethThumb.png)](http://curran.github.io/model/examples/d3LinkedChoropleth/)
 [![](http://bl.ocks.org/curran/raw/cf4b98fff0517ca04667/thumbnail.png)](http://bl.ocks.org/curran/cf4b98fff0517ca04667)

@@ -20,6 +20,8 @@ Kind of like [Backbone](http://backbonejs.org/) and [React](http://facebook.gith
 
 Installable via [Bower](http://bower.io/): `bower install model`.
 
+Installable via [JSPM](http://jspm.io/): `jspm install model=github:curran/model`.
+
 Usable as:
 
  * an AMD (RequireJS) module `define(["model"], function(Model){ ... });`

@@ -37,7 +37,6 @@
     });
   }
 
-
   // The constructor function, accepting default values.
   function Model(defaults){
 
@@ -47,7 +46,7 @@
       return new Model(defaults);
     }
 
-    // The returned public API object.
+    // `model` is the public API object returned from invoking `new Model()`.
     var model = this,
 
         // The internal stored values for tracked properties. { property -> value }
@@ -162,7 +161,6 @@
     model.on = on;
     model.off = off;
     model.set = set;
-
   }
   
   // Model.None is A representation for an optional Model property that is not specified.

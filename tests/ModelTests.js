@@ -412,6 +412,13 @@ describe("model", function() {
         done();
       }
     });
-
   });
+
+  it("should support instanceof to check model type, regardless if 'new' is used", function() {
+    var a = Model(),
+        b = new Model();
+    expect(a instanceof Model).to.equal(true);
+    expect(b instanceof Model).to.equal(true);
+  });
+
 });

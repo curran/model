@@ -35,6 +35,7 @@
 <li>github.com/mathiasrw</li>
 <li>github.com/bollwyvl</li>
 <li>github.com/adle29</li>
+<li>github.com/Hypercubed</li>
 </ul>
 <p>The module is defined inside an immediately invoked function
 so it does not pullute the global namespace.</p>
@@ -52,11 +53,23 @@ so it does not pullute the global namespace.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The constructor function, accepting default values.</p>
+              <p>Returns a debounced version of the given function.
+See <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounce</a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">(defaults)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span><span class="hljs-params">(callback)</span></span>{
+    <span class="hljs-keyword">var</span> queued = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+      <span class="hljs-keyword">if</span>(!queued){
+        queued = <span class="hljs-literal">true</span>;
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+          queued = <span class="hljs-literal">false</span>;
+          callback();
+        }, <span class="hljs-number">0</span>);
+      }
+    };
+  }</pre></div></div>
             
         </li>
         
@@ -67,11 +80,15 @@ so it does not pullute the global namespace.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>The returned public API object.</p>
+              <p>Returns true if all elements of the given array are defined, false otherwise.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span></span>{
+    <span class="hljs-keyword">return</span> !arr.some(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>;
+    });
+  }</pre></div></div>
             
         </li>
         
@@ -82,11 +99,11 @@ so it does not pullute the global namespace.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>The internal stored values for tracked properties. { property -&gt; value }</p>
+              <p>The constructor function, accepting default values.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        values = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">(defaults)</span></span>{</pre></div></div>
             
         </li>
         
@@ -97,11 +114,14 @@ so it does not pullute the global namespace.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>The callback functions for each tracked property. { property -&gt; [callback] }</p>
+              <p>Make sure “new” is always used,
+so we can use “instanceof” to check if something is a Model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        listeners = {},</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> Model)) {
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Model(defaults);
+    }</pre></div></div>
             
         </li>
         
@@ -112,11 +132,11 @@ so it does not pullute the global namespace.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>The set of tracked properties. { property -&gt; true }</p>
+              <p>The returned public API object.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        trackedProperties = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>,</pre></div></div>
             
         </li>
         
@@ -126,6 +146,51 @@ so it does not pullute the global namespace.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>The internal stored values for tracked properties. { property -&gt; value }</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        values = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>The callback functions for each tracked property. { property -&gt; [callback] }</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        listeners = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The set of tracked properties. { property -&gt; true }</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        trackedProperties = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>The functional reactive “when” operator.</p>
 <ul>
@@ -148,11 +213,11 @@ so it does not pullute the global namespace.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Make sure the default <code>this</code> becomes 
 the object you called <code>.on</code> on.</p>
@@ -164,11 +229,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Handle either an array or a single string.</p>
 
@@ -179,11 +244,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>This function will trigger the callback to be invoked.</p>
 
@@ -201,11 +266,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Trigger the callback once for initialization.</p>
 
@@ -216,11 +281,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Trigger the callback whenever specified properties change.</p>
 
@@ -233,11 +298,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Return this function so it can be removed later with <code>model.cancel(listener)</code>.</p>
 
@@ -249,57 +314,11 @@ the object you called <code>.on</code> on.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>Returns a debounced version of the given function.
-See <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounce</a></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span><span class="hljs-params">(callback)</span></span>{
-      <span class="hljs-keyword">var</span> queued = <span class="hljs-literal">false</span>;
-      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        <span class="hljs-keyword">if</span>(!queued){
-          queued = <span class="hljs-literal">true</span>;
-          setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-            queued = <span class="hljs-literal">false</span>;
-            callback();
-          }, <span class="hljs-number">0</span>);
-        }
-      };
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>Returns true if all elements of the given array are defined, false otherwise.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span></span>{
-      <span class="hljs-keyword">return</span> !arr.some(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> </span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>;
-      });
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Adds a change listener for a given property with Backbone-like behavior.
 Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Events-on</a></p>
@@ -315,11 +334,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Gets or creates the array of listener functions for a given property.</p>
 
@@ -332,11 +351,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Tracks a property if it is not already tracked.</p>
 
@@ -362,11 +381,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Cancels a listener returned by a call to <code>model.when(...)</code>.</p>
 
@@ -381,11 +400,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Removes a change listener added using <code>on</code>.</p>
 
@@ -400,11 +419,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Sets all of the given values on the model.
 <code>newValues</code> is an object { property -&gt; value }.</p>
@@ -420,11 +439,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Transfer defaults passed into the constructor to the model.</p>
 
@@ -435,11 +454,11 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Public API.</p>
 
@@ -451,17 +470,16 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
     model.off = off;
     model.set = set;
 
-    <span class="hljs-keyword">return</span> model;
   }</pre></div></div>
             
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>Model.None is A representation for an optional Model property that is not specified.
 Model property values of null or undefined are not propagated through
@@ -481,11 +499,11 @@ See <a href="http://alvinalexander.com/scala/using-scala-option-some-none-idiom-
         </li>
         
         
-        <li id="section-25">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>Support AMD (RequireJS), CommonJS (Node), and browser globals.
 Inspired by <a href="https://github.com/umdjs/umd">https://github.com/umdjs/umd</a></p>

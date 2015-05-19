@@ -9,16 +9,46 @@
 //  * github.com/mathiasrw
 //  * github.com/bollwyvl
 //  * github.com/adle29
+//  * github.com/Hypercubed
 //
 // The module is defined inside an immediately invoked function
 // so it does not pullute the global namespace.
 (function(){
 
+  // Returns a debounced version of the given function.
+  // See http://underscorejs.org/#debounce
+  function debounce(callback){
+    var queued = false;
+    return function () {
+      if(!queued){
+        queued = true;
+        setTimeout(function () {
+          queued = false;
+          callback();
+        }, 0);
+      }
+    };
+  }
+
+  // Returns true if all elements of the given array are defined, false otherwise.
+  function allAreDefined(arr){
+    return !arr.some(function (d) {
+      return typeof d === 'undefined' || d === null;
+    });
+  }
+
+
   // The constructor function, accepting default values.
   function Model(defaults){
 
+    // Make sure "new" is always used,
+    // so we can use "instanceof" to check if something is a Model.
+    if (!(this instanceof Model)) {
+      return new Model(defaults);
+    }
+
     // The returned public API object.
-    var model = {},
+    var model = this,
 
         // The internal stored values for tracked properties. { property -> value }
         values = {},
@@ -68,28 +98,6 @@
 
       // Return this function so it can be removed later with `model.cancel(listener)`.
       return listener;
-    }
-
-    // Returns a debounced version of the given function.
-    // See http://underscorejs.org/#debounce
-    function debounce(callback){
-      var queued = false;
-      return function () {
-        if(!queued){
-          queued = true;
-          setTimeout(function () {
-            queued = false;
-            callback();
-          }, 0);
-        }
-      };
-    }
-
-    // Returns true if all elements of the given array are defined, false otherwise.
-    function allAreDefined(arr){
-      return !arr.some(function (d) {
-        return typeof d === 'undefined' || d === null;
-      });
     }
 
     // Adds a change listener for a given property with Backbone-like behavior.
@@ -155,7 +163,6 @@
     model.off = off;
     model.set = set;
 
-    return model;
   }
   
   // Model.None is A representation for an optional Model property that is not specified.

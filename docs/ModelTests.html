@@ -99,7 +99,7 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> Model = ModelFromRequireJS;
 
-  it(<span class="hljs-string">"should create a model and listen for changes to a single property"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> </span>{</pre></div></div>
+  it(<span class="hljs-string">"should be a Model instance"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{</pre></div></div>
             
         </li>
         
@@ -125,6 +125,39 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
+              <p>Values in the model can be accessed like plain JS object properties.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    expect(model <span class="hljs-keyword">instanceof</span> Model).to.equal(<span class="hljs-literal">true</span>);
+  });
+
+  it(<span class="hljs-string">"should create a model and listen for changes to a single property"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(done)</span> </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Create a new model by calling <code>Model()</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = Model();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
               <p>Listen for changes on x using <code>model.when()</code>.</p>
 
             </div>
@@ -137,11 +170,11 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
         </li>
         
         
-        <li id="section-8">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Set x to be 30, which triggers the callback.</p>
 
@@ -152,11 +185,11 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
         </li>
         
         
-        <li id="section-9">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Values in the model can be accessed like plain JS object properties.</p>
 
@@ -168,11 +201,11 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
         </li>
         
         
-        <li id="section-10">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p><code>model.when()</code> calls the callback for existing values.</p>
 
@@ -190,11 +223,11 @@ describe(<span class="hljs-string">"model"</span>, <span class="hljs-function"><
         </li>
         
         
-        <li id="section-11">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>An array of dependencies can be passed to <code>when()</code>,
 and the values from the model are passed to the callback.</p>
@@ -217,14 +250,14 @@ and the values from the model are passed to the callback.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Model values are passed as arguments to the callback
-in the order specified in the dependencies array. </p>
+in the order specified in the dependencies array.</p>
 
             </div>
             
@@ -244,11 +277,11 @@ in the order specified in the dependencies array. </p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Do some tests with the CommonJS version to make sure it works.</p>
 
@@ -259,11 +292,11 @@ in the order specified in the dependencies array. </p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Multiple properties can be set simultaneously by
 passing an object to <code>model.set</code>.</p>
@@ -288,11 +321,11 @@ passing an object to <code>model.set</code>.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>The callback is not called until all dependency values are defined.</p>
 
@@ -315,11 +348,11 @@ passing an object to <code>model.set</code>.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Multiple changes on a property that happen in sequence
 cause the <code>when</code> callback to be executed only once.</p>
@@ -355,11 +388,11 @@ cause the <code>when</code> callback to be executed only once.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Properties can be set in the model in the body of a <code>when()</code> callback.
 This pattern can be used to define a data dependency graph
@@ -426,11 +459,11 @@ through the data dependency graph. This is similar to computed properties in Emb
         </li>
         
         
-        <li id="section-18">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>An additional argument can be passed to <code>when</code>,
 which will be the value of <code>this</code> in the callback function.</p>
@@ -452,11 +485,11 @@ which will be the value of <code>this</code> in the callback function.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Updates through a data dependency graph propagate in a
 breadth-first manner.</p>
@@ -475,7 +508,7 @@ through the following two paths simultaneously:</p>
     <span class="hljs-comment">/* a -&gt; (b, c) */</span>
     model.when(<span class="hljs-string">"a"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> </span>{
       model.set({ b: a + <span class="hljs-number">1</span>, c: a + <span class="hljs-number">2</span> });
-    }); 
+    });
 
     <span class="hljs-comment">/* b -&gt; d */</span>
     model.when(<span class="hljs-string">"b"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(b)</span> </span>{
@@ -488,7 +521,7 @@ through the following two paths simultaneously:</p>
     });
 
     <span class="hljs-comment">/* (d, e) -&gt; f */</span>
-    model.when([<span class="hljs-string">"d"</span>, <span class="hljs-string">"e"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d, e)</span> </span>{ 
+    model.when([<span class="hljs-string">"d"</span>, <span class="hljs-string">"e"</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d, e)</span> </span>{
       model.f = d + e;
     });
 
@@ -496,7 +529,7 @@ through the following two paths simultaneously:</p>
       expect(f).to.equal(<span class="hljs-number">15</span>);
       done();
     });
-    
+
     model.a = <span class="hljs-number">5</span>;
   });
 
@@ -650,8 +683,15 @@ through the following two paths simultaneously:</p>
         done();
       }
     });
-
   });
+
+  it(<span class="hljs-string">"should support instanceof to check model type, regardless if 'new' is used"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">var</span> a = Model(),
+        b = <span class="hljs-keyword">new</span> Model();
+    expect(a <span class="hljs-keyword">instanceof</span> Model).to.equal(<span class="hljs-literal">true</span>);
+    expect(b <span class="hljs-keyword">instanceof</span> Model).to.equal(<span class="hljs-literal">true</span>);
+  });
+
 });</pre></div></div>
             
         </li>

@@ -1,5 +1,5 @@
 // Unit tests for `model.js`.
-// 
+//
 // Curran Kelleher March 2015
 var requirejs = require("requirejs"),
     expect = require("chai").expect,
@@ -19,6 +19,15 @@ describe("model", function() {
 
   // Do some tests with the RequireJS version.
   var Model = ModelFromRequireJS;
+
+  it("should be a Model instance", function() {
+
+    // Create a new model by calling `Model()`.
+    var model = Model();
+
+    // Values in the model can be accessed like plain JS object properties.
+    expect(model instanceof Model).to.equal(true);
+  });
 
   it("should create a model and listen for changes to a single property", function(done) {
 
@@ -64,7 +73,7 @@ describe("model", function() {
   });
 
   // Model values are passed as arguments to the callback
-  // in the order specified in the dependencies array. 
+  // in the order specified in the dependencies array.
   it("should call fn with multiple dependency properties in the order specified", function(done) {
     var model = Model();
     model.when(["y", "x", "z"], function (y, x, z) {
@@ -219,7 +228,7 @@ describe("model", function() {
   //
   // When "a" changes, "f" should update once only, after the changes propagated
   // through the following two paths simultaneously:
-  // 
+  //
   //  * a -> b -> d -> f
   //  * a -> c -> e -> f
   it("should propagate changes in breadth first iterations", function (done) {
@@ -228,7 +237,7 @@ describe("model", function() {
     /* a -> (b, c) */
     model.when("a", function (a) {
       model.set({ b: a + 1, c: a + 2 });
-    }); 
+    });
 
     /* b -> d */
     model.when("b", function (b) {
@@ -241,7 +250,7 @@ describe("model", function() {
     });
 
     /* (d, e) -> f */
-    model.when(["d", "e"], function (d, e) { 
+    model.when(["d", "e"], function (d, e) {
       model.f = d + e;
     });
 
@@ -249,7 +258,7 @@ describe("model", function() {
       expect(f).to.equal(15);
       done();
     });
-    
+
     model.a = 5;
   });
 

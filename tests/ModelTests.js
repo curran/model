@@ -20,15 +20,6 @@ describe("model", function() {
   // Do some tests with the RequireJS version.
   var Model = ModelFromRequireJS;
 
-  it("should be a Model instance", function() {
-
-    // Create a new model by calling `Model()`.
-    var model = Model();
-
-    // Values in the model can be accessed like plain JS object properties.
-    expect(model instanceof Model).to.equal(true);
-  });
-
   it("should create a model and listen for changes to a single property", function(done) {
 
     // Create a new model by calling `Model()`.

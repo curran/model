@@ -92,6 +92,9 @@ model.when(['firstName', 'lastName'], function (firstName, lastName) {
 });
 ```
 
+[![](http://bl.ocks.org/curran/raw/05780c9eb997b86eab76/thumbnail.png)](http://bl.ocks.org/curran/05780c9eb997b86eab76)
+Here's a [full working example that computes fullName and uses HTML forms](http://bl.ocks.org/curran/05780c9eb997b86eab76).
+
 <img src="http://curran.github.io/model/images/computedProperty.png">
 
 The following example demonstrates construction of a data dependency graph in which the flow propagates two hops from x to y to z.

@@ -1,6 +1,6 @@
 {
-  "name": "model",
-  "version": "0.2.3",
+  "name": "model-js",
+  "version": "0.2.4",
   "description": "A functional reactive model library",
   "main": "dist/model",
   "format": "amd",

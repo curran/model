@@ -29,6 +29,8 @@ Usable as:
  * a CommonJS (Node) module `var Model = require("model");`
  * a browser global `<script src="model.js"></script>`
 
+Also, check out this redesign of this library - [reactive-model](https://github.com/curran/reactive-model).
+
 ## Public API
 
 `var model = Model([defaults]);`

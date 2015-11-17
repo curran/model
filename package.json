@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/curran/model.git"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "jshint src/model.js tests/ModelTests.js",
     "docs": "docco src/model.js tests/ModelTests.js",

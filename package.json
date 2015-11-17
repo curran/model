@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/curran/model.git"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "gulp test"
   },

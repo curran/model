@@ -11,6 +11,29 @@
   <div id="container">
     <div id="background"></div>
     
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="model.html">
+                  model.js
+                </a>
+              
+                
+                <a class="source" href="ModelTests.html">
+                  ModelTests.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
     <ul class="sections">
         
           <li id="title">
@@ -42,7 +65,7 @@ so it does not pullute the global namespace.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
             
         </li>
         
@@ -58,12 +81,12 @@ See <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounc
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span><span class="hljs-params">(callback)</span></span>{
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span>(<span class="hljs-params">callback</span>)</span>{
     <span class="hljs-keyword">var</span> queued = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
       <span class="hljs-keyword">if</span>(!queued){
         queued = <span class="hljs-literal">true</span>;
-        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
           queued = <span class="hljs-literal">false</span>;
           callback();
         }, <span class="hljs-number">0</span>);
@@ -84,8 +107,8 @@ See <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounc
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span><span class="hljs-params">(arr)</span></span>{
-    <span class="hljs-keyword">return</span> !arr.some(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> </span>{
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">allAreDefined</span>(<span class="hljs-params">arr</span>)</span>{
+    <span class="hljs-keyword">return</span> !arr.some(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">d</span>) </span>{
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> d === <span class="hljs-string">'undefined'</span> || d === <span class="hljs-literal">null</span>;
     });
   }</pre></div></div>
@@ -103,7 +126,7 @@ See <a href="http://underscorejs.org/#debounce">http://underscorejs.org/#debounc
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span><span class="hljs-params">(defaults)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Model</span>(<span class="hljs-params">defaults</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -208,7 +231,7 @@ so we can use “instanceof” to check if something is a Model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">when</span><span class="hljs-params">(properties, callback, thisArg)</span></span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">when</span>(<span class="hljs-params">properties, callback, thisArg</span>)</span>{</pre></div></div>
             
         </li>
         
@@ -254,8 +277,8 @@ the object you called <code>.on</code> on.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> listener = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span></span>{
-        <span class="hljs-keyword">var</span> args = properties.map(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span></span>{
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> listener = debounce(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">var</span> args = properties.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">property</span>)</span>{
           <span class="hljs-keyword">return</span> values[property];
         });
         <span class="hljs-keyword">if</span>(allAreDefined(args)){
@@ -291,7 +314,7 @@ the object you called <code>.on</code> on.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      properties.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span></span>{
+            <div class="content"><div class='highlight'><pre>      properties.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">property</span>)</span>{
         on(property, listener);
       });</pre></div></div>
             
@@ -325,7 +348,7 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">on</span><span class="hljs-params">(property, callback, thisArg)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">on</span>(<span class="hljs-params">property, callback, thisArg</span>)</span>{
       thisArg = thisArg || <span class="hljs-keyword">this</span>;
       getListeners(property).push(callback);
       track(property, thisArg);
@@ -344,7 +367,7 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getListeners</span><span class="hljs-params">(property)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getListeners</span>(<span class="hljs-params">property</span>)</span>{
       <span class="hljs-keyword">return</span> listeners[property] || (listeners[property] = []);
     }</pre></div></div>
             
@@ -361,16 +384,16 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">track</span><span class="hljs-params">(property, thisArg)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">track</span>(<span class="hljs-params">property, thisArg</span>)</span>{
       <span class="hljs-keyword">if</span>(!(property <span class="hljs-keyword">in</span> trackedProperties)){
         trackedProperties[property] = <span class="hljs-literal">true</span>;
         values[property] = model[property];
         <span class="hljs-built_in">Object</span>.defineProperty(model, property, {
-          get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> values[property]; },
-          set: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(newValue)</span> </span>{
+          get: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> values[property]; },
+          set: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">newValue</span>) </span>{
             <span class="hljs-keyword">var</span> oldValue = values[property];
             values[property] = newValue;
-            getListeners(property).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(callback)</span></span>{
+            getListeners(property).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>)</span>{
               callback.call(thisArg, newValue, oldValue);
             });
           }
@@ -391,7 +414,7 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancel</span><span class="hljs-params">(listener)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancel</span>(<span class="hljs-params">listener</span>)</span>{
       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> property <span class="hljs-keyword">in</span> listeners){
         off(property, listener);
       }
@@ -410,8 +433,8 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">off</span><span class="hljs-params">(property, callback)</span></span>{
-      listeners[property] = listeners[property].filter(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(listener)</span> </span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">off</span>(<span class="hljs-params">property, callback</span>)</span>{
+      listeners[property] = listeners[property].filter(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">listener</span>) </span>{
         <span class="hljs-keyword">return</span> listener !== callback;
       });
     }</pre></div></div>
@@ -430,7 +453,7 @@ Similar to <a href="http://backbonejs.org/#Events-on">http://backbonejs.org/#Eve
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span><span class="hljs-params">(newValues)</span></span>{
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span>(<span class="hljs-params">newValues</span>)</span>{
       <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> property <span class="hljs-keyword">in</span> newValues){
         model[property] = newValues[property];
       }
@@ -510,7 +533,7 @@ Inspired by <a href="https://github.com/umdjs/umd">https://github.com/umdjs/umd<
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">"function"</span> &amp;&amp; define.amd) {
-    define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{ <span class="hljs-keyword">return</span> Model; });
+    define([], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> Model; });
   } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">"object"</span>) {
     <span class="hljs-built_in">module</span>.exports = Model;
   } <span class="hljs-keyword">else</span> {

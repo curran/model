@@ -2,19 +2,22 @@
   "name": "model-js",
   "version": "0.2.4",
   "description": "A functional reactive model library",
-  "main": "dist/model",
-  "format": "amd",
+  "main": "src/model",
+  "format": "cjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/curran/model.git"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "lint": "jshint src/model.js tests/ModelTests.js",
     "docs": "docco src/model.js tests/ModelTests.js",
-    "build": "cp src/model.js dist && uglifyjs dist/model.js -o dist/model-min.js && npm run docs",
+    "browserify": "browserify src/model.js -s Model -o dist/model.js",
+    "uglifyjs": "uglifyjs dist/model.js -o dist/model-min.js",
+    "build": "npm run browserify && npm run uglifyjs && npm run docs",
     "test": "mocha tests/**/*.js -R spec"
   },
   "keywords": [

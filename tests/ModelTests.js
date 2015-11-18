@@ -15,7 +15,7 @@ describe("model", function() {
   var ModelFromRequireJS = requirejs("../dist/model");
 
   // Load the library as a CommonJS module.
-  var ModelFromCommonJS = require("../dist/model");
+  var ModelFromCommonJS = require("../src/model");
 
   // Do some tests with the RequireJS version.
   var Model = ModelFromRequireJS;
